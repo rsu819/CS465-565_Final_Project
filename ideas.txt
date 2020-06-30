@@ -5,3 +5,5 @@
 - games:
   + scrabble
   + cards against humanity
+ - plant care and watering database
+ - restaurant opening/takeout status
