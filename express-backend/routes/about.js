@@ -3,4 +3,6 @@ var router = express.Router();
 
 var aboutCtlr = require('../controllers/about');
 
-exports.aboutUs = router.get('/', aboutCtlr.about);
+router.get('/', aboutCtlr.about);
+
+module.exports = router;
