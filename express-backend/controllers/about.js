@@ -1,3 +1,5 @@
-exports.aboutUs = function(req, res) {
-    res.send('About Page! Connect to React to render page');
+//about page info request
+
+exports.about = function(req, res) {
+    res.send('About Page! Render with React');
 };

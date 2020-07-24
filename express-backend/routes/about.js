@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var aboutController = require('../controllers/about');
+var aboutCtlr = require('../controllers/about');
 
-router.get('/', aboutController.aboutUs);
+exports.aboutUs = router.get('/', aboutCtlr.about);
