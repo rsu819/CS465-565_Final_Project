@@ -7,7 +7,7 @@ class About extends React.Component {
   }
 
   callAPI() {
-    fetch("http://localhost:9000/about")
+    fetch("http://localhost:3000/about")
       .then((res) => res.text())
       .then((res) => this.setState({ apiResponse: res }));
   }
