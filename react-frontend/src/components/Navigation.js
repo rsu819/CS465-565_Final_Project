@@ -4,8 +4,8 @@ import { Navbar, Nav } from "react-bootstrap";
 class Navigation extends React.Component {
   render() {
     return (
-      <Navbar classsName="navbar" expand="md">
-        <Navbar.Brand href="#home">PlantsPlantsPlants</Navbar.Brand>
+      <Navbar className="navbar" expand="md">
+        <Navbar.Brand href="#">PlantsPlantsPlants</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
