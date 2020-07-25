@@ -4,9 +4,7 @@ var router = express.Router();
 var searchCtlr = require('../controllers/search');
 
 // redirect search to index page
-router.get('/', function(req, res) {
-  res.redirect('/index');
-});
+router.get('/', searchCtlr.results);
 
 router.get('/results', searchCtlr.results);
 

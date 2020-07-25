@@ -12,7 +12,7 @@ var plantRouter = require('./routes/plants');
 var findRouter = require('./routes/plantfinder');
 var weatherRouter = require('./routes/weather');
 var aboutRouter = require('./routes/about');
-//const { urlencoded } = require('express');
+const { urlencoded } = require('express');
 
 // create express app object
 var app = express();
@@ -30,7 +30,7 @@ app.use('/about', aboutRouter);
 // parsing urlencoded payloads
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(urlencoded({extended: false}));
 
 // if 404 error
 app.use(function(req, res, next) {
@@ -38,3 +38,7 @@ app.use(function(req, res, next) {
 });
 
 module.exports = app;
+
+var req = require('./API/plantRequest');
+
+req.getAuth();
