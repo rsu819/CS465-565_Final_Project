@@ -1,18 +1,21 @@
 // import modules
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-//var cookieParser = require('cookie-parser');
+const path = require('path');
+const logger = require('morgan');
+const { urlencoded } = require('express');
+
+const trefle = require('./api/trefle');
+const weather = require('./api/weather');
 
 // import router paths
-var indexRouter = require('./routes/index');
-var searchRouter = require('./routes/search');
-var plantRouter = require('./routes/plants');
-var findRouter = require('./routes/plantfinder');
-var weatherRouter = require('./routes/weather');
-var aboutRouter = require('./routes/about');
-const { urlencoded } = require('express');
+let indexRouter = require('./routes/index');
+let searchRouter = require('./routes/search');
+let plantRouter = require('./routes/plants');
+let findRouter = require('./routes/plantfinder');
+let weatherRouter = require('./routes/weather');
+let aboutRouter = require('./routes/about');
+
 
 // create express app object
 var app = express();
@@ -37,8 +40,9 @@ app.use(function(req, res, next) {
     next(createError(404));
 });
 
+let jwt = "";
+trefle.getAuth().then(response => (app.set('jwt', response.token)));
+console.log(jwt);
 module.exports = app;
 
-var req = require('./API/plantRequest');
 
-req.getAuth();

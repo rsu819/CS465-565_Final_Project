@@ -1,8 +1,17 @@
-const axios = require('axios');
-var http = require('http');
+const fetch = require('node-fetch');
+const app = require('../app');
 
+// import API call functions
+const trefle = require('../api/trefle');
 
-exports.results = function(req, res) {
-    res.send('SEARCH RESULTS: List all results from keyword search');
+// methods for retrieving API request data
+exports.getJWT = function(req, res, next) {
+    trefle.getAuth().then(response => console.log(response.token));
 };
+
+// exports.results = function(req, res) {
+//     res.send('SEARCH RESULTS: List results from keyword search');
+// };
+
+    
 

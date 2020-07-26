@@ -1,3 +1,6 @@
+
+
 exports.plantBio = function(req, res) {
-    res.send('INDIVIDUAL PLANT INFO');
+    res.send("This is the page for: " + req.params.slug);
 };
+
