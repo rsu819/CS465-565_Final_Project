@@ -6,8 +6,8 @@ const logger = require("morgan");
 const cors = require("cors");
 const { urlencoded } = require("express");
 
-const trefle = require("./api/trefle");
-const weather = require("./api/weather");
+//const trefle = require("./api/trefle");
+//const weather = require("./api/weather");
 
 // import router paths
 let indexRouter = require("./routes/index");
@@ -19,6 +19,12 @@ let aboutRouter = require("./routes/about");
 
 // create express app object
 const app = express();
+
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.use(cors());
 // call middleware functions for each requested path
