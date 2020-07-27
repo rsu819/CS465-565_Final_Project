@@ -1,13 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-var searchCtlr = require('../controllers/search');
+var trefle = require('../api/trefle');
 
-// redirect search to index page
-router.get('/', function(req, res) {
-  res.redirect('/index');
+var jwt = '';
+
+// router.use(function getAuth(req, res, next) {
+//     trefle.getAuth().then(response => {
+//         jwt = response.token;
+//         next()});
+// }, function (req, res) {
+//     trefle.requestAll(jwt).then(data => res.send(data));
+// });
+
+router.use(function getAuth(req, res, next) {
+    trefle.getAuth().then(response => {
+        jwt = response.token;
+        res.sendStatus(200)});
 });
 
-router.get('/results', searchCtlr.results);
 
 module.exports = router;
