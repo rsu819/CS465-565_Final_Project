@@ -1,10 +1,14 @@
 // import modules
+<<<<<<< HEAD
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var logger = require("morgan");
 var cors = require("cors");
-//var cookieParser = require('cookie-parser');
+const { urlencoded } = require('express');
+
+const trefle = require('./api/trefle');
+const weather = require('./api/weather');
 
 // import router paths
 var indexRouter = require("./routes/index");
@@ -13,25 +17,59 @@ var plantRouter = require("./routes/plants");
 var findRouter = require("./routes/plantfinder");
 var weatherRouter = require("./routes/weather");
 var aboutRouter = require("./routes/about");
-//const { urlencoded } = require('express');
+
+=======
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cors = require('cors');
+const { urlencoded } = require('express');
+
+const trefle = require('./api/trefle');
+const weather = require('./api/weather');
+
+// import router paths
+let indexRouter = require('./routes/index');
+let searchRouter = require('./routes/search');
+let plantRouter = require('./routes/plants');
+let findRouter = require('./routes/plantfinder');
+let weatherRouter = require('./routes/weather');
+let aboutRouter = require('./routes/about');
+
+>>>>>>> Robin
 
 // create express app object
-var app = express();
+const app = express();
 
 app.use(cors());
 // call middleware functions for each requested path
-app.use("/index", indexRouter);
+<<<<<<< HEAD
+app.use("/", indexRouter);
 app.use("/search", searchRouter);
 app.use("/plants", plantRouter);
 app.use("/plantfinder", findRouter);
 app.use("/weather", weatherRouter);
 app.use("/about", aboutRouter);
+=======
+app.use('/', indexRouter);
+app.use('/search', searchRouter);
+app.use('/plants', plantRouter);
+app.use('/plantfinder', findRouter);
+app.use('/weather', weatherRouter);
+app.use('/about', aboutRouter);
+
+>>>>>>> Robin
 
 // middleware functions
 // parsing urlencoded payloads
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+<<<<<<< HEAD
+app.use(urlencoded({ extended: false }));
+=======
+app.use(urlencoded({extended: false}));
+>>>>>>> Robin
 
 // if 404 error
 app.use(function (req, res, next) {
@@ -39,3 +77,6 @@ app.use(function (req, res, next) {
 });
 
 module.exports = app;
+<<<<<<< HEAD
+=======
+>>>>>>> Robin
