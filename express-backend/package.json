@@ -1,7 +1,8 @@
 {
   "name": "express-backend",
   "version": "1.0.0",
-  "engines": "12.18.2",
+  "engines": {
+	  "node": "12.x",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

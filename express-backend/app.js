@@ -3,6 +3,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const cors = require('cors');
 const { urlencoded } = require('express');
 
 const trefle = require('./api/trefle');
@@ -20,6 +21,7 @@ let aboutRouter = require('./routes/about');
 // create express app object
 const app = express();
 
+app.use(cors());
 // call middleware functions for each requested path
 app.use('/', indexRouter);
 app.use('/search', searchRouter);
@@ -31,16 +33,13 @@ app.use('/about', aboutRouter);
 
 // middleware functions
 // parsing urlencoded payloads
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(urlencoded({extended: false}));
 
 // if 404 error
-app.use(function(req, res, next) {
-    next(createError(404));
+app.use(function (req, res, next) {
+  next(createError(404));
 });
 
 module.exports = app;
-
-
-
