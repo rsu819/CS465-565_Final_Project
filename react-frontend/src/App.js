@@ -1,8 +1,11 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import About from "./components/About";
+import Weather from "./components/Weather";
+import Finder from "./components/Finder";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -10,10 +13,15 @@ function App() {
       <BrowserRouter>
         <Navigation />
         <Switch>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          <Route path="/home" component={Home} exact />
+          <Route path="/finder" component={Finder} exact />
+          <Route path="/weather" component={Weather} exact />
           <Route path="/about" component={About} exact />
         </Switch>
       </BrowserRouter>
-      <h1 className="m-2">hello world!</h1>
     </div>
   );
 }
