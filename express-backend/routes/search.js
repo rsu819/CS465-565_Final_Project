@@ -3,8 +3,6 @@ var router = express.Router();
 
 var trefle = require('../api/trefle');
 
-//var searchCtlr = require('../controllers/search');
-
 var jwt = '';
 
 // router.use(function getAuth(req, res, next) {
@@ -18,11 +16,8 @@ var jwt = '';
 router.use(function getAuth(req, res, next) {
     trefle.getAuth().then(response => {
         jwt = response.token;
-        next()});
-}, function(req, res) {
-    res.send(jwt);
-});
+        res.sendStatus(200)});
+};
 
-//router.get('/', searchCtlr.getJWT);
 
 module.exports = router;
