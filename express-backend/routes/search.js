@@ -17,7 +17,7 @@ router.use(function getAuth(req, res, next) {
     trefle.getAuth().then(response => {
         jwt = response.token;
         res.sendStatus(200)});
-};
+});
 
 
 module.exports = router;
