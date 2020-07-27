@@ -1,6 +1,6 @@
 // import modules
-var createError = require('http-errors');
-var express = require('express');
+const createError = require('http-errors');
+const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const { urlencoded } = require('express');
@@ -18,10 +18,10 @@ let aboutRouter = require('./routes/about');
 
 
 // create express app object
-var app = express();
+const app = express();
 
 // call middleware functions for each requested path
-app.use('/index', indexRouter);
+app.use('/', indexRouter);
 app.use('/search', searchRouter);
 app.use('/plants', plantRouter);
 app.use('/plantfinder', findRouter);
@@ -40,9 +40,7 @@ app.use(function(req, res, next) {
     next(createError(404));
 });
 
-let jwt = "";
-trefle.getAuth().then(response => (app.set('jwt', response.token)));
-console.log(jwt);
 module.exports = app;
+
 
 
