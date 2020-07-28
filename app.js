@@ -21,6 +21,7 @@ let aboutRouter = require("./routes/about");
 const app = express();
 
 // Serve static files from the React app
+console.log(__dirname);
 app.use(express.static(path.join(__dirname, "react-frontend/build")));
 
 // The "catchall" handler: for any request that doesn't
