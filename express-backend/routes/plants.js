@@ -3,7 +3,7 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-    res.redirect('/plantfinder');
+    res.redirect('/');
   });
 
 router.get('/:slug', function(req, res) {

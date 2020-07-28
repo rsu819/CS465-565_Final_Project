@@ -10,22 +10,22 @@ class Home extends React.Component {
     this.state = {value: ""};
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleClick = function() {
-    alert('You searched for ' + this.state.value);
-    return;
-  }
-
-  handleChange = function(e) {
+  handleChange = function() {
     this.setState({value: e.target.value});
     console.log(this.state.value);
     return;
   }
 
+  handleSubmit = function() {
+    alert('You searched for ' + this.state.value);
+    return;
+  }
+
   render() {
-    return <Form className="searchform" >
+    return <Form className="searchform" onSubmit={this.handleSubmit} action="./plants/results">
       <Form.Group controlId="formSearchPlants">
         <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
         <Form.Control className="search" 
@@ -36,7 +36,7 @@ class Home extends React.Component {
                 required
         />
       </Form.Group>
-      <Button className="btn" type="submit" variant="primary" onClick={this.handleClick}>Search!</Button>
+      <Button className="btn" type="submit" variant="primary" >Search!</Button>
     </Form>
   }
 }
