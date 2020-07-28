@@ -15,7 +15,7 @@ function App() {
           <Route path="/about" component={About} exact />
         </Switch>
       </BrowserRouter>
-      <h1 className="m-2">hello world!</h1>
+      {/* <h1 className="m-2">hello world!</h1> */}
     </div>
   );
 }

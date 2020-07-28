@@ -1,19 +1,43 @@
 import React from "react";
 import '../App.css';
 import '../stylesheets/Home.css';
+import { Button, Form } from "react-bootstrap";
 
 class Home extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {value: ""};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick = function() {
+    alert('You searched for ' + this.state.value);
+    return;
+  }
+
+  handleChange = function(e) {
+    this.setState({value: e.target.value});
+    console.log(this.state.value);
+    return;
+  }
+
   render() {
-    return <div>
-        <form action="#" >
-        <div class="form-group m-5 p-5 text-center">
-            <label for="search" class="lead mb-3 display-4">Enter plant to care for:</label>
-            <input type="text" id="search" class="form-control m-2" placeholder="search any plant..." required />
-            <button type="submit" class="btn btn-md btn-primary mt-3 text-dark font-weight-bold" id="submit" name="Submit">Submit</button>
-        </div>
-    </form>
-    </div>;
+    return <Form className="searchform" >
+      <Form.Group controlId="formSearchPlants">
+        <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
+        <Form.Control className="search" 
+                type="text" 
+                onChange={this.handleChange}
+                placeholder="search any plant..." 
+                aria-label="enter search for plants" 
+                required
+        />
+      </Form.Group>
+      <Button className="btn" type="submit" variant="primary" onClick={this.handleClick}>Search!</Button>
+    </Form>
   }
 }
-
 export default Home;

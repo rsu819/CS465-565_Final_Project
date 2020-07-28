@@ -1,3 +1,14 @@
+.title {
+    font-size: 3em;
+    margin-bottom: 0em;
+}
+
+.search {
+    display: inline;
+    width: 75%;
+    margin-bottom: 1.5em;
+}
+
 .btn {
     background-color:var(--green-dark);
     border-color: var(--green-light);
