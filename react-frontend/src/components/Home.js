@@ -1,6 +1,6 @@
 import React from "react";
 import '../App.css';
-import '../stylesheets/Home.css';
+import '../public/stylesheets/Home.css';
 import { Button, Form } from "react-bootstrap";
 
 class Home extends React.Component {
