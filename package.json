@@ -1,26 +1,29 @@
 {
-  "name": "CS465-565_Final_Project",
+  "name": "express-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "bootstrap": "^4.5.0",
-    "http-errors": "^1.8.0"
+  "engines": {
+    "node": "12.18.2"
   },
-  "devDependencies": {},
+  "main": "app.js",
   "scripts": {
-    "start": "node ./express-backend/bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rsu819/CS465-565_Final_Project.git"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devstart": "nodemon ./bin/www",
+    "serverstart": "DEBUG=express-backend:* npm run devstart",
+    "start": "node ./bin/www"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rsu819/CS465-565_Final_Project/issues"
+  "dependencies": {
+    "async": "^3.2.0",
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.0"
   },
-  "homepage": "https://github.com/rsu819/CS465-565_Final_Project#readme"
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "description": ""
 }
