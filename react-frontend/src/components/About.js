@@ -7,21 +7,33 @@ import robin from "../images/robin_su.png";
 class About extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: "" };
+    this.state = { apiResponse: [], passwords: [] };
   }
 
   callAPI() {
-    fetch("http://localhost:3000/about")
-      .then((res) => res.text())
-      .then((res) => this.setState({ apiResponse: res }));
+    fetch("/about")
+      .then((res) => {
+        return res.text();
+      })
+      .then((res) => {
+        console.log("DEBUG res:", res);
+        this.setState({ apiResponse: res });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  componentWillMount() {
+  // life cycle hook: automatically executes on first render
+  UNSAFE_componentWillMount() {
+    console.log("DEBUG About componentWillMount");
     this.callAPI();
   }
+
   render() {
     return (
       <div>
+        <p>response body: {this.state.apiResponse}</p>
         <h1 className="m-5">About</h1>
         <Container fluid>
           <Row className="justify-content-md-center">
