@@ -19,13 +19,17 @@ class Home extends React.Component {
     return;
   }
 
-  handleSubmit = function() {
-    alert('You searched for ' + this.state.value);
+  handleSubmit = function(req, res) {
+    fetch('/search',
+            { method: 'GET',
+            keyword: `${this.state.value}`})
+    .then(res=>res.json())
+    alert(res);
     return;
   }
 
   render() {
-    return <Form className="searchform" onSubmit={this.handleSubmit} action="./plants/results">
+    return <Form className="searchform" onSubmit={this.handleSubmit} action="/plants">
       <Form.Group controlId="formSearchPlants">
         <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
         <Form.Control className="search" 
