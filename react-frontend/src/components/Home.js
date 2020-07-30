@@ -13,7 +13,7 @@ class Home extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange = function() {
+  handleChange = function(e) {
     this.setState({value: e.target.value});
     console.log(this.state.value);
     return;

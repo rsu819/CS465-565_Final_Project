@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// refle = require('../api/trefle');
 const fetch = require('node-fetch');
 
 //base URL
@@ -9,7 +8,8 @@ let url = 'https://trefle.io';
 // URL endpoints
 let auth = '/api/auth/claim';
 let listPlants = '/api/v1/plants?token=';
-let plant = '/api/v1/plants/search?q='
+let plant = '/api/v1/plants/search?q=';
+
 // API token
 //const token = ${{ secrets.TREFLETOKEN }};
 const token = 'N01xNVBYZGd6ZjlHeldTTmduUGJEdz09';
@@ -38,8 +38,8 @@ let requestAll = async function(jwt) {
     return json;
   };
 
-// router.get('/', function(req, res) {
-//     res.render(Home);
+// router.get('/home', function(req, res) {
+//     res.sendFile('/index.html', {root: 'react-frontend/public'});
 // });
 
 router.get( '/search', async function(req, res, next) {
@@ -53,12 +53,12 @@ router.get( '/search', async function(req, res, next) {
 });
 
 
-// router.use( async function(req, res) {
-//     let authenticated = await getAuth();
-//     jwt = authenticated.token;
-//     res.sendStatus(200);
-//     console.log(jwt);
-// })
+router.get( async function(req, res) {
+    let authenticated = await getAuth();
+    jwt = authenticated.token;
+    res.sendStatus(200);
+    console.log(jwt);
+})
 
 
 module.exports = router;

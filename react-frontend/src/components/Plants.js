@@ -5,10 +5,11 @@ import { Button, Form } from "react-bootstrap";
 
 class Plants extends React.Component {
     render() {
-        return 
+        return (
             <div>
-                {object}
+               <h3> Search results for </h3>
             </div>
+        )
     }
 }
 
@@ -16,4 +17,4 @@ class Plants extends React.Component {
         
     // }
 
-
+export default Plants;

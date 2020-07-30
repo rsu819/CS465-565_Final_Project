@@ -4,8 +4,9 @@
 }
 
 .search {
-    display: inline;
+    display: block;
     width: 75%;
+    margin: auto;
     margin-bottom: 1.5em;
 }
 
