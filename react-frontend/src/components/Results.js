@@ -15,10 +15,10 @@ class Results extends React.Component {
     // }
 
     render() {
-        return <div>
+        return (<div>
                 <p> Hello Hello? </p>
             </div>
-    }
+        );
 }
 
 export default Results;
