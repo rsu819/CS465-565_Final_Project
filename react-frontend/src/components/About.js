@@ -18,11 +18,10 @@ class About extends React.Component {
       })
       .then((res) => {
         console.log("DEBUG res:", res);
-        console.log(`DEBUT count: ${res.count}`);
-        res.results.forEach((character) => {
-          console.log(character);
+        res.data.forEach((plant) => {
+          console.log(plant);
           this.setState({
-            apiResponse: [...this.state.apiResponse, character.name],
+            apiResponse: [...this.state.apiResponse, { name: plant.common_name, id: plant.id }],
           });
         });
       })
@@ -40,8 +39,11 @@ class About extends React.Component {
   render() {
     return (
       <div>
-        <p>TEST response body: {this.state.apiResponse}</p>
-        <h1 className="m-5">About</h1>
+        <p>TEST response body: </p>
+        <ul>
+          {this.state.apiResponse.map((plant, index) => <li key={index}>{plant.name}</li>)}
+        </ul>
+        < h1 className="m-5" > About</h1>
         <Container fluid>
           <Row className="justify-content-md-center">
             <Col xs lg="4">

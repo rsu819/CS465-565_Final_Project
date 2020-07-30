@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 var router = express.Router();
 
 router.get("/", function (req, res, next) {
-  fetch("https://swapi.dev/api/people")
+  fetch(`https://trefle.io/api/v1/plants?token=${process.env.TREFLE_KEY}`)
     .then((res) => res.json())
     .then((data) => {
       //console.log(data);
