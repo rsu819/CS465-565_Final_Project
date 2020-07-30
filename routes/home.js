@@ -1,5 +1,6 @@
+const express = require('express');
 const fetch = require('node-fetch');
-const router = require('./plants');
+const router = express.Router();
 
 //const token = ${{ secrets.TREFLETOKEN }};
 const token = 'N01xNVBYZGd6ZjlHeldTTmduUGJEdz09';
@@ -16,6 +17,11 @@ const authParams = {
     token: token
 };
 
+router.get('/', function(req, res) {
+   let jwt = getAuth();
+   res.send(jwt);
+});
+
 
 // get JWT auth token
 exports.getAuth = async function() {
@@ -29,9 +35,4 @@ exports.getAuth = async function() {
   return json;
   };
 
-router.get('/', function(req, res) {
-    res.send(getAuth);
-});
-
-
-
+module.exports = router;

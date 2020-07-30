@@ -20,5 +20,6 @@ class Results extends React.Component {
             </div>
         );
 }
+}
 
 export default Results;
