@@ -6,9 +6,12 @@ const logger = require('morgan');
 const cors = require('cors');
 const { urlencoded } = require('express');
 
+//const trefle = require('./api/trefle');
+//const weather = require('./api/weather');
+
 // import router paths
 let indexRouter = require('./routes/index');
-let homeRouter = require('./routes/home');
+let searchRouter = require('./routes/search');
 let plantRouter = require('./routes/plants');
 let findRouter = require('./routes/finder');
 let weatherRouter = require('./routes/weather');
@@ -17,11 +20,22 @@ let aboutRouter = require('./routes/about');
 
 // create express app object
 const app = express();
+
+// Serve static files from the React app
+console.log(__dirname);
+app.use(express.static(path.join(__dirname, "react-frontend/build")));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/react-frontend/build/index.html"));
+});
+
+
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'react-frontend/public/index.html')));
 // call middleware functions for each requested path
 app.use('/', indexRouter);
-app.use('/home', homeRouter);
+app.use('/search', searchRouter);
 app.use('/plants', plantRouter);
 app.use('/finder', findRouter);
 app.use('/weather', weatherRouter);

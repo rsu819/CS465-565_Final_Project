@@ -1,9 +1,0 @@
-- recipe database
-- food expiry manager
-- last time
-- camp site locator + weather/pollen + trail finder
-- games:
-  + scrabble
-  + cards against humanity
- - plant care and watering database
- - restaurant opening/takeout status
