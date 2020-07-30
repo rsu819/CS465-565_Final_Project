@@ -33,7 +33,7 @@ app.get("*", (req, res) => {
 app.use(cors());
 // call middleware functions for each requested path
 app.use('/', indexRouter);
-app.use('/search', homeRouter);
+app.use('/home', homeRouter);
 app.use('/plants', plantRouter);
 app.use('/finder', findRouter);
 app.use('/weather', weatherRouter);
