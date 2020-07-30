@@ -2,7 +2,7 @@ import React from "react";
 
 class Weather extends React.Component {
   render() {
-    return <div>This is the Weather Page</div>;
+    return <h1 className="m-5">Weather coming soon...</h1>
   }
 }
 
