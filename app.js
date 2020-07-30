@@ -13,7 +13,7 @@ const { urlencoded } = require('express');
 let indexRouter = require('./routes/index');
 let searchRouter = require('./routes/search');
 let plantRouter = require('./routes/plants');
-let findRouter = require('./routes/plantfinder');
+let findRouter = require('./routes/finder');
 let weatherRouter = require('./routes/weather');
 let aboutRouter = require('./routes/about');
 
@@ -37,7 +37,7 @@ app.use(cors());
 app.use('/', indexRouter);
 app.use('/search', searchRouter);
 app.use('/plants', plantRouter);
-app.use('/plantfinder', findRouter);
+app.use('/finder', findRouter);
 app.use('/weather', weatherRouter);
 app.use('/about', aboutRouter);
 
