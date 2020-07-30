@@ -6,12 +6,10 @@ const logger = require('morgan');
 const cors = require('cors');
 const { urlencoded } = require('express');
 
-//const trefle = require('./api/trefle');
-//const weather = require('./api/weather');
 
 // import router paths
 let indexRouter = require('./routes/index');
-let searchRouter = require('./routes/search');
+let homeRouter = require('./routes/home');
 let plantRouter = require('./routes/plants');
 let findRouter = require('./routes/finder');
 let weatherRouter = require('./routes/weather');
@@ -35,7 +33,7 @@ app.get("*", (req, res) => {
 app.use(cors());
 // call middleware functions for each requested path
 app.use('/', indexRouter);
-app.use('/search', searchRouter);
+app.use('/search', homeRouter);
 app.use('/plants', plantRouter);
 app.use('/finder', findRouter);
 app.use('/weather', weatherRouter);
