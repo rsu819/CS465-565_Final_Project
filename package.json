@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=express-backend:* npm run devstart",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "heroku-postbuild": "cd react-frontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "keywords": [],
   "author": "",
