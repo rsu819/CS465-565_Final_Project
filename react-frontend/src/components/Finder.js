@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 
-const TREFLE_KEY = process.env.REACT_APP_TREFLE_KEY
-const apiUrl = "http://trefle.io/api/v1"
+const apiUrl = "https://trefle.io/api/v1";
+
 class Finder extends React.Component {
   constructor(props) {
     super(props);
@@ -60,7 +60,7 @@ class Finder extends React.Component {
 
   getDivisions = function () {
     console.log('DEBUG getDivisions()')
-    fetch(`${apiUrl}/divisions?token=${TREFLE_KEY}`)
+    fetch(`${apiUrl}/divisions?token=${process.env.REACT_APP_TREFLE_KEY}`)
       .then((res) => res.json())
       .then((res) => {
         //clear existing data
@@ -79,7 +79,7 @@ class Finder extends React.Component {
 
   getClasses = function () {
     console.log('DEBUG getClasses()')
-    fetch(`${apiUrl}/division_classes?token=${TREFLE_KEY}`)
+    fetch(`${apiUrl}/division_classes?token=${process.env.REACT_APP_TREFLE_KEY}`)
       .then((res) => res.json())
       .then((res) => {
         this.setState({ classes: [] });
