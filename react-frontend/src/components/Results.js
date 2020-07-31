@@ -1,25 +1,21 @@
 import React from "react";
 import '../App.css';
-//import fetch from "node-fetch";
+
 
 
 class Results extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {keyword: "basil",
-                     results: [],}
+        this.state = {value: ""}
     }
     
-    // getResults = function() {
-        
-    // }
-
+    
     render() {
         return (<div>
-                <p> Hello Hello? </p>
+                <p className="title"> Hello Hello? </p>
             </div>
         );
-}
+    }
 }
 
 export default Results;

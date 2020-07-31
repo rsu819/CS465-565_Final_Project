@@ -2,6 +2,7 @@ import React from "react";
 import '../App.css';
 import '../stylesheets/Home.css';
 import { Button, Form } from "react-bootstrap";
+import fetch from "node-fetch";
 
 class Home extends React.Component {
 
@@ -20,8 +21,10 @@ class Home extends React.Component {
   }
 
   handleSubmit = function() {
-    alert('You searched for ' + this.state.value);
-    return;
+    fetch('http://localhost:3000/plants/results', {
+          method: 'GET',
+          keyword: this.state.value})
+    .then(resp => console.log(resp));
   }
 
   render() {
