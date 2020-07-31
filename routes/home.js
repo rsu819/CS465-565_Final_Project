@@ -1,41 +1,20 @@
-const express = require('express');
-const fetch = require('node-fetch');
-const router = express.Router();
+var express = require("express");
+var router = express.Router();
 
-//const token = ${{ secrets.TREFLETOKEN }};
-const token = process.env.TREFLE_KEY;
+//var trefle = require('../api/trefle');
 
-//base URL
-let url = 'https://trefle.io';
+var jwt = "";
 
-// URL endpoints
-let auth = '/api/auth/claim';
-let plant = '/api/v1/plants/search?q=';
+// router.use(function getAuth(req, res, next) {
+//     trefle.getAuth().then(response => {
+//         jwt = response.token;
+//         next()});
+// }, function (req, res) {
+//     trefle.requestAll(jwt).then(data => res.send(data));
+// });
 
-const authParams = {
-    origin: 'https://plantsplantsplants.herokuapp.com/',
-    token: token
-};
-
-
-router.get('/', function(req, res) {
-  fetch(`http://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_KEY}&q=basil`)
-    .then((response) => {res.send(response)})
-    // .then((data) => res.send(data))
-    .catch((err) => console.log(err));
- 
-});
-
-// get JWT auth token
-exports.getAuth = async function() {
-  const response = await fetch(
-    url+auth, {
-      method: 'post',
-      body: JSON.stringify(authParams),
-      headers: { 'Content-Type': 'application/json' }
-    });
-  const json = await response.json();
-  return json;
-  };
-
-module.exports = router;
+// router.use(function getAuth(req, res, next) {
+//     trefle.getAuth().then(response => {
+//         jwt = response.token;
+//         res.sendStatus(200)});
+// });
