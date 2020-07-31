@@ -27,16 +27,17 @@ exports.getAuth = async function() {
   const json = await response.json();
   return json;
   };
-router.get('/', function(req, res) {
-    res.redirect('/');
-  });
 
-router.get('/results', async function(req, res) {
-    let jwt = await getAuth();
-    let response = await fetch(url+plant+req.keyword+'&token='+jwt);
-    let json = response.json();
-    res.send(json);
-})
+
+router.get('/results', function(req, res) {
+    // let jwt = getAuth();
+    // console.log(jwt);
+    // fetch(`http://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_KEY}&q=basil`)
+    // .then((response) => {console.log(response)})
+    // .then((data) => res.send(data))
+    // .catch((err) => console.log(err));
+    fetch('https://jsonplaceholder.typicode.com/todos/1').then((response => {res.send(response)}))
+});
 
 router.get('/:slug', function(req, res) {
   res.send('THIS PAGE IS ABOUT ' + req.params.slug);

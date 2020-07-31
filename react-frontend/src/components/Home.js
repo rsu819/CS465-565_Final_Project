@@ -1,5 +1,4 @@
 import React from "react";
-import '../App.css';
 import '../stylesheets/Home.css';
 import { Button, Form } from "react-bootstrap";
 import fetch from "node-fetch";
@@ -10,8 +9,8 @@ class Home extends React.Component {
     super(props);
     this.state = {value: ""};
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+   this.handleChange = this.handleChange.bind(this);
+   this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = function(e) {
@@ -20,27 +19,28 @@ class Home extends React.Component {
     return;
   }
 
-  handleSubmit = function() {
-    fetch('http://localhost:3000/plants/results', {
-          method: 'GET',
-          keyword: this.state.value})
-    .then(resp => console.log(resp));
-  }
+  handleSubmit = function() { fetch("/plants/results", {method: 'GET', headers: {'Content-Type': 'application/json'}})
+    .then((response) => {console.log(response)})
+    .then( (data) => {console.log(data)})
+    .catch((err) => {console.log(err);});
+  };
 
   render() {
-    return <Form className="searchform" onSubmit={this.handleSubmit} action="./plants/results">
-      <Form.Group controlId="formSearchPlants">
-        <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
-        <Form.Control className="search" 
-                type="text" 
-                onChange={this.handleChange}
-                placeholder="search any plant..." 
-                aria-label="enter search for plants" 
-                required
-        />
-      </Form.Group>
-      <Button className="btn" type="submit" variant="primary" >Search!</Button>
-    </Form>
-  }
-}
-export default Home;
+  //   return <Form className="searchform" onSubmit={this.handleSubmit} action="/home">
+  //     <Form.Group controlId="formSearchPlants">
+  //       <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
+  //       <Form.Control className="search" 
+  //               type="text" 
+  //               onChange={this.handleChange}
+  //               placeholder={this.state.results}
+  //               aria-label="enter search for plants" 
+  //               required
+  //       />
+  //     </Form.Group>
+  //     <Button className="btn" type="submit" variant="primary">Search!</Button>
+  //   </Form>
+         return <Button className="btn" type="Enter" variant="primary" onClick={this.handleSubmit}>Search!</Button>
+   }
+};
+
+  export default Home;

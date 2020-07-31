@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const router = express.Router();
 
 //const token = ${{ secrets.TREFLETOKEN }};
-const token = 'N01xNVBYZGd6ZjlHeldTTmduUGJEdz09';
+const token = process.env.TREFLE_KEY;
 
 //base URL
 let url = 'https://trefle.io';
@@ -17,11 +17,14 @@ const authParams = {
     token: token
 };
 
-router.get('/', function(req, res) {
-   let jwt = getAuth();
-   res.send(jwt);
-});
 
+router.get('/', function(req, res) {
+  fetch(`http://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_KEY}&q=basil`)
+    .then((response) => {res.send(response)})
+    // .then((data) => res.send(data))
+    .catch((err) => console.log(err));
+ 
+});
 
 // get JWT auth token
 exports.getAuth = async function() {

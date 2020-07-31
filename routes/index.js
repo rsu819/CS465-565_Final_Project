@@ -3,7 +3,7 @@ var router = express.Router();
 
 router.get('/', function (req, res) {
     //add logic for acquiring JWT here
-    res.redirect('./search');
+    res.redirect('./home');
 });
 
 module.exports = router;

@@ -21,7 +21,6 @@ const app = express();
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "react-frontend/build")));
-
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get("*", (req, res) => {
@@ -45,9 +44,11 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(urlencoded({extended: false}));
 
+
 // if 404 error
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
 
 module.exports = app;
