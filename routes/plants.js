@@ -3,7 +3,7 @@ const { default: fetch } = require('node-fetch');
 let router = express.Router();
 
 //const token = ${{ secrets.TREFLETOKEN }};
-const token = 'N01xNVBYZGd6ZjlHeldTTmduUGJEdz09';
+
 
 //base URL
 let url = 'https://trefle.io';
