@@ -13,11 +13,11 @@ let auth = '/api/auth/claim';
 let plant = '/api/v1/plants/search?q=';
 
 const authParams = {
-    origin: 'https://plantsplantsplants.herokuapp.com/',
+    origin: 'http://localhost:3000',
     token: token
 };
 
-exports.getAuth = async function() {
+let getAuth = async function() {
   const response = await fetch(
     url+auth, {
       method: 'post',
@@ -28,19 +28,20 @@ exports.getAuth = async function() {
   return json;
   };
 
-
+let jwt = '';
 router.get('/results', function(req, res) {
-    // let jwt = getAuth();
-    // console.log(jwt);
-    // fetch(`http://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_KEY}&q=basil`)
-    // .then((response) => {console.log(response)})
-    // .then((data) => res.send(data))
-    // .catch((err) => console.log(err));
-    fetch('https://jsonplaceholder.typicode.com/todos/1').then((response => {res.send(response)}))
+    getAuth().then(token => jwt = token.token).catch((err) => {console.log(err)});
+    console.log(jwt);
+    let data = req.query.search;
+    fetch(`http://trefle.io/api/v1/plants/search?token=${jwt}&q=`+data, {method: 'GET'})
+    .then((response) => {response.json()})
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err));
+    
 });
 
-router.get('/:slug', function(req, res) {
-  res.send('THIS PAGE IS ABOUT ' + req.params.slug);
-});
+// router.get('/:slug', function(req, res) {
+//   res.send('THIS PAGE IS ABOUT ' + req.body.keyword);
+// });
 
 module.exports = router;
