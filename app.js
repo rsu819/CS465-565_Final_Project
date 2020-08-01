@@ -5,6 +5,7 @@ const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const { urlencoded } = require("express");
+require('dotenv').config();
 
 // import router paths
 let indexRouter = require("./routes/index");
@@ -18,7 +19,8 @@ let aboutRouter = require("./routes/about");
 const app = express();
 
 
-app.use(cors());
+
+//app.use(cors());
 // call middleware functions for each requested path
 app.use("/", indexRouter);
 app.use("/home", homeRouter);
