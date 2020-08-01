@@ -18,7 +18,16 @@ let aboutRouter = require("./routes/about");
 // create express app object
 const app = express();
 
+if (process.env.NODE_ENV === 'production') {
 
+  app.use('/', express.static(path.join(__dirname, "react-frontend/build")));
+
+  // The "catchall" handler: for any request that doesn't
+  // match one above, send back React's index.html file.
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + '/react-frontend/build', 'index.html'));
+  });
+}
 
 //app.use(cors());
 // call middleware functions for each requested path
@@ -35,16 +44,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 
-if (process.env.NODE_ENV === 'production') {
 
-  app.use('/', express.static(path.join(__dirname, "react-frontend/build")));
-
-  // The "catchall" handler: for any request that doesn't
-  // match one above, send back React's index.html file.
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname + '/react-frontend/build', 'index.html'));
-  });
-}
 
 // if 404 error
 app.use(function (req, res, next) {
