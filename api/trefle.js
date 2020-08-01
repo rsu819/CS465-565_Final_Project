@@ -1,6 +1,6 @@
 // const fetch = require('node-fetch');
 
-// //const token = $TREFLETOKEN;
+
 // const token = ${{ secrets.TREFLETOKEN }};
 // //base URL
 // let url = 'https://trefle.io';
