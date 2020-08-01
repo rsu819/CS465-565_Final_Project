@@ -18,6 +18,16 @@ let aboutRouter = require("./routes/about");
 // create express app object
 const app = express();
 
+//app.use(cors());
+// call middleware functions for each requested path
+app.use("/", indexRouter);
+app.use("/home", homeRouter);
+app.use("/plants", plantRouter);
+app.use("/finder", findRouter);
+app.use("/weather", weatherRouter);
+app.use("/about", aboutRouter);
+
+
 if (process.env.NODE_ENV === 'production') {
 
   app.use('/', express.static(path.join(__dirname, "react-frontend/build")));
@@ -28,15 +38,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname + '/react-frontend/build', 'index.html'));
   });
 }
-
-//app.use(cors());
-// call middleware functions for each requested path
-app.use("/", indexRouter);
-app.use("/home", homeRouter);
-app.use("/plants", plantRouter);
-app.use("/finder", findRouter);
-app.use("/weather", weatherRouter);
-app.use("/about", aboutRouter);
 
 // middleware functions
 // parsing urlencoded payloads
