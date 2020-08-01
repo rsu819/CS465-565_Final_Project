@@ -3,7 +3,7 @@ const { default: fetch } = require('node-fetch');
 let router = express.Router();
 
 //const token = ${{ secrets.TREFLETOKEN }};
-const token = 'N01xNVBYZGd6ZjlHeldTTmduUGJEdz09';
+const token = "N01xNVBYZGd6ZjlHeldTTmduUGJEdz09";
 
 //base URL
 let url = 'https://trefle.io';
@@ -13,7 +13,7 @@ let auth = '/api/auth/claim';
 let plant = '/api/v1/plants/search?q=';
 
 const authParams = {
-    origin: 'http://localhost:3000',
+    origin: 'https://www.example.com',
     token: token
 };
 
@@ -33,7 +33,8 @@ router.get('/results', function(req, res) {
     getAuth().then(token => jwt = token.token).catch((err) => {console.log(err)});
     console.log(jwt);
     let data = req.query.search;
-    fetch(`http://trefle.io/api/v1/plants/search?token=${jwt}&q=`+data, {method: 'GET'})
+    console.log(data);
+    fetch(`http://trefle.io/api/v1/plants/search?token=${jwt}&q=`+data, {method:'GET', header: {Authorization: Bearer }})
     .then((response) => {response.json()})
     .then((data) => console.log(data))
     .catch((err) => console.log(err));
