@@ -30,7 +30,6 @@ class PlantRow extends React.Component {
     renderPlantSquare(plant) {
         let image = plant.image_url;
         let name = plant.common_name; 
-        console.log(name);
         let slug = plant.common_name;
         let sciName = plant.scientific_name;
         let url = '/plants/'+plant.slug;
@@ -696,15 +695,16 @@ class Results extends React.Component {
         .catch((err) => {console.log(err)})
     };
 
-    UNSAFE_componentWillMount() {
-        this.fetchResults()
-        .then((results) => {
-            console.log('fetch results: ' + results);
-            this.setState({results: results})
-        })
-        .catch((err) => {console.log(err)});
-        //this.setState({results: basil.data}) 
-    };
+     UNSAFE_componentWillMount() {
+         this.fetchResults()
+         .then((results) => {console.log(results)})
+        // .then((results) => {
+        //     console.log('fetch results: ' + results);
+        //     this.setState({results: results})
+        // })
+        // .catch((err) => {console.log(err)});
+        .then(this.setState({results: basil.data})) 
+     };
 
     render() {
         return <div>

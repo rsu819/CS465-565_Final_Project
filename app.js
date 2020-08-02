@@ -27,22 +27,22 @@ const app = express();
 //   res.sendFile(path.join(__dirname + "/react-frontend/build/index.html"));
 // });
 
-app.use(
-  session(
-      { store: new session.MemoryStore(),
-        secret: 'cookiemonster',
-        resave: false,
-        saveUninitialized: false,
-        cookie: {maxAge: 80000000}
-      }
-  )
-);
+// app.use(
+//   session(
+//       { store: new session.MemoryStore(),
+//         secret: 'cookiemonster',
+//         resave: false,
+//         saveUninitialized: false,
+//         cookie: {maxAge: 80000000}
+//       }
+//   )
+// );
 
-app.use(function(req, res) {
-  if (!req.session.query) {
-    req.session.query = '';
-  }
-});
+// app.use(function(req, res) {
+//   if (!req.session.query) {
+//     req.session.query = '';
+//   }
+// });
 
 app.use(cors());
 // call middleware functions for each requested path

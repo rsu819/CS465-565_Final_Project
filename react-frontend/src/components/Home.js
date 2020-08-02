@@ -11,7 +11,7 @@ class Home extends React.Component {
     this.state = {value: ""};
 
    this.handleChange = this.handleChange.bind(this);
-  this.handleClick = this.handleClick.bind(this);
+  this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
@@ -21,11 +21,11 @@ class Home extends React.Component {
     return;
   }
 
-  handleClick() {
+  handleSubmit = function() {
     console.log(this.state.value)
-    fetch('http://localhost:3000/plants/results', {
+    fetch('http://localhost:3000/plants/results', { 
       method: 'POST', 
-      body: {'query' : this.state.value}
+      body: {'query': this.state.value}
     })
     .then((keyword) => {console.log('result from click' + keyword)})
     .catch((err) => {console.log(err)});
@@ -33,7 +33,7 @@ class Home extends React.Component {
 
 
   render() {
-    return <Form className="searchform" action="/plants/results">
+    return <Form className="searchform" action="/plants">
       <Form.Group controlId="searchPlants">
         <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
         <Form.Control className="search" 
@@ -45,7 +45,7 @@ class Home extends React.Component {
                 required
         />
       </Form.Group>
-      <Button className="btn" type="submit" variant="primary" onClick={this.handleClick}>Search!</Button>
+      <Button className="btn" type="submit" variant="primary" onClick={this.handleSubmit}>Search!</Button>
     </Form>
    }
 };
