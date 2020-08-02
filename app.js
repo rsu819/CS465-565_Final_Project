@@ -5,7 +5,11 @@ const path = require('path');
 const logger = require('morgan');
 const cors = require('cors');
 const { urlencoded } = require('express');
+<<<<<<< HEAD
 const session = require('express-session');
+=======
+
+>>>>>>> master
 
 // import router paths
 let indexRouter = require('./routes/index');

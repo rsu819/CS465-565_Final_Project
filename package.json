@@ -10,7 +10,11 @@
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=express-backend:* npm run devstart",
     "start": "node ./bin/www",
+<<<<<<< HEAD
     "session-debug": "DEBUG=express-session & npm run devstart"
+=======
+    "heroku-postbuild": "cd react-frontend && npm install && npm run build"
+>>>>>>> master
   },
   "keywords": [],
   "author": "",
