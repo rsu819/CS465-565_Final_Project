@@ -1,7 +1,8 @@
 import React from "react";
 import '../App.css';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container } from "react-bootstrap";
 import fetch from "node-fetch";
+import { useParams } from "react-router-dom";
 
 // //the props passed in should be att with JSON object fields
 class PlantSquare extends React.Component {
@@ -57,9 +58,19 @@ class PlantRow extends React.Component {
 
 
 class Results extends React.Component {
+    // constructor(props) {
+    //     super(props);
+    //     //let { slug } = useParams();
+    //     this.state = {
+    //         slug: this.props.slug
+    //     }
     
+
     fetchResults() {
-        fetch('http://localhost:3000/plants/results')
+       
+        fetch(`http://localhost:3000/plants/${this.props.slug}`, {
+            method: 'GET'
+        })
         .then(data => {return data})
         .catch((err) => {console.log(err)})
     };

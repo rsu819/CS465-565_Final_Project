@@ -57,6 +57,12 @@ if (process.env.NODE_ENV !== 'production') {
     .then((data) => {console.log(data)})
     .catch((err) => console.log(err)); 
   });
+
+  router.get('/:slug', function(req, res) {
+    console.log(req.params.slug);
+    res.send('This page is search results for' + req.params.slug);
+  });
+  
   
   // router.get('/results', function(req, res) {
   //   let rose = {
@@ -692,9 +698,6 @@ if (process.env.NODE_ENV !== 'production') {
   // });
   
   
-  router.get('/:slug', function(req, res) {
-    res.send('THIS PAGE IS ABOUT ' + req.body.keyword);
-  });
-  
+
   module.exports = router;
   
