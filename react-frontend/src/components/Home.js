@@ -1,6 +1,7 @@
 import React from "react";
 import '../stylesheets/Home.css';
 import { Button, Form } from "react-bootstrap";
+//import { Redirect } from 'react-router-dom';
 //import fetch from "node-fetch";
 
 class Home extends React.Component {
@@ -13,17 +14,6 @@ class Home extends React.Component {
   //  //this.handleSubmit = this.handleSubmit.bind(this);
   // }
 
-  // handleChange = function(e) {
-  //   this.setState({value: e.target.value});
-  //   console.log(this.state.value);
-  //   return;
-  // }
-
-  // handleSubmit = function() { fetch("/plants/results", {method: 'GET', headers: {'Content-Type': 'application/json'}})
-  //   .then((response) => {console.log(response)})
-  //   .then( (data) => {console.log(data)})
-  //   .catch((err) => {console.log(err);});
-  // };
 
   render() {
     return <Form className="searchform" onSubmit={this.handleSubmit} action="http://localhost:3000/plants/results">

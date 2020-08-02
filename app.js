@@ -5,7 +5,7 @@ const path = require('path');
 const logger = require('morgan');
 const cors = require('cors');
 const { urlencoded } = require('express');
-
+const session = require('express-session');
 
 // import router paths
 let indexRouter = require('./routes/index');
@@ -27,6 +27,16 @@ const app = express();
 //   res.sendFile(path.join(__dirname + "/react-frontend/build/index.html"));
 // });
 
+app.use(
+  session(
+      { store: new session.MemoryStore(),
+        secret: 'cookiemonster',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {maxAge: 80000000}
+      }
+  )
+);
 
 app.use(cors());
 // call middleware functions for each requested path
@@ -36,6 +46,7 @@ app.use('/plants', plantRouter);
 app.use('/finder', findRouter);
 app.use('/weather', weatherRouter);
 app.use('/about', aboutRouter);
+
 
 
 // middleware functions
