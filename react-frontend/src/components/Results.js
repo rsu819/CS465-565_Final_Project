@@ -644,7 +644,7 @@ class PlantSquare extends React.Component {
     // }
 
     render() {
-    return <Col className='square p-4'sm={6} md={4}>
+    return <Col className='square p-4 border' sm={6} md={4}>
             <img href={this.props.image} alt={this.props.name}/>
             <div>Name: {this.props.name}</div>
             <div>Scientific Name: {this.props.sciName}</div>
@@ -681,7 +681,7 @@ class PlantRow extends React.Component {
 
     render() {
         return <Row>
-            {results.map((plant) => {
+            {this.props.data.map((plant) => {
                 console.log(plant);
                 return this.renderPlantSquare(plant)
             })}
@@ -693,24 +693,27 @@ class PlantRow extends React.Component {
 class Results extends React.Component {
     
     fetchResults() {
-        fetch('http://localhost:3000/plants/')
-        .then(data => {return <div>{data}</div>})
+        fetch('http://localhost:3000/plants/results')
+        .then(data => {return data})
         .catch((err) => {console.log(err)})
     };
 
     componentDidMount() {
-        // this.fetchResults()
-        // .then((fetchResults) => {
-        //     return <PlantRow data={fetchResults} />
-        // })
-        return <PlantRow />
+        this.fetchResults()
+        .then((results) => {
+            console.log(results);
+            return <PlantRow data={results} />
+        })
         
     }
 
     render() {
-        return <Container fluid='sm' className="results" name="results">
-          <PlantRow/>
-        </Container>
+        return <div>
+                <h2 className='results m-5'>Search Results</h2>
+                <Container className="results" name="results">
+                     <PlantRow/>
+                </Container>
+            </div>
     }
 }
 
