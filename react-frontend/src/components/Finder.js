@@ -20,10 +20,14 @@ class Finder extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.getJWT();
   }
 
   componentDidMount() {
-    this.getDivisions();
+    // const response = this.getJWT();
+    // console.log(response);
+    //this.getDivisions();
 
   }
 
@@ -57,6 +61,31 @@ class Finder extends React.Component {
 
   //=====================================
   // API calls to classifications
+
+  getJWT = function (res, req) {
+    // try {
+    //   const response = await fetch("/finder");
+    //   const json = await response.json();
+    //   console.log(json);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    fetch("/about", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((res) => {
+        return res;
+      })
+      .then((res) => {
+        console.log("DEBUG res:", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   getDivisions = function () {
     console.log('DEBUG getDivisions()')
