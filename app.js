@@ -43,7 +43,7 @@ app.use(function (req, res, next) {
 
 if (process.env.NODE_ENV === 'production') {
 
-  app.use(express.static(path.join(__dirname, "react-frontend/", "build")));
+  app.use(express.static(path.join(__dirname, "react-frontend", "build")));
 
   // The "catchall" handler: for any request that doesn't
   // match one above, send back React's index.html file.
