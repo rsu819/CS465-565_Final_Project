@@ -35,11 +35,6 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 
-// if 404 error
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
 
 if (process.env.NODE_ENV === 'production') {
 
@@ -51,4 +46,10 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'react-frontend', 'build', 'index.html'));
   });
 }
+
+// if 404 error
+app.use(function (req, res, next) {
+  next(createError(404));
+});
+
 module.exports = app;
