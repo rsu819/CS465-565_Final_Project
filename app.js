@@ -38,6 +38,12 @@ app.use(
   )
 );
 
+app.use(function(req, res) {
+  if (!req.session.query) {
+    req.session.query = '';
+  }
+});
+
 app.use(cors());
 // call middleware functions for each requested path
 app.use('/', indexRouter);

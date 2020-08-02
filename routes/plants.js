@@ -7,6 +7,7 @@ let fetch = require('node-fetch');
 const { response } = require('express');
 const token = process.env._TREFLE_KEY;
 const app = require('../app');
+const { nextTick } = require('async');
 //base URL
 let url = 'https://trefle.io';
 
@@ -18,8 +19,7 @@ const authParams = {
     origin: 'https://www.example.com',
     token: process.env.TREFLE_KEY
 };
-let json;
-let jwt = '';
+
 let getAuth = function() {
   return fetch(
       url+auth, {
@@ -32,19 +32,16 @@ let getAuth = function() {
     .catch((err) => {console.log(err)});
 };
 
-router.get('/', function(req, res) {
-  if (req.session.searchKeyword === undefined) {
-    req.session.searchKeyword = "";
-  }
-  req.session.searchKeyword = req.query.search;
-  console.log(req.session.searchKeyword);
-  res.status(200);
+router.post('/results', function(req, res) {
+  req.session.query = req.body;
+  console.log('received post: ' + req.session.query);
   res.set({'Content-Type': 'text/html'})
-  res.sendStatus(200)
+  res.sendStatus(200);
+  return;
 });
 
 router.get('/results', function(req, res) {
-  let query = 'rose';
+  let query = req.session.query;
   console.log('Search query: ' + query);
   getAuth().then((jwt) => {
     return fetch(url+plant+query, 
@@ -54,7 +51,7 @@ router.get('/results', function(req, res) {
       })
   })
   .then((response) => { return response.json()})
-  .then((data) => {console.log(data)})
+  .then((data) => {return res.send(data)})
   .catch((err) => console.log(err)); 
 });
 
