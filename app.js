@@ -19,6 +19,18 @@ let aboutRouter = require("./routes/about");
 const app = express();
 
 //app.use(cors());
+
+if (process.env.NODE_ENV === 'production') {
+
+  app.use(express.static(path.join(__dirname, "react-frontend/build")));
+
+  // The "catchall" handler: for any request that doesn't
+  // match one above, send back React's index.html file.
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + '/react-frontend/build', 'index.html'));
+  });
+}
+
 // call middleware functions for each requested path
 app.use("/", indexRouter);
 app.use("/home", homeRouter);
@@ -27,17 +39,6 @@ app.use("/finder", findRouter);
 app.use("/weather", weatherRouter);
 app.use("/about", aboutRouter);
 
-
-if (process.env.NODE_ENV === 'production') {
-
-  app.use('/', express.static(path.join(__dirname, "react-frontend/build")));
-
-  // The "catchall" handler: for any request that doesn't
-  // match one above, send back React's index.html file.
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname + '/react-frontend/build', 'index.html'));
-  });
-}
 
 // middleware functions
 // parsing urlencoded payloads
