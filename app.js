@@ -14,6 +14,7 @@ let plantRouter = require("./routes/plants");
 let findRouter = require("./routes/finder");
 let weatherRouter = require("./routes/weather");
 let aboutRouter = require("./routes/about");
+let authRouter = require("./routes/auth");
 
 // create express app object
 const app = express();
@@ -27,6 +28,7 @@ app.use("/plants", plantRouter);
 app.use("/finder", findRouter);
 app.use("/weather", weatherRouter);
 app.use("/about", aboutRouter);
+app.use("/auth", authRouter);
 
 
 // middleware functions

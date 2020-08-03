@@ -2,14 +2,28 @@ import React from "react";
 import "../App.css";
 import "../stylesheets/Home.css";
 import { Button, Form } from "react-bootstrap";
+import AuthService from "../services/auth.service";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = { value: "" };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    console.log(AuthService.login());
+    console.log(AuthService.getCurrentUser().token);
+    let token = JSON.parse(localStorage.getItem('user'));
+
+    if (token) {
+      console.log('we have a token!');
+    }
+    else {
+      console.log('no token );');
+    }
+
   }
 
   handleChange = function (e) {

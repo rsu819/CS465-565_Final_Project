@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
+import AuthService from "../services/auth.service";
 
 const apiUrl = "https://trefle.io/api/v1";
 
@@ -21,14 +22,11 @@ class Finder extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    this.getJWT();
   }
 
   componentDidMount() {
-    // const response = this.getJWT();
-    // console.log(response);
-    //this.getDivisions();
-
+    console.log(AuthService.getCurrentUser().token);
+    this.getDivisions();
   }
 
   //===================================
@@ -61,38 +59,19 @@ class Finder extends React.Component {
 
   //=====================================
   // API calls to classifications
-
-  getJWT = function (res, req) {
-    // try {
-    //   const response = await fetch("/finder");
-    //   const json = await response.json();
-    //   console.log(json);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-    fetch("/about", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) => {
-        return res;
-      })
-      .then((res) => {
-        console.log("DEBUG res:", res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   getDivisions = function () {
     console.log('DEBUG getDivisions()')
-    fetch(`${apiUrl}/divisions?token=${process.env.REACT_APP_TREFLE_KEY}`)
+    fetch(`${apiUrl}/divisions`, {
+      headers:
+      {
+        'Content-Type': 'application/html',
+        'Authorization': `Bearer ${AuthService.getCurrentUser().token}`
+      }
+    })
       .then((res) => res.json())
       .then((res) => {
         //clear existing data
+        console.log(res);
         this.setState({ divisions: [] });
         res.data.forEach((division) => {
           //console.log(division);
