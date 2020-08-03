@@ -1,7 +1,7 @@
 import React from "react";
 import '../stylesheets/Home.css';
 import { Button, Form } from "react-bootstrap";
-import fetch from "node-fetch";
+//import fetch from "node-fetch";
 
 
 class Home extends React.Component {
@@ -21,31 +21,33 @@ class Home extends React.Component {
     return;
   }
 
-  handleSubmit = function() {
-    console.log(this.state.value)
-    fetch('http://localhost:3000/plants/results', { 
-      method: 'POST', 
-      body: {'query': this.state.value}
-    })
-    .then((keyword) => {console.log('result from click' + keyword)})
-    .catch((err) => {console.log(err)});
+  handleSubmit = function(e) {
+    e.preventDefault();
+    this.props.history.push(`/plants/${this.state.value}`);
+    // fetch('http://localhost:3000/plants/results', { 
+    //   method: 'POST', 
+    //   body: {'query': this.state.value}
+    // })
+    // .then((keyword) => {console.log('result from click' + keyword)})
+    // .catch((err) => {console.log(err)});
   }
 
 
   render() {
-    return <Form className="searchform" action="/plants">
+    return <Form className="searchform" onSubmit={this.handleSubmit}>
       <Form.Group controlId="searchPlants">
         <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
         <Form.Control className="search" 
                 type="text" 
                 name="search"
                 placeholder="search any plant..."
+                value={this.state.value}
                 onChange={this.handleChange}
                 aria-label="enter search for plants" 
                 required
         />
       </Form.Group>
-      <Button className="btn" type="submit" variant="primary" onClick={this.handleSubmit}>Search!</Button>
+      <Button className="btn" type="submit" variant="primary">Search!</Button>
     </Form>
    }
 };

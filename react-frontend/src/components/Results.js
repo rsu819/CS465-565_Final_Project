@@ -42,9 +42,6 @@ class PlantRow extends React.Component {
                 />
         }
 
-    componentDidMount() {
-        
-    }
 
     render() {
         return <Row>
@@ -67,8 +64,9 @@ class Results extends React.Component {
     
 
     fetchResults() {
-       
-        fetch(`http://localhost:3000/plants/${this.props.slug}`, {
+       let {slug} = useParams();
+       console.log(slug);
+        fetch(`http://localhost:3000/${slug}`, {
             method: 'GET'
         })
         .then(data => {return data})
