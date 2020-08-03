@@ -85,6 +85,18 @@ class Finder extends React.Component {
       genii: [],
       species: [],
     });
+    this.getFamilies(`${apiUrl}/api/v1/families`);
+    this.seeState();
+  }
+
+  onChangeFamily = function (e) {
+    console.log(`DEBUG order: ${e.target.value}`);
+    this.setState({ selectedFamilyId: parseInt(e.target.value, 10) });
+    //clear all following states
+    this.setState({
+      genii: [],
+      species: [],
+    });
     this.seeState();
   }
 
@@ -202,6 +214,48 @@ class Finder extends React.Component {
     }
   }
 
+  // GET FAMILIES
+  getFamilies = async () => {
+    console.log('getFamiliess()');
+    try {
+      let next = true;
+      let page = 1;
+      while (next) {
+        let response = await this.reqFamilies(page);
+        //console.log('get');
+        //console.log(response);
+        page++;
+        if (page > this.state.familyPages) next = false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  reqFamilies = async (page) => {
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/families?page=${page}`, {
+        headers:
+        {
+          'Content-Type': 'application/html',
+          'Authorization': `Bearer ${AuthService.getCurrentUser().token}`
+        }
+      });
+      const data = await response.json();
+      //console.log(`req`);
+      this.setState({ familyPages: parseInt(data.links.last.slice(-1), 10) });
+      data.data.forEach((item) => {
+        if (item.division_order && (this.state.selectedOrderId === item.division_order.id)) {
+          this.setState({
+            families: [...this.state.families, { name: item.name, id: item.id }],
+          })
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   // DEBUG function
   seeState = () => {
     console.log(this.state);
@@ -232,8 +286,9 @@ class Finder extends React.Component {
             <option>Select Order ...</option>
             {this.state.orders.map((order, index) => <option key={index} value={order.id}>{order.name}</option>)}
           </Form.Control><br />
-          <Form.Control as="select" aria-label="select plant family">
+          <Form.Control onChange={this.onChangeFamily.bind(this)} as="select" aria-label="select plant family">
             <option>Select Family ...</option>
+            {this.state.families.map((family, index) => <option key={index} value={family.id}>{family.name}</option>)}
           </Form.Control><br />
           <Form.Control as="select" aria-label="select plant order">
             <option>Select Genus ...</option>
