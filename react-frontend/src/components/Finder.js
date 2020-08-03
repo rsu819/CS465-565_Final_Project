@@ -3,7 +3,6 @@ import { Button, Form } from "react-bootstrap";
 import AuthService from "../services/auth.service";
 
 const apiUrl = "https://trefle.io";
-const apiClassUrl = (page) => `${apiUrl}/api/v1/division_classes?page=${page}`;
 
 class Finder extends React.Component {
   constructor(props) {
@@ -11,7 +10,6 @@ class Finder extends React.Component {
     this.state = {
       divisions: [],
       classes: [],
-      subclasses: [],
       orders: [],
       families: [],
       genii: [],
@@ -19,6 +17,10 @@ class Finder extends React.Component {
       selectedDivisionId: 0,
       selectedClassId: 0,
       classPages: "",
+      orderPages: "",
+      familyPages: "",
+      genusPages: "",
+      speciesPages: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -48,19 +50,48 @@ class Finder extends React.Component {
   onChangeDivision = function (e) {
     console.log(`DEBUG division: ${e.target.value}`);
     this.setState({ selectedDivisionId: parseInt(e.target.value, 10) });
-    this.getClasses(`${apiUrl}/api/v1/division_classes`);
     //clear all following states
-    this.setState({ classes: [] });
+    this.setState({
+      classes: [],
+      orders: [],
+      families: [],
+      genii: [],
+      species: [],
+    });
+    this.getClasses(`${apiUrl}/api/v1/division_classes`);
+    this.seeState();
   }
 
   onChangeClass = function (e) {
     console.log(`DEBUG class: ${e.target.value}`);
     this.setState({ selectedClassId: parseInt(e.target.value, 10) });
     //clear all following states
+    this.setState({
+      orders: [],
+      families: [],
+      genii: [],
+      species: [],
+    });
+    this.getOrders(`${apiUrl}/api/v1/division_orders`);
+    this.seeState();
   }
+
+  onChangeOrder = function (e) {
+    console.log(`DEBUG order: ${e.target.value}`);
+    this.setState({ selectedOrderId: parseInt(e.target.value, 10) });
+    //clear all following states
+    this.setState({
+      families: [],
+      genii: [],
+      species: [],
+    });
+    this.seeState();
+  }
+
 
   //=====================================
   // API calls to classifications
+  // GET DIVISION
   getDivisions = function () {
     console.log('DEBUG getDivisions()')
     fetch(`${apiUrl}/api/v1/divisions`, {
@@ -73,7 +104,7 @@ class Finder extends React.Component {
       .then((res) => res.json())
       .then((res) => {
         //clear existing data
-        console.log(res);
+        //console.log(res);
         this.setState({ divisions: [] });
         res.data.forEach((division) => {
           //console.log(division);
@@ -87,33 +118,23 @@ class Finder extends React.Component {
       });
   }
 
-  // getClasses = function () {
-  //   fetch(`${apiUrl}/division_classes`, {
-  //     headers:
-  //     {
-  //       'Content-Type': 'application/html',
-  //       'Authorization': `Bearer ${AuthService.getCurrentUser().token}`
-  //     }
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       //clear existing data
-  //       console.log(res);
-  //       this.setState({ classes: [] });
-  //       res.data.forEach((item) => {
-  //         //console.log(clas);
-  //         if (item.division && (this.state.selectedDivisionId === item.division.id)) {
-  //           console.log(item);
-  //           this.setState({
-  //             classes: [...this.state.classes, { name: item.name, id: item.id }],
-  //           });
-  //         }
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
+  // GET CLASSES
+  getClasses = async () => {
+    console.log('getClasses()');
+    try {
+      let next = true;
+      let page = 1;
+      while (next) {
+        let response = await this.reqClasses(page);
+        //console.log('get');
+        //console.log(response);
+        page++;
+        if (page > this.state.classPages) next = false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   reqClasses = async (page) => {
     try {
@@ -125,7 +146,7 @@ class Finder extends React.Component {
         }
       });
       const data = await response.json();
-      console.log(`req`);
+      //console.log(`req`);
       this.setState({ classPages: parseInt(data.links.last.slice(-1), 10) });
       data.data.forEach((item) => {
         if (item.division && (this.state.selectedDivisionId === item.division.id)) {
@@ -138,17 +159,44 @@ class Finder extends React.Component {
       console.log(err);
     }
   }
-  getClasses = async () => {
+
+  // GET ORDERS
+  getOrders = async () => {
+    console.log('getOrders()');
     try {
       let next = true;
       let page = 1;
       while (next) {
-        let response = await this.reqClasses(page);
-        console.log('get');
-        console.log(response);
+        let response = await this.reqOrders(page);
+        //console.log('get');
+        //console.log(response);
         page++;
-        if (page > this.state.classPages) next = false;
+        if (page > this.state.orderPages) next = false;
       }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  reqOrders = async (page) => {
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/division_orders?page=${page}`, {
+        headers:
+        {
+          'Content-Type': 'application/html',
+          'Authorization': `Bearer ${AuthService.getCurrentUser().token}`
+        }
+      });
+      const data = await response.json();
+      //console.log(`req`);
+      this.setState({ orderPages: parseInt(data.links.last.slice(-1), 10) });
+      data.data.forEach((item) => {
+        if (item.division_class && (this.state.selectedClassId === item.division_class.id)) {
+          this.setState({
+            orders: [...this.state.orders, { name: item.name, id: item.id }],
+          })
+        }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -159,6 +207,8 @@ class Finder extends React.Component {
     console.log(this.state);
   }
 
+  //==============================================
+  // RENDER
   render() {
     return (
       <Form
@@ -178,11 +228,9 @@ class Finder extends React.Component {
             <option>Select Class ...</option>
             {this.state.classes.map((clas, index) => <option key={index} value={clas.id}>{clas.name}</option>)}
           </Form.Control><br />
-          <Form.Control as="select" aria-label="select plant subclass">
-            <option>Select Subclass ...</option>
-          </Form.Control><br />
-          <Form.Control as="select" aria-label="select plant order">
+          <Form.Control onChange={this.onChangeOrder.bind(this)} as="select" aria-label="select plant order">
             <option>Select Order ...</option>
+            {this.state.orders.map((order, index) => <option key={index} value={order.id}>{order.name}</option>)}
           </Form.Control><br />
           <Form.Control as="select" aria-label="select plant family">
             <option>Select Family ...</option>

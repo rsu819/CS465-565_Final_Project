@@ -19,7 +19,7 @@ let authRouter = require("./routes/auth");
 // create express app object
 const app = express();
 
-//app.use(cors());
+app.use(cors());
 
 // call middleware functions for each requested path
 app.use("/", indexRouter);
