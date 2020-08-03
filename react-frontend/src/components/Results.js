@@ -73,7 +73,7 @@ class Results extends React.Component {
         .catch((err) => {console.log(err)})
     };
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         this.fetchResults()
         .then((results) => {
             console.log(results);

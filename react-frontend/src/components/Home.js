@@ -1,6 +1,8 @@
 import React from "react";
-import '../stylesheets/Home.css';
+import "../stylesheets/Home.css";
 import { Button, Form } from "react-bootstrap";
+import { Route } from "react-router-dom";
+import Results from "./Results";
 //import fetch from "node-fetch";
 
 
@@ -23,7 +25,11 @@ class Home extends React.Component {
 
   handleSubmit = function(e) {
     e.preventDefault();
-    this.props.history.push(`/plants/${this.state.value}`);
+    return <Route 
+            path={`/plants/${this.state.value}`} 
+            query={this.state.value} 
+            component={Results} exact/>
+    //this.props.history.push(`/plants/${this.state.value}`);
     // fetch('http://localhost:3000/plants/results', { 
     //   method: 'POST', 
     //   body: {'query': this.state.value}

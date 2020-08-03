@@ -23,7 +23,7 @@ class App extends React.Component {
             <Redirect to="/home" />
           </Route>
           <Route path="/home" component={Home} exact />
-          <Route path="/plants/:slug" component={Results} exact />
+          <Route path="/plants/" component={Results} exact />
           <Route path="/finder" component={Finder} exact />
           <Route path="/weather" component={Weather} exact />
           <Route path="/about" component={About} exact />
