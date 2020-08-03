@@ -12,10 +12,14 @@ class Finder extends React.Component {
       classes: [],
       orders: [],
       families: [],
-      genii: [],
+      genera: [],
       species: [],
       selectedDivisionId: 0,
       selectedClassId: 0,
+      selectedOrderId: 0,
+      selectedFamilyId: 0,
+      selectedGenusId: 0,
+      selectedSpeciesId: 0,
       classPages: "",
       orderPages: "",
       familyPages: "",
@@ -55,10 +59,15 @@ class Finder extends React.Component {
       classes: [],
       orders: [],
       families: [],
-      genii: [],
+      genera: [],
       species: [],
+      selectedClassId: 0,
+      selectedOrderId: 0,
+      selectedFamilyId: 0,
+      selectedGenusId: 0,
+      selectedSpeciesId: 0,
     });
-    this.getClasses(`${apiUrl}/api/v1/division_classes`);
+    this.getClasses();
     this.seeState();
   }
 
@@ -69,10 +78,14 @@ class Finder extends React.Component {
     this.setState({
       orders: [],
       families: [],
-      genii: [],
+      genera: [],
       species: [],
+      selectedOrderId: 0,
+      selectedFamilyId: 0,
+      selectedGenusId: 0,
+      selectedSpeciesId: 0,
     });
-    this.getOrders(`${apiUrl}/api/v1/division_orders`);
+    this.getOrders();
     this.seeState();
   }
 
@@ -82,24 +95,41 @@ class Finder extends React.Component {
     //clear all following states
     this.setState({
       families: [],
-      genii: [],
+      genera: [],
       species: [],
+      selectedFamilyId: 0,
+      selectedGenusId: 0,
+      selectedSpeciesId: 0,
     });
-    this.getFamilies(`${apiUrl}/api/v1/families`);
+    this.getFamilies();
     this.seeState();
   }
 
   onChangeFamily = function (e) {
-    console.log(`DEBUG order: ${e.target.value}`);
+    console.log(`DEBUG family: ${e.target.value}`);
     this.setState({ selectedFamilyId: parseInt(e.target.value, 10) });
+    console.log(this.state.selectedFamilyId);
     //clear all following states
     this.setState({
-      genii: [],
+      genera: [],
       species: [],
+      selectedGenusId: 0,
+      selectedSpeciesId: 0,
     });
+    this.getGenera();
     this.seeState();
   }
 
+  onChangeGenus = function (e) {
+    console.log(`DEBUG family: ${e.target.value}`);
+    this.setState({ selectedGenusId: parseInt(e.target.value, 10) });
+    //clear all following states
+    this.setState({
+      species: [],
+      selectedSpeciesId: 0,
+    });
+    this.seeState();
+  }
 
   //=====================================
   // API calls to classifications
@@ -159,7 +189,7 @@ class Finder extends React.Component {
       });
       const data = await response.json();
       //console.log(`req`);
-      this.setState({ classPages: parseInt(data.links.last.slice(-1), 10) });
+      this.setState({ classPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         if (item.division && (this.state.selectedDivisionId === item.division.id)) {
           this.setState({
@@ -201,7 +231,7 @@ class Finder extends React.Component {
       });
       const data = await response.json();
       //console.log(`req`);
-      this.setState({ orderPages: parseInt(data.links.last.slice(-1), 10) });
+      this.setState({ orderPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         if (item.division_class && (this.state.selectedClassId === item.division_class.id)) {
           this.setState({
@@ -243,7 +273,7 @@ class Finder extends React.Component {
       });
       const data = await response.json();
       //console.log(`req`);
-      this.setState({ familyPages: parseInt(data.links.last.slice(-1), 10) });
+      this.setState({ familyPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         if (item.division_order && (this.state.selectedOrderId === item.division_order.id)) {
           this.setState({
@@ -256,8 +286,51 @@ class Finder extends React.Component {
     }
   }
 
+  // GET GENERA
+  getGenera = async () => {
+    console.log('getGenera()');
+    try {
+      let next = true;
+      let page = 1;
+      while (next) {
+        let response = await this.reqGenera(page);
+        //console.log('get');
+        //console.log(response);
+        page++;
+        if (page > this.state.genusPages) next = false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  reqGenera = async (page) => {
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/genus?page=${page}`, {
+        headers:
+        {
+          'Content-Type': 'application/html',
+          'Authorization': `Bearer ${AuthService.getCurrentUser().token}`
+        }
+      });
+      const data = await response.json();
+      //console.log(`req`);
+      this.setState({ genusPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
+      data.data.forEach((item) => {
+        if (item.family && (this.state.selectedFamilyId === item.family.id)) {
+          this.setState({
+            genera: [...this.state.genera, { name: item.name, id: item.id }],
+          })
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   // DEBUG function
   seeState = () => {
+    console.log('this.state');
     console.log(this.state);
   }
 
@@ -276,22 +349,23 @@ class Finder extends React.Component {
           </Form.Label>
           <Form.Control onChange={this.onChangeDivision.bind(this)} as="select" aria-label="select plant division">
             <option>Select Division ...</option>
-            {this.state.divisions.map((division, index) => <option key={index} value={division.id}>{division.name}</option>)}
+            {this.state.divisions.map((division, index) => <option key={index} value={division.id}>{division.id}{division.name}</option>)}
           </Form.Control ><br />
           <Form.Control onChange={this.onChangeClass.bind(this)} as="select" aria-label="select plant class">
             <option>Select Class ...</option>
-            {this.state.classes.map((clas, index) => <option key={index} value={clas.id}>{clas.name}</option>)}
+            {this.state.classes.map((clas, index) => <option key={index} value={clas.id}>{clas.id}{clas.name}</option>)}
           </Form.Control><br />
           <Form.Control onChange={this.onChangeOrder.bind(this)} as="select" aria-label="select plant order">
             <option>Select Order ...</option>
-            {this.state.orders.map((order, index) => <option key={index} value={order.id}>{order.name}</option>)}
+            {this.state.orders.map((order, index) => <option key={index} value={order.id}>{order.id}{order.name}</option>)}
           </Form.Control><br />
           <Form.Control onChange={this.onChangeFamily.bind(this)} as="select" aria-label="select plant family">
             <option>Select Family ...</option>
-            {this.state.families.map((family, index) => <option key={index} value={family.id}>{family.name}</option>)}
+            {this.state.families.map((family, index) => <option key={index} value={family.id}>{family.id}{family.name}</option>)}
           </Form.Control><br />
-          <Form.Control as="select" aria-label="select plant order">
+          <Form.Control onChange={this.onChangeGenus.bind(this)} as="select" aria-label="select plant order">
             <option>Select Genus ...</option>
+            {this.state.genera.map((genus, index) => <option key={index} value={genus.id}>{genus.id}{genus.name}</option>)}
           </Form.Control><br />
           <Form.Control as="select" aria-label="select plant order">
             <option>Select Species ...</option>
