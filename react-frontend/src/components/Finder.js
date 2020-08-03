@@ -2,7 +2,8 @@ import React from "react";
 import { Button, Form } from "react-bootstrap";
 import AuthService from "../services/auth.service";
 
-const apiUrl = "https://trefle.io/api/v1";
+const apiUrl = "https://trefle.io";
+const apiClassUrl = (page) => `${apiUrl}/api/v1/division_classes?page=${page}`;
 
 class Finder extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Finder extends React.Component {
       species: [],
       selectedDivisionId: 0,
       selectedClassId: 0,
+      classPages: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,15 +47,15 @@ class Finder extends React.Component {
 
   onChangeDivision = function (e) {
     console.log(`DEBUG division: ${e.target.value}`);
-    this.setState({ selectedDivisionId: e.target.value });
-    this.getClasses();
+    this.setState({ selectedDivisionId: parseInt(e.target.value, 10) });
+    this.getClasses(`${apiUrl}/api/v1/division_classes`);
     //clear all following states
     this.setState({ classes: [] });
   }
 
   onChangeClass = function (e) {
     console.log(`DEBUG class: ${e.target.value}`);
-    this.setState({ selectedClassId: e.target.value });
+    this.setState({ selectedClassId: parseInt(e.target.value, 10) });
     //clear all following states
   }
 
@@ -61,7 +63,7 @@ class Finder extends React.Component {
   // API calls to classifications
   getDivisions = function () {
     console.log('DEBUG getDivisions()')
-    fetch(`${apiUrl}/divisions`, {
+    fetch(`${apiUrl}/api/v1/divisions`, {
       headers:
       {
         'Content-Type': 'application/html',
@@ -85,23 +87,76 @@ class Finder extends React.Component {
       });
   }
 
-  getClasses = function () {
-    console.log('DEBUG getClasses()')
-    fetch(`${apiUrl}/division_classes?token=${process.env.REACT_APP_TREFLE_KEY}`)
-      .then((res) => res.json())
-      .then((res) => {
-        this.setState({ classes: [] });
-        res.data.forEach((clas) => {
-          console.log(clas);
-          if (clas.division && this.state.selectedDivisionId === clas.division.id)
-            this.setState({
-              classes: [...this.state.classes, { name: clas.name, id: clas.id }],
-            });
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+  // getClasses = function () {
+  //   fetch(`${apiUrl}/division_classes`, {
+  //     headers:
+  //     {
+  //       'Content-Type': 'application/html',
+  //       'Authorization': `Bearer ${AuthService.getCurrentUser().token}`
+  //     }
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       //clear existing data
+  //       console.log(res);
+  //       this.setState({ classes: [] });
+  //       res.data.forEach((item) => {
+  //         //console.log(clas);
+  //         if (item.division && (this.state.selectedDivisionId === item.division.id)) {
+  //           console.log(item);
+  //           this.setState({
+  //             classes: [...this.state.classes, { name: item.name, id: item.id }],
+  //           });
+  //         }
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
+
+  reqClasses = async (page) => {
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/division_classes?page=${page}`, {
+        headers:
+        {
+          'Content-Type': 'application/html',
+          'Authorization': `Bearer ${AuthService.getCurrentUser().token}`
+        }
       });
+      const data = await response.json();
+      console.log(`req`);
+      this.setState({ classPages: parseInt(data.links.last.slice(-1), 10) });
+      data.data.forEach((item) => {
+        if (item.division && (this.state.selectedDivisionId === item.division.id)) {
+          this.setState({
+            classes: [...this.state.classes, { name: item.name, id: item.id }],
+          })
+        }
+      })
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  getClasses = async () => {
+    try {
+      let next = true;
+      let page = 1;
+      while (next) {
+        let response = await this.reqClasses(page);
+        console.log('get');
+        console.log(response);
+        page++;
+        if (page > this.state.classPages) next = false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // DEBUG function
+  seeState = () => {
+    console.log(this.state);
   }
 
   render() {
