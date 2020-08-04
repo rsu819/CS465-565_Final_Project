@@ -39,10 +39,6 @@ class About extends React.Component {
   render() {
     return (
       <div>
-        <p>TEST response body: </p>
-        <ul>
-          {this.state.apiResponse.map((plant, index) => <li key={index}>{plant.name}</li>)}
-        </ul>
         < h1 className="m-5" > About</h1>
         <Container fluid>
           <Row className="justify-content-md-center">
