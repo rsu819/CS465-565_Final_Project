@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+const fetch = require("node-fetch")
+
 
 //var trefle = require('../api/trefle');
 
@@ -18,5 +20,8 @@ var jwt = "";
 //         jwt = response.token;
 //         res.sendStatus(200)});
 // });
+
+
+
 
 module.exports = router;
