@@ -22,6 +22,4 @@ var jwt = "";
 // });
 
 
-
-
 module.exports = router;
