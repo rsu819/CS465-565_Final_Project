@@ -8,18 +8,19 @@ class About extends React.Component {
   constructor(props) {
     super(props);
     this.state = { apiResponse: [] };
-    // this.callAPI(); // if getting rid of componentWillMount()
+    // this.callAPI(); // if getting rid of componen›tWillMount()
   }
 
   callAPI() {
-    fetch("/about")
+    fetch("http://localhost:3000/about")
       .then((res) => {
+        console.log(res);
         return res.json();
       })
       .then((res) => {
         console.log("DEBUG res:", res);
         res.data.forEach((plant) => {
-          console.log(plant);
+          //console.log(plant);
           this.setState({
             apiResponse: [...this.state.apiResponse, { name: plant.common_name, id: plant.id }],
           });
