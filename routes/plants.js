@@ -5,60 +5,32 @@ let express = require('express');
 let router = express.Router();
 let fetch = require('node-fetch'); 
 const { response } = require('express');
-const token = process.env._TREFLE_KEY;
 const app = require('../app');
 const { nextTick } = require('async');
 //base URL
 let url = 'https://trefle.io';
 
 // URL endpoints
-let auth = '/api/auth/claim';
-let plant = '/api/v1/plants/search?q=';
+//let auth = '/api/auth/claim';
+let plant = `/api/v1/plants/search?q=`;
 
-const authParams = {
-    origin: 'https://www.example.com',
-    token: process.env.TREFLE_KEY
-};
+// const authParams = {
+//     origin: 'https://www.example.com',
+//     token: process.env.TREFLE_KEY
+// };
 
-// get jwt from auth endpoint
-let getAuth = function() {
-  return fetch(
-      url+auth, {
-        method: 'post',
-        body: JSON.stringify(authParams),
-        headers: { 'Content-Type': 'application/json' }
-      })
-    .then((response) => { return response.json()})
-    .then((token) => {return token.token} )
-    .catch((err) => {console.log(err)});
-};
-
-// // get query keyword and save in session store
-// router.post('/results', function(req, res) {
-//   req.session.query = req.body;
-//   //console.log('received post');
-//   res.set({'Content-Type': 'text/html'})
-//   res.send('post received');
-// });
-
-
-
-
-// get request for search query
-router.get('/:slug', function(req, res) {
-  let query = req.params.slug;
-  console.log('Search query: ' + query);
-  getAuth().then((jwt) => {
-    return fetch(url+plant+query, 
-      { headers: 
-          {'Content-Type': 'application/html', 
-          'Authorization': `Bearer ${jwt}` }
-      })
-  })
-  .then((response) => { return response.json()})
-  .then((data) => {return res.send(data)})
-  .catch((err) => console.log(err)); 
-});
+// // get jwt from auth endpoint
+// let getAuth = function() {
+//   return fetch(
+//       url+auth, {
+//         method: 'post',
+//         body: JSON.stringify(authParams),
+//         headers: { 'Content-Type': 'application/json' }
+//       })
+//     .then((response) => { return response.json()})
+//     .then((token) => {return token.token} )
+//     .catch((err) => {console.log(err)});
+// };
 
 let basil = {
     "data": [
@@ -689,6 +661,24 @@ let basil = {
         "total": 76
     }
 }
+// get request for search query
+router.get('/:slug', function(req, res) {
+  let query = req.params.slug;
+  console.log('Search query: ' + query);
+  fetch(url+plant+query+`&token=${process.env.TREFLE_KEY}`, { 
+      //fetch('http://swapi.dev/api/people/',{
+        headers: 
+        {'Content-Type': 'application/json'}
+  })
+  .then((response) => {return response.json()})
+  .then((data) => {res.send(data)})
+  .catch((err) => console.log(err)); 
+});
+
+// router.get('/:slug/:id', function(req, res) {
+
+// })
+
 
   module.exports = router;
   
