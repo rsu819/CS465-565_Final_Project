@@ -3,6 +3,7 @@ import '../App.css';
 import { Route, Switch, useParams } from "react-router-dom";
 import PlantGrid from "./PlantGrid";
 
+
 function Plants() {
     let {slug} = useParams();
     console.log(slug)

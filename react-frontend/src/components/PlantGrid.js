@@ -19,14 +19,24 @@ class PlantSquare extends React.Component {
 
 
 class PlantRow extends React.Component {
-    // constructor(props) {
-    //     super(props);
-        //this.fetchPlant(this.props.data);
-        //console.log(this.state)
-        // this.state = {
-        //     data: this.props.data
-        // }
+    constructor(props) {
+        super(props);
+        console.log(this.props.data)
+        this.state = {
+            data: undefined
+        }
+    this.fetchPlant(this.props.data);
+    }
 
+    fetchPlant(plant) {
+        console.log(plant);
+        fetch(`http://www.localhost:3000/plants/${plant}`)
+        .then((response) => {response.json()})
+        .then((json) => { 
+            console.log(json);
+            this.setState({data: json.data})})
+        .catch((err) => console.log(err));
+    }
     
     renderPlantSquare(plant) {
         let image = plant.image_url;
@@ -43,48 +53,26 @@ class PlantRow extends React.Component {
                     url={url}
                 />
     }
+    // componentDidMount() {
+    //     this.fetchPlant(this.props.data);
+    //     //console.log(this.state.data)
+    // }
+
 
     render() {
-        //console.log(this.state.data);
-        // let list = this.props.data;
-        // return list.map((each) => {
-        //     let squares = this.renderPlantSquare(each);
-            return <Row>{this.state.data.map((each) => {return this.renderPlantSquare(each)})}</Row>
+        return <Row>{this.state.data.map((each) => {this.renderPlantSquare(each)})}</Row>
     }
 }
 
 
 class PlantGrid extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: undefined, 
-            slug: this.props.value
-        };
-        this.fetchPlant(this.props.value).then((data) => this.setState({data:data}));
-        // console.log(this.state);
-        
-    }
-
-    fetchPlant(plant) {
-        console.log(plant);
-        fetch(`http://www.localhost:3000/plants/${plant}`)
-        .then((response) => {response.json()})
-        .then((data) => {
-              console.log(data.data);
-              return {data: data.data};
-         });
-    }
-
-    UNSAFE_componentWillMount() {
-       
-    }
-
+  
     render() {
+        
         return  <div>
                     <h2 className='results m-5'>Search Results</h2>
                     <Container className="results" name="results">
-                       <PlantRow data={this.state.data}/>
+                       <PlantRow data={this.props.value}/>
                     </Container>
                 </div>
     }                        
