@@ -1,20 +1,21 @@
 import React from "react";
 import '../App.css';
-import { BrowserRouter } from "react-router-dom";
-import { BrowserRouter, Route, Switch, useParams } from "react-router-dom";
-import { Results } from "./Results";
+import { Route, Switch, useParams, useRouteMatch } from "react-router-dom";
+import PlantGrid from "./PlantGrid";
+import Bio from "./Bio";
 
-class Plants extends React.Component {
-
-    render() {
-        let {slug} = useParams();
-        <Switch>   
-          <Route path="/:slug" component={Results} exact>
-              <Results slug= {slug} />
-          </Route>
-          <Route path="/:id" component={Bio} exact /> 
-        </Switch>
-    }
+function Plants() {
+    let { url } = useRouteMatch();
+    let {slug} = useParams();
+    console.log(url)
+    return <Switch> 
+      <Route path={`${url}/:id`}>
+        <Bio/>
+        </Route> 
+      <Route path='/:slug'>
+        <PlantGrid value={slug}/>
+      </Route>
+    </Switch>
 }
 
 export default Plants;
