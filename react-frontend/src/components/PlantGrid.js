@@ -73,7 +73,7 @@ class PlantRow extends React.Component {
             return <div>Loading...</div>
         }
         else {
-            return <Row>{this.state.data.map(
+            return <Row>{data.map(
                 (each) => {
                     return this.renderPlantSquare(each)
                 })}
