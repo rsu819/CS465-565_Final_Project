@@ -6,8 +6,8 @@ import Bio from "./Bio";
 
 function Plants() {
     let { url } = useRouteMatch();
-    let {slug} = useParams();
-    console.log(url)
+    let { slug } = useParams();
+    console.log(slug);
     return <Switch> 
       <Route path={`${url}/:id`}>
         <Bio/>
