@@ -1,43 +1,67 @@
 import React from "react";
-import '../App.css';
-import '../stylesheets/Home.css';
+import "../App.css";
+import "../stylesheets/Home.css";
 import { Button, Form } from "react-bootstrap";
+import AuthService from "../services/auth.service";
 
 class Home extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = {value: ""};
-
+    this.state = { value: "" };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange = function(e) {
-    this.setState({value: e.target.value});
+  componentDidMount() {
+    console.log(AuthService.login());
+    console.log(AuthService.getCurrentUser().token);
+    let token = JSON.parse(localStorage.getItem('user'));
+
+    if (token) {
+      console.log('we have a token!');
+    }
+    else {
+      console.log('no token );');
+    }
+
+  }
+
+  handleChange = function (e) {
+    this.setState({ value: e.target.value });
     console.log(this.state.value);
     return;
-  }
+  };
 
-  handleSubmit = function() {
-    alert('You searched for ' + this.state.value);
+  handleSubmit = function () {
+    alert("You searched for " + this.state.value);
     return;
-  }
+  };
 
   render() {
-    return <Form className="searchform" onSubmit={this.handleSubmit} action="./plants/results">
-      <Form.Group controlId="formSearchPlants">
-        <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
-        <Form.Control className="search" 
-                type="text" 
-                onChange={this.handleChange}
-                placeholder="search any plant..." 
-                aria-label="enter search for plants" 
-                required
-        />
-      </Form.Group>
-      <Button className="btn" type="submit" variant="primary" >Search!</Button>
-    </Form>
+    return (
+      <Form
+        className="searchform"
+        onSubmit={this.handleSubmit}
+        action="./plants/results"
+      >
+        <Form.Group controlId="formSearchPlants">
+          <Form.Label className="title mt-5 p-5">
+            Enter plant to care for:
+          </Form.Label>
+          <Form.Control
+            className="search"
+            type="text"
+            onChange={this.handleChange}
+            placeholder="search any plant..."
+            aria-label="enter search for plants"
+            required
+          />
+        </Form.Group>
+        <Button className="btn" type="submit" variant="primary">
+          Search!
+        </Button>
+      </Form>
+    );
   }
 }
 export default Home;
