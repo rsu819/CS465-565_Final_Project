@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import "../stylesheets/Home.css";
-import { useRouteMatch } from "react-router-dom";
+import { useParams, useRouteMatch } from "react-router-dom";
 
 
 // class PlantInfo extends React.Component {
@@ -45,16 +45,16 @@ import { useRouteMatch } from "react-router-dom";
 // }
 
 function Bio () {
-    //let { id } = useParams();
+    let { id } = useParams();
     const { url } = useRouteMatch();
     
-    console.log(url);
+    console.log(id);
     const [plantInfo, setInfo] = useState([])
     const [isLoaded, setStatus] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect((url) => {
-        fetch(`http://www.localhost:3000/${url}`)
+    useEffect((id) => {
+        fetch(`http://www.localhost:3000/${id}`)
             .then((response) => {response.json()})
             .then((apiRes) => { 
                 console.log(apiRes);

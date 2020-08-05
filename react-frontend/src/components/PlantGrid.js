@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 class PlantSquare extends React.Component {
  
     render() {
-    return <Col className='square p-4 border' sm={6} md={4}>
-            <img href={this.props.image} alt={this.props.name}/>
+    return <Col className='square p-4' sm={6} md={4}>
+            {/* <img href={this.props.image} alt={this.props.name}/> */}
             <div>Name: {this.props.name}</div>
             <div>Scientific Name: {this.props.sciName}</div>
             <div>
-                <Link href={this.props.url}>Go!</Link>
+                <Link to={this.props.url}>Go!</Link>
             </div>
         </Col>
     }
@@ -32,37 +32,38 @@ class PlantRow extends React.Component {
     renderPlantSquare(plant) {
         let image = plant.image_url;
         let name = plant.common_name; 
-        console.log(name);
+        //console.log(name);
         let slug = plant.common_name;
         let sciName = plant.scientific_name;
-        let url = '/plants/'+plant.slug;
+        let url = `/plants/${this.props.data}/${plant.id}`;
         return <PlantSquare
                     image={image}
                     name={name}
                     sciName={sciName}
                     slug={slug}
                     url={url}
+                    key={plant.id}
                 />
     }
- 
-    componentDidMount() {
-        console.log(this.props.data);
-        fetch(`http://www.localhost:3000/plants/${this.props.data}`)
-            .then((response) => {response.json()})
-            .then((results) => { 
-                console.log(results);
-                this.setState({
-                    data: results,
-                    isLoaded: true })
-            }, 
-            (error) => {
+
+    componentDidMount = async function() {
+        try {
+            let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
+            let results = await response.json();
+            console.log(results);
+            this.setState({
+                data: results,
+                isLoaded: true 
+            })
+            }
+            catch (error) {
                 this.setState({
                     isLoaded: true,
                     error
-                }); 
-            }
-        )   
+            });
+        }
     }
+    
 
     render() {
         const { data, isLoaded, error } = this.state;
@@ -73,7 +74,7 @@ class PlantRow extends React.Component {
             return <div>Loading...</div>
         }
         else {
-            return <Row>{data.map(
+            return <Row>{data.data.map(
                 (each) => {
                     return this.renderPlantSquare(each)
                 })}
@@ -91,6 +92,7 @@ class PlantGrid extends React.Component {
             isLoaded: false,
             error: null
         };
+    console.log(this.props.value);
     }
 
     render() {

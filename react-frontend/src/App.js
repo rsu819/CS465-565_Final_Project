@@ -1,9 +1,6 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter, 
-          Route, 
-          Switch, 
-          Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import About from "./components/About";
 import Weather from "./components/Weather";
@@ -11,10 +8,9 @@ import Finder from "./components/Finder";
 import Home from "./components/Home";
 import Plants from "./components/Plants";
 
-class App extends React.Component {
-
-  render() {
-    return  <div className="App">
+function App() {
+  return (
+    <div className="App">
       <BrowserRouter>
         <Navigation />
         <Switch>
@@ -29,8 +25,7 @@ class App extends React.Component {
         </Switch>
       </BrowserRouter>
     </div>
-  }
+  );
 }
-
 
 export default App;

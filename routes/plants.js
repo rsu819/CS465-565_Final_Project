@@ -15,31 +15,35 @@ let plant = `/api/v1/plants/search?q=`;
 let id = `/api/v1/plants/`;
 
 // get information for selected plant
-router.get('/:slug/:id', function(req, res) {
-    let query = req.params.id;
-    console.log('Search id: ' + query);
-    fetch(url+id+query+`?token=${process.env.TREFLE_KEY}`, { 
-          headers: 
-          {'Content-Type': 'application/json'}
-    })
-    .then((response) => {response.json()})
-    .then((data) => {res.send(data)})
-    .catch((err) => console.log(err)); 
+router.get('/:slug/:id', async function(req, res) {
+  let id = req.params.id;
+  console.log('Search id: ' + id);
+  try {
+    const response = await fetch(url+id+query+`?token=${process.env.TREFLE_KEY}`);
+  const json = await response.json();
+  //console.log(json);
+  res.status(200).send(json);
+  }
+  catch(error) {
+    console.log(error);
+  }
 });
 
-
-// get request for search query
-router.get('/:slug', function(req, res) {
+router.get('/:slug', async function(req, res) {
   let query = req.params.slug;
   console.log('Search query: ' + query);
-  fetch(url+plant+query+`&token=${process.env.TREFLE_KEY}`, { 
-        headers: 
-        {'Content-Type': 'application/json'}
-  })
-  .then((response) => {response.json()})
-  .then((data) => {res.send(data)})
-  .catch((err) => console.log(err)); 
+  try {
+    const response = await fetch(url+plant+query+`&token=${process.env.TREFLE_KEY}`);
+  const json = await response.json();
+  //console.log(json);
+  res.status(200).send(json);
+  }
+  catch(error) {
+    console.log(error);
+  }
+  
 });
+
 
 
   module.exports = router;
