@@ -1,7 +1,7 @@
 import React from "react";
 import '../App.css';
-import { Row, Col, Container } from "react-bootstrap";
-
+import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 //the props passed in should be attr with JSON object fields
 class PlantSquare extends React.Component {
  
@@ -11,7 +11,7 @@ class PlantSquare extends React.Component {
             <div>Name: {this.props.name}</div>
             <div>Scientific Name: {this.props.sciName}</div>
             <div>
-                <a href={this.props.url}>Go!</a>
+                <Link href={this.props.url}>Go!</Link>
             </div>
         </Col>
     }
@@ -23,21 +23,12 @@ class PlantRow extends React.Component {
         super(props);
         console.log(this.props.data)
         this.state = {
-            data: undefined
+            data: [],
+            isLoaded: false,
+            error: null
         }
-    this.fetchPlant(this.props.data);
     }
 
-    fetchPlant(plant) {
-        console.log(plant);
-        fetch(`http://www.localhost:3000/plants/${plant}`)
-        .then((response) => {response.json()})
-        .then((json) => { 
-            console.log(json);
-            this.setState({data: json.data})})
-        .catch((err) => console.log(err));
-    }
-    
     renderPlantSquare(plant) {
         let image = plant.image_url;
         let name = plant.common_name; 
@@ -45,28 +36,63 @@ class PlantRow extends React.Component {
         let slug = plant.common_name;
         let sciName = plant.scientific_name;
         let url = '/plants/'+plant.slug;
-        return <PlantSquare key={plant.id}
-                    image={image} 
-                    name={name} 
+        return <PlantSquare
+                    image={image}
+                    name={name}
                     sciName={sciName}
                     slug={slug}
                     url={url}
                 />
     }
-    // componentDidMount() {
-    //     this.fetchPlant(this.props.data);
-    //     //console.log(this.state.data)
-    // }
-
+ 
+    componentDidMount() {
+        console.log(this.props.data);
+        fetch(`http://www.localhost:3000/plants/${this.props.data}`)
+            .then((response) => {response.json()})
+            .then((results) => { 
+                console.log(results);
+                this.setState({
+                    data: results,
+                    isLoaded: true })
+            }, 
+            (error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                }); 
+            }
+        )   
+    }
 
     render() {
-        return <Row>{this.state.data.map((each) => {this.renderPlantSquare(each)})}</Row>
+        const { data, isLoaded, error } = this.state;
+        if (error) {
+            return <div>{error.message}</div>
+        }
+        else if (!isLoaded) {
+            return <div>Loading...</div>
+        }
+        else {
+            return <Row>{this.state.data.map(
+                (each) => {
+                    return this.renderPlantSquare(each)
+                })}
+                </Row>
+        }
     }
 }
 
 
 class PlantGrid extends React.Component {
-  
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: undefined,
+            isLoaded: false,
+            error: null
+        };
+    }
+
     render() {
         
         return  <div>
