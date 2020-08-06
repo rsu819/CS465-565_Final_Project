@@ -5,12 +5,16 @@ const fetch = require("node-fetch");
 class AuthService {
   login() {
     try {
-      fetch("/auth")
+      fetch("http://localhost:3000/auth")
         .then((res) => {
-          if (res.data) {
-            localStorage.setItem("user", JSON.stringify(res.data));
+          console.log(res);
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+          if (res) {
+            localStorage.setItem("user", JSON.stringify(res));
           }
-          return res.data;
         })
     } catch (err) {
       console.log(err);
@@ -27,8 +31,12 @@ class AuthService {
     //   });
   }
 
+  logout() {
+    localStorage.removeItem("user");
+  }
+
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
+    return JSON.parse(localStorage.getItem('user'));
   }
 }
 

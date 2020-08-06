@@ -40,7 +40,7 @@ class Finder extends React.Component {
   }
 
   componentDidMount() {
-    console.log(AuthService.getCurrentUser().token);
+    // console.log(AuthService.getCurrentUser().token);
     this.getDivisions();
   }
 
