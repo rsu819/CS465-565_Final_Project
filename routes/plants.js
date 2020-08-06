@@ -13,11 +13,27 @@ let url = 'https://trefle.io';
 // URL endpoints
 let plant = `/api/v1/plants/search?q=`;
 let id = `/api/v1/plants/`;
+let family = `/api/v1/families/`;
+
+router.get('/:slug', async function(req, res) {
+  let query = req.params.slug;
+  console.log('Search query: ' + query);
+  try {
+    const response = await fetch(url+plant+query+`&token=${process.env.TREFLE_KEY}`);
+  const json = await response.json();
+  console.log(json);
+  res.status(200).send(json);
+  }
+  catch(error) {
+    console.log(error);
+  }
+  
+});
 
 // get information for selected plant
 router.get('/:slug/:id', async function(req, res) {
-  let id = req.params.id;
-  console.log('Search id: ' + id);
+  let query = req.params.id;
+  console.log('Search id: ' + query);
   try {
     const response = await fetch(url+id+query+`?token=${process.env.TREFLE_KEY}`);
   const json = await response.json();
@@ -29,19 +45,19 @@ router.get('/:slug/:id', async function(req, res) {
   }
 });
 
-router.get('/:slug', async function(req, res) {
-  let query = req.params.slug;
-  console.log('Search query: ' + query);
+// get information for genus list
+router.get('/family/:family', async function(req, res) {
+  let query = req.params.family;
+  console.log('Search family: ' + query);
   try {
-    const response = await fetch(url+plant+query+`&token=${process.env.TREFLE_KEY}`);
+    const response = await fetch(url+family+query+`?token=${process.env.TREFLE_KEY}`);
   const json = await response.json();
-  //console.log(json);
+  console.log(json);
   res.status(200).send(json);
   }
   catch(error) {
     console.log(error);
   }
-  
 });
 
 

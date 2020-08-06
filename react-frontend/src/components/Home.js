@@ -39,7 +39,7 @@ class Home extends React.Component {
                 required
         />
       </Form.Group>
-      <Button className="btn" type="submit" variant="primary">Search!</Button>
+      <Button className="btn rounded-0" type="submit" variant="primary">Search!</Button>
     </Form>
    }
 };

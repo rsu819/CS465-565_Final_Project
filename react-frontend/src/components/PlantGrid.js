@@ -1,6 +1,6 @@
 import React from "react";
 import '../App.css';
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 //the props passed in should be attr with JSON object fields
 class PlantSquare extends React.Component {
@@ -11,7 +11,7 @@ class PlantSquare extends React.Component {
             <div>Name: {this.props.name}</div>
             <div>Scientific Name: {this.props.sciName}</div>
             <div>
-                <Link to={this.props.url}>Go!</Link>
+                <Button href={this.props.url} className='btn-sm btn-primary mt-2 rounded-0'>Go</Button>
             </div>
         </Col>
     }

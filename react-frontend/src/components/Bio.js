@@ -1,104 +1,190 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import "../stylesheets/Home.css";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import "../stylesheets/Bio.css";
+import { useRouteMatch } from "react-router-dom";
 
 
-// class PlantInfo extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             common_name: "",
-//             scientific_name: "",
-//             main_species: {
-//                 foliage: {
-//                     texture: "",
-//                     leaf_retention: "",
-//                 },
-//                 fruit: {
-//                     color: ""
-//                 },
-//                 flower: {
-//                     color: ""
-//                 },
-//                 specifications: {
-//                     growth_habit: "",
-//                     average_height: null,
-//                     shape_and_orientation: "",
-//                 },
-//                 growth: {
-//                     light: "",
-//                     atmospheric_humidity: "",
-//                     minimum_precipitation: null,
-//                     maximum_precipitation: null,
-//                     minimum_temperature: {
-//                         deg_f: null
-//                     },
-//                     maximum_temperature: {
-//                         deg_f: null
-//                     }
-//                 },
-//                 synonyms: []
-//             }
-//         }
-//     }
-// }
+
+class PlantRow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            family: [],
+            isLoaded: false
+        }
+    }
+    componentDidMount = async function() {
+        try {
+                let familyRes = await fetch(`http://www.localhost:3000/plants/family/${this.props.family.name}`);
+                let family = await familyRes.json();
+                this.setState({
+                    family: family.data,
+                    isLoaded: true
+                })
+            }
+            catch (error) {
+               this.setState({
+                   isLoaded: true,
+                   error
+               })
+            }
+    }
+    // componentDidUpdate() {
+    //     try {
+    //             async function fetchFamily() {
+    //                 let familyRes = await fetch(`http://www.localhost:3000/plants/family/${this.props.family.id}`);
+    //                 let family = await familyRes.json();
+    //                 this.setState({
+    //                     family: family.data,
+    //                     isLoaded: true
+    //                 })
+                    
+    //             }
+    //             fetchFamily();
+    //         }
+    //         catch (error) {
+    //            console.log(error);
+    //         }
+    // }
+
+    render() {
+        const {error, isLoaded, family } = this.state;
+        if (error) {
+            return <div>Error: {error.message}</div>
+        }
+        else if (!isLoaded) {
+            return <div>Loading...</div>
+        }
+        else {
+            return <Row>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col></Col>
+                </Row>
+        }
+    
+    }
+}
+
+function Flower(props) {
+    return <div>Flower color: {props.color}</div>
+}
+
+function Foliage(props) {
+    return <div>Foliage color: {props.color}</div>
+}
+
+function FlowerFoliage(props) {
+    if (props.flower && props.foliage) {
+        if (props.flower.color && props.foliage.color) {
+            return <div>
+            <Flower color={props.flower.color}/>
+            <Foliage color={props.foliage.color}/>
+        </div>
+        } 
+    }
+    else if (props.flower) {
+        if (props.flower.color) {
+            return <Flower color={props.flower.color} />
+        } 
+    }
+    else if (props.foliage) {
+        if (props.foliage.color) {
+            return <Foliage color={props.foliage.color}/>
+        }
+        
+    }
+}
 
 function Bio () {
-    let { id } = useParams();
-    const { url } = useRouteMatch();
-    
-    console.log(id);
-    const [plantInfo, setInfo] = useState([])
+    let { url } = useRouteMatch();
+    console.log(url);
+    const [plantInfo, setInfo] = useState([]);
     const [isLoaded, setStatus] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect((id) => {
-        fetch(`http://www.localhost:3000/${id}`)
-            .then((response) => {response.json()})
-            .then((apiRes) => { 
-                console.log(apiRes);
-                setInfo(apiRes.data);
+    useEffect(() => {
+        try {
+            async function fetchData() { 
+                let response = await fetch(`http://www.localhost:3000${url}`);
+                let info = await response.json();
+                console.log(info.data);
+                setInfo(info.data);
                 setStatus(true);
-                },
-                (error) => {
-                    setError(error);
-                })
-    }, [])
+            }
+            fetchData();      
+        }
+        catch(error) {
+            setError(error);
+        }
+    }, []);
+
+    // useEffect(() => {
+    //     try {
+    //         async function fetchFamily() {
+    //             let familyRes = await fetch(`http://www.localhost:3000/plants/family/${this.state.family.id}`);
+    //             let family = await familyRes.json();
+    //             setFamilyList(family.data);
+    //             setFamStatus(true); 
+    //         }
+    //         fetchFamily();
+    //     }
+    //     catch (error) {
+    //         setError(error);
+    //     }
+    // }, []);
+  
+
     
    
     if (error) {
         return <div>Error: {error.message}</div>
     }
     else if (!isLoaded) {
-        return <div>Loading Plant Data...</div>
+        return <div className="loading mt-5 pt-3">Loading Plant Data...</div>
     }
     else {
+        const syn = plantInfo.main_species.synonyms.map((plant) => {return <li key={plant.id}>{plant.name}</li>})
         return (
             <div>
-                <h1>{plantInfo.common_name}</h1>
+                <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
                 <div>
                     <img className="plantPic" src={plantInfo.image_url} alt={`${plantInfo.common_name}`} />
-                    <p>
+                    <div className="plantBio mt-4">
                         Common Name: {plantInfo.common_name}<br/>
                         Scientific Name: {plantInfo.scientific_name}<br/>
-                        Foliage Texture: <br/>
-                        Flower color, if any: <br/>
-                        Fruit color, if any: <br/>
-                        Growth Habit: <br/>
-                        Average Height: <br/>
-                        Shape and Orientation: <br/>
-                        Toxicity: {plantInfo.main_species.specification.toxicity}<br/>
-                        Light Requirement: <br/>
-                        Humidity: <br/>
-                        Minimum Precipitation: <br/>
-                        Maximum Precipitation: <br/>
-                        Minimum Temperature Needed: <br/>
-                        Maximum Temperature Tolerated: <br/>
-                        Synonyms for this plant: {} <br/>
-                    </p>
-                </div>
-            </div>  
+                        Growth Habit: {plantInfo.main_species.specifications.growth_habit}<br/>
+                        Average Height: {plantInfo.main_species.specifications.avg_height} <br/>
+                        <FlowerFoliage flower={plantInfo.main_species.flower}/>
+                        {/* Shape and Orientation: {plantInfo.main_species.} <br/> */}
+                        {/* Toxicity: {plantInfo.main_species.specifications.toxicity}<br/>*/}
+                        Amount of light needed (0-10): {plantInfo.main_species.growth.light} lux <br/>
+                        Humidity: {plantInfo.main_species.growth.athmospheric_humidity}<br/>
+                        Minimum Precipitation (in mm): {plantInfo.main_species.growth.minimum_precipitation.mm}<br/>
+                        Maximum Precipitation (in mm): {plantInfo.main_species.growth.maximum_precipitation.mm}<br/>
+                        Minimum Temperature Needed: {plantInfo.main_species.growth.minimum_temperature.deg_f}<br/>
+                        Maximum Temperature Tolerated: {plantInfo.main_species.growth.maximum_temperature.deg_f}<br/>
+                        Synonyms: 
+                            <ul>
+                                {syn}
+                            </ul>
+                    </div>  
+                </div> 
+                <Container fluid>
+                    <h5 className="title m-5">Varieties of the same family:</h5>
+                    <PlantRow family={plantInfo.family}/>
+                    {/* <Row>
+                        <Col>Variety</Col>
+                        <Col>Variety</Col>
+                        <Col>Variety</Col>
+                        <Col>Variety</Col>
+                        <Col>Variety</Col>
+                    </Row> */}
+                </Container> 
+            </div>
         )
     }
 }
