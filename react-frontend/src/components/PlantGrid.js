@@ -63,11 +63,11 @@ class PlantRow extends React.Component {
 
     componentDidMount = async function() {
         try {
-            //let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
-            //let results = await response.json();
-            //console.log(results);
+            let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
+            let results = await response.json();
+            console.log(results);
             this.setState({
-                data: basil,
+                data: results,
                 isLoaded: true 
             })
             }

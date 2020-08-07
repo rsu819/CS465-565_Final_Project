@@ -4,7 +4,38 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "../stylesheets/Bio.css";
 import { useRouteMatch } from "react-router-dom";
 
+function PlantMiniSquare(props) {
 
+    let squares = [];
+    if (props.family.length < 6) {      
+        for (let i = 0; i < props.family.length; i++) {
+            if (props.family[i].common_name === props.skip) {
+                continue;
+            }
+                squares.push(<Col>
+                        <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
+                        <div className="commonName p-2">{props.family[i].common_name}</div>
+                        <div className="scientificName p-2">{props.family[i].scientific_name}</div>
+                        <Button className="btn btn-sm" href={`../../plants/${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
+                    </Col>)
+        }
+    }
+    else {    
+        for (let i = 0; i < 5; i++) {
+            if (props.family[i].common_name === props.skip) {
+                continue;
+            }
+            squares.push (<Col>
+                <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
+                <div>{props.family[i].common_name}</div>
+                <div>{props.family[i].scientific_name}</div>
+                <Button className="btn-sm" href={`../../plants/${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
+            </Col>)
+        }
+    }
+    return squares;
+        
+}
 
 class PlantRow extends React.Component {
     constructor(props) {
@@ -16,7 +47,7 @@ class PlantRow extends React.Component {
     }
     componentDidMount = async function() {
         try {
-                let familyRes = await fetch(`http://www.localhost:3000/plants/family/${this.props.family.name}`);
+                let familyRes = await fetch(`http://www.localhost:3000/plants/family/${this.props.family}`);
                 let family = await familyRes.json();
                 this.setState({
                     family: family.data,
@@ -30,23 +61,6 @@ class PlantRow extends React.Component {
                })
             }
     }
-    // componentDidUpdate() {
-    //     try {
-    //             async function fetchFamily() {
-    //                 let familyRes = await fetch(`http://www.localhost:3000/plants/family/${this.props.family.id}`);
-    //                 let family = await familyRes.json();
-    //                 this.setState({
-    //                     family: family.data,
-    //                     isLoaded: true
-    //                 })
-                    
-    //             }
-    //             fetchFamily();
-    //         }
-    //         catch (error) {
-    //            console.log(error);
-    //         }
-    // }
 
     render() {
         const {error, isLoaded, family } = this.state;
@@ -58,11 +72,7 @@ class PlantRow extends React.Component {
         }
         else {
             return <Row>
-                    <Col></Col>
-                    <Col></Col>
-                    <Col></Col>
-                    <Col></Col>
-                    <Col></Col>
+                    <PlantMiniSquare family={this.state.family} skip={this.props.skip}/>
                 </Row>
         }
     
@@ -97,6 +107,7 @@ function FlowerFoliage(props) {
         }
         
     }
+    return null;
 }
 
 function Bio () {
@@ -122,22 +133,6 @@ function Bio () {
         }
     }, []);
 
-    // useEffect(() => {
-    //     try {
-    //         async function fetchFamily() {
-    //             let familyRes = await fetch(`http://www.localhost:3000/plants/family/${this.state.family.id}`);
-    //             let family = await familyRes.json();
-    //             setFamilyList(family.data);
-    //             setFamStatus(true); 
-    //         }
-    //         fetchFamily();
-    //     }
-    //     catch (error) {
-    //         setError(error);
-    //     }
-    // }, []);
-  
-
     
    
     if (error) {
@@ -159,8 +154,6 @@ function Bio () {
                         Growth Habit: {plantInfo.main_species.specifications.growth_habit}<br/>
                         Average Height: {plantInfo.main_species.specifications.avg_height} <br/>
                         <FlowerFoliage flower={plantInfo.main_species.flower}/>
-                        {/* Shape and Orientation: {plantInfo.main_species.} <br/> */}
-                        {/* Toxicity: {plantInfo.main_species.specifications.toxicity}<br/>*/}
                         Amount of light needed (0-10): {plantInfo.main_species.growth.light} lux <br/>
                         Humidity: {plantInfo.main_species.growth.athmospheric_humidity}<br/>
                         Minimum Precipitation (in mm): {plantInfo.main_species.growth.minimum_precipitation.mm}<br/>
@@ -173,16 +166,9 @@ function Bio () {
                             </ul>
                     </div>  
                 </div> 
-                <Container fluid>
+                <Container fluid className="suggestions m-5">
                     <h5 className="title m-5">Varieties of the same family:</h5>
-                    <PlantRow family={plantInfo.family}/>
-                    {/* <Row>
-                        <Col>Variety</Col>
-                        <Col>Variety</Col>
-                        <Col>Variety</Col>
-                        <Col>Variety</Col>
-                        <Col>Variety</Col>
-                    </Row> */}
+                    <PlantRow  family={plantInfo.family_common_name} skip={plantInfo.common_name}/>
                 </Container> 
             </div>
         )
