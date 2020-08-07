@@ -8,6 +8,7 @@ import Finder from "./components/Finder";
 import Home from "./components/Home";
 // import Results from "./components/Results";
 import AuthService from "./services/auth.service";
+import PageNotFound from "./components/PageNotFound";
 
 class App extends React.Component {
   componentDidMount() {
@@ -45,6 +46,7 @@ class App extends React.Component {
             <Route path="/finder" component={Finder} exact />
             <Route path="/weather" component={Weather} exact />
             <Route path="/about" component={About} exact />
+            <Route path="*" component={PageNotFound} />
           </Switch>
         </BrowserRouter>
       </div>

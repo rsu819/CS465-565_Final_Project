@@ -67,7 +67,16 @@ class About extends React.Component {
             </Col>
           </Row>
         </Container>
-      </div>
+
+        <h2 className="m-3">Tech Stack:</h2>
+        <ul style={{ listStyleType: 'none', margins: '0px', padding: '0px' }}>
+          <li><a href="https://trefle.io">Trefle.IO</a></li>
+          <li><a href="https://openweathermap.org">OpenWeather</a></li>
+          <li><a href="https://reactjs.org">React</a></li>
+          <li><a href="https://expressjs.com">Express</a></li>
+          <li><a href="https://www.heroku.com">Heroku</a></li>
+        </ul>
+      </div >
     );
   }
 }
