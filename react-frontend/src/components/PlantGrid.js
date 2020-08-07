@@ -1,17 +1,31 @@
 import React from "react";
-import '../App.css';
+//import '../App.css';
+import '../stylesheets/PlantGrid.css'
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import basil from './testResult'
 //the props passed in should be attr with JSON object fields
+
+
+function Name(props) {
+    if (props.name) {
+        return   <div className="name p-2 text-capitalize"><strong>{props.name}</strong></div>
+    }
+    else {
+        return <div className="name p-2 h6 font-weight-lighter"><em>(common name unlisted)</em></div>
+    }
+
+}
+
 class PlantSquare extends React.Component {
  
     render() {
     return <Col className='square p-4' sm={6} md={4}>
             {/* <img href={this.props.image} alt={this.props.name}/> */}
-            <div>Name: {this.props.name}</div>
-            <div>Scientific Name: {this.props.sciName}</div>
+            <Name name={this.props.name}/>
+            <div className="sciName p-2">Scientific Name:<br/> {this.props.sciName}</div>
             <div>
-                <Button href={this.props.url} className='btn-sm btn-primary mt-2 rounded-0'>Go</Button>
+                <Button href={this.props.url} className='btn-sm btn-primary mt-2 rounded-0'><strong>Go!</strong></Button>
             </div>
         </Col>
     }
@@ -37,6 +51,7 @@ class PlantRow extends React.Component {
         let sciName = plant.scientific_name;
         let url = `/plants/${this.props.data}/${plant.id}`;
         return <PlantSquare
+                    className="plant-square"
                     image={image}
                     name={name}
                     sciName={sciName}
@@ -48,11 +63,11 @@ class PlantRow extends React.Component {
 
     componentDidMount = async function() {
         try {
-            let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
-            let results = await response.json();
-            console.log(results);
+            //let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
+            //let results = await response.json();
+            //console.log(results);
             this.setState({
-                data: results,
+                data: basil,
                 isLoaded: true 
             })
             }

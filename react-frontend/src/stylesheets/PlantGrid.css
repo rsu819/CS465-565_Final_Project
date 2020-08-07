@@ -1,0 +1,15 @@
+.square {
+    background-color: var(--blue-green);
+    border: solid white 3px;
+}
+
+.name {
+    font-size: 1.3em;
+}
+
+.btn {
+    background-color: var(--blue-dark);
+    color: white;
+    border-width: 1px;
+    border-style: none;
+}
