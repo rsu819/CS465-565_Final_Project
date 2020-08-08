@@ -14,8 +14,7 @@ import PageNotFound from "./components/PageNotFound";
 class App extends React.Component {
   componentDidMount() {
     let token = JSON.parse(localStorage.getItem('user'));
-
-    if (token) {
+    if (token !== undefined) {
       console.log('we have a token!');
       console.log(token.token);
       console.log(token.expiration);
