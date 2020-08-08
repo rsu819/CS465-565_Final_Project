@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import moment from 'moment';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import About from "./components/About";
@@ -13,13 +14,14 @@ import PageNotFound from "./components/PageNotFound";
 class App extends React.Component {
   componentDidMount() {
     let token = JSON.parse(localStorage.getItem('user'));
-
     if (token) {
       console.log('we have a token!');
       console.log(token.token);
       console.log(token.expiration);
-      let dateNow = new Date().getTime();
-      let expiration = new Date(token.expiration.match(/\d+/)[0] * 1);
+      let dateNow = new Date();
+      let expiration = new Date(moment(token.expiration, "MM-DD-YYYY hh:mm"));
+      console.log(dateNow);
+      console.log(expiration);
       if (expiration < dateNow) {
         AuthService.logout();
         AuthService.login();
