@@ -9,6 +9,12 @@ class Finder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      divisionDisabled: true,
+      classDisabled: true,
+      orderDisabled: true,
+      familyDisabled: true,
+      genusDisabled: true,
+      speciesDisabled: true,
       divisionLoading: false,
       classLoading: false,
       orderLoading: false,
@@ -40,7 +46,6 @@ class Finder extends React.Component {
   }
 
   componentDidMount() {
-    // console.log(AuthService.getCurrentUser().token);
     this.getDivisions();
   }
 
@@ -54,7 +59,7 @@ class Finder extends React.Component {
   };
 
   handleSubmit = function () {
-    alert("You searched for " + this.state.value);
+    alert("You searched for " + this.state.selectedSpeciesId);
     return;
   };
 
@@ -78,6 +83,11 @@ class Finder extends React.Component {
       familyPages: "",
       genusPages: "",
       speciesPages: "",
+      classDisabled: true,
+      orderDisabled: true,
+      familyDisabled: true,
+      genusDisabled: true,
+      speciesDisabled: true,
     });
     this.getClasses();
   }
@@ -99,6 +109,10 @@ class Finder extends React.Component {
       familyPages: "",
       genusPages: "",
       speciesPages: "",
+      orderDisabled: true,
+      familyDisabled: true,
+      genusDisabled: true,
+      speciesDisabled: true,
     });
     this.getOrders();
   }
@@ -117,6 +131,9 @@ class Finder extends React.Component {
       familyPages: "",
       genusPages: "",
       speciesPages: "",
+      familyDisabled: true,
+      genusDisabled: true,
+      speciesDisabled: true,
     });
     this.getFamilies();
   }
@@ -133,6 +150,8 @@ class Finder extends React.Component {
       selectedSpeciesId: 0,
       genusPages: "",
       speciesPages: "",
+      genusDisabled: true,
+      speciesDisabled: true,
     });
     this.getGenera();
   }
@@ -145,6 +164,7 @@ class Finder extends React.Component {
       species: [],
       selectedSpeciesId: 0,
       speciesPages: "",
+      speciesDisabled: true,
     });
     this.getSpecies();
   }
@@ -152,7 +172,7 @@ class Finder extends React.Component {
   onChangeSpecies = function (e) {
     console.log(`DEBUG species: ${e.target.value}`);
     this.setState({ selectedSpeciesId: parseInt(e.target.value, 10) });
-    console.log(`selectedSpecies ${this.selectedSpeciesId} `)
+    console.log(`selectedSpecies ${this.state.selectedSpeciesId} `)
   }
 
   //=====================================
@@ -180,6 +200,7 @@ class Finder extends React.Component {
           });
         });
         this.setState({ divisionLoading: false });
+        this.setState({ divisionDisabled: false });
         this.seeState();
       })
       .catch((err) => {
@@ -203,6 +224,7 @@ class Finder extends React.Component {
         if (page > this.state.classPages) next = false;
       }
       this.setState({ classLoading: false });
+      this.setState({ classDisabled: false });
       this.seeState();
     } catch (err) {
       console.log(err);
@@ -249,6 +271,7 @@ class Finder extends React.Component {
         if (page > this.state.orderPages) next = false;
       }
       this.setState({ orderLoading: false });
+      this.setState({ orderDisabled: false });
       this.seeState();
     } catch (err) {
       console.log(err);
@@ -295,6 +318,7 @@ class Finder extends React.Component {
         if (page > this.state.familyPages) next = false;
       }
       this.setState({ familyLoading: false });
+      this.setState({ familyDisabled: false });
       this.seeState();
     } catch (err) {
       console.log(err);
@@ -338,9 +362,11 @@ class Finder extends React.Component {
         //console.log('get');
         //console.log(response);
         page++;
-        if (page > this.state.genusPages) next = false;
+        //capping pages to 25
+        if (page > this.state.genusPages || page >= 25) next = false;
       }
       this.setState({ genusLoading: false });
+      this.setState({ genusDisabled: false });
       this.seeState();
     } catch (err) {
       console.log(err);
@@ -386,9 +412,11 @@ class Finder extends React.Component {
         //console.log('get');
         //console.log(response);
         page++;
-        if (page > this.state.speciesPages) next = false;
+        //capping pages to 25
+        if (page > this.state.speciesPages || page >= 25) next = false;
       }
       this.setState({ speciesLoading: false });
+      this.setState({ speciesDisabled: false });
       this.seeState();
     } catch (err) {
       console.log(err);
@@ -445,28 +473,52 @@ class Finder extends React.Component {
             <Form.Label>
               <h1 className="mb-5">Search by Filter:</h1>
             </Form.Label>
-            <Form.Control onChange={this.onChangeDivision.bind(this)} as="select" aria-label="select plant division">
+
+            <Form.Control onChange={this.onChangeDivision.bind(this)}
+              as="select"
+              aria-label="select plant division"
+              disabled={this.state.divisionDisabled ? true : false}>
               <option>Select Division ...</option>
               {this.state.divisions.map((division, index) => <option key={index} value={division.id}>{division.name}</option>)}
             </Form.Control >
             <br />
-            <Form.Control onChange={this.onChangeClass.bind(this)} as="select" aria-label="select plant class">
+
+            <Form.Control onChange={this.onChangeClass.bind(this)}
+              as="select"
+              aria-label="select plant class"
+              disabled={this.state.classDisabled ? true : false}>
               <option>Select Class ...</option>
               {this.state.classes.map((clas, index) => <option key={index} value={clas.id}>{clas.name}</option>)}
             </Form.Control><br />
-            <Form.Control onChange={this.onChangeOrder.bind(this)} as="select" aria-label="select plant order">
+
+            <Form.Control onChange={this.onChangeOrder.bind(this)}
+              as="select"
+              aria-label="select plant order"
+              disabled={this.state.orderDisabled ? true : false}>
               <option>Select Order ...</option>
               {this.state.orders.map((order, index) => <option key={index} value={order.id}>{order.name}</option>)}
             </Form.Control><br />
-            <Form.Control onChange={this.onChangeFamily.bind(this)} as="select" aria-label="select plant family">
+
+            <Form.Control onChange={this.onChangeFamily.bind(this)}
+              as="select"
+              aria-label="select plant family"
+              disabled={this.state.familyDisabled ? true : false}>
               <option>Select Family ...</option>
               {this.state.families.map((family, index) => <option key={index} value={family.id}>{family.name}</option>)}
             </Form.Control><br />
-            <Form.Control onChange={this.onChangeGenus.bind(this)} as="select" aria-label="select plant order">
+
+            <Form.Control onChange={this.onChangeGenus.bind(this)}
+              as="select"
+              aria-label="select plant order"
+              disabled={this.state.genusDisabled ? true : false}>
               <option>Select Genus ...</option>
               {this.state.genera.map((genus, index) => <option key={index} value={genus.id}>{genus.name}</option>)}
             </Form.Control><br />
-            <Form.Control onChange={this.onChangeGenus.bind(this)} as="select" aria-label="select plant order">
+
+            <Form.Control onChange={this.onChangeSpecies.bind(this)}
+              as="select"
+              aria-label="select plant species"
+              disabled={this.state.speciesDisabled ? true : false}>
               <option>Select Species ...</option>
               {this.state.species.map((plant, index) => <option key={index} value={plant.id}>{plant.name} ({plant.common_name})</option>)}
             </Form.Control><br />
