@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 // eslint-disable-next-line
 import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
-// import i01d from "../images/icons/01d.png";
-// import i01n from "../images/icons/01n.png";
-// import i02d from "../images/icons/02d.png";
-// import i02n from "../images/icons/02n.png";
-// import i03d from "../images/icons/03d.png";
-// import i03n from "../images/icons/03n.png";
-// import i04d from "../images/icons/04d.png";
-// import i04n from "../images/icons/04n.png";
-// import i09d from "../images/icons/09d.png";
-// import i09n from "../images/icons/09n.png";
-// import i10d from "../images/icons/10d.png";
-// import i10n from "../images/icons/10n.png";
-// import i11d from "../images/icons/11d.png";
-// import i11n from "../images/icons/11n.png";
-// import i13d from "../images/icons/13d.png";
-// import i13n from "../images/icons/13n.png";
-// import i50d from "../images/icons/50d.png";
-// import i50n from "../images/icons/50n.png";
+import i01d from "../images/icons/01d.png";
+import i01n from "../images/icons/01n.png";
+import i02d from "../images/icons/02d.png";
+import i02n from "../images/icons/02n.png";
+import i03d from "../images/icons/03d.png";
+import i03n from "../images/icons/03n.png";
+import i04d from "../images/icons/04d.png";
+import i04n from "../images/icons/04n.png";
+import i09d from "../images/icons/09d.png";
+import i09n from "../images/icons/09n.png";
+import i10d from "../images/icons/10d.png";
+import i10n from "../images/icons/10n.png";
+import i11d from "../images/icons/11d.png";
+import i11n from "../images/icons/11n.png";
+import i13d from "../images/icons/13d.png";
+import i13n from "../images/icons/13n.png";
+import i50d from "../images/icons/50d.png";
+import i50n from "../images/icons/50n.png";
 
 function Weather(props) {
   const [zip, setZip] = useState("");
@@ -26,13 +26,13 @@ function Weather(props) {
   const [data, setData] = useState();
 
   const handleClick = (e) => {
+    e.preventDefault();
     if (validZip() === true) {
       setActive(true);
       getWeatherByZip();
     } else {
       setActive(false);
     }
-    e.preventDefault();
   }
 
   const validZip = () => {
@@ -63,7 +63,8 @@ function Weather(props) {
       <h1 style={{ display: 'none' }}>Weather Page</h1>
       <Form
         id="searchform"
-        className="text-center">
+        className="text-center"
+        action="">
         <Form.Group controlId="formSearchWeather">
           <Form.Label className="title mt-5 p-5">
             Enter ZIP code:
@@ -82,7 +83,7 @@ function Weather(props) {
         </Form.Group>
 
 
-        <Button className="btn" type="button" onClick={handleClick} variant="primary" aria-label="search button for weather form">
+        <Button className="btn" type="click" onClick={handleClick} variant="primary" aria-label="search button for weather form">
           Search!
         </Button>
 
@@ -109,11 +110,10 @@ function WeatherResults(props) {
   const [icon, setIcon] = useState();
 
   useEffect(() => {
-    console.log('WeatherResults useEffet');
+    console.log('WeatherResults useEffect');
     console.log(`props.zip: ${props.zip}`);
     console.log(`props.data:`);
     console.log(props.data);
-    setLoad(true);
     if (props.data) {
       setTemperature(convertToF(props.data.main.temp));
       setFeelsLike(convertToF(props.data.main.feels_like));
@@ -122,8 +122,8 @@ function WeatherResults(props) {
       setHumidity(props.data.main.humidity);
       setPressure(props.data.main.pressure);
       setName(props.data.name);
-      setIcon('i' + props.data.weather[0].icon);
-
+      setIcon(props.data.weather[0].icon);
+      setLoad(true);
     }
   }, [props.zip, props.data]);
 
@@ -132,7 +132,11 @@ function WeatherResults(props) {
   }
 
 
-  return (
+  if (!loaded) {
+    return <div>Loading...</div>
+  }
+  else {
+    return (
     <>
       <h2 className="m-4">Weather in {name}: </h2>
       <Container fluid>
@@ -140,12 +144,12 @@ function WeatherResults(props) {
           {!loaded ? (<p>Loading...</p>) : (
 
             <Col xs lg="4">
-              {/* <Image
+              <Image
                 className="w-15"
-                src={`${icon}`}
+                src={require(`../images/icons/${icon}.png`)}
                 alt="weather icon"
                 fluid
-              /> */}
+              />
               <div className="mt-4">
                 <p> Current temperature: {temperature} &#176; F</p>
                 <p> Feels like: {feelsLike} &#176; F</p>
@@ -158,7 +162,7 @@ function WeatherResults(props) {
         </Row>
       </Container>
     </>
-  )
+  )}
 }
 
 
