@@ -14,8 +14,6 @@ function Weather(props) {
     } else {
       setActive(false);
     }
-    // console.log(`zip: ${zip}`);
-    // console.log(`isActive: ${isActive}`);
     e.preventDefault();
   }
 
@@ -53,7 +51,7 @@ function Weather(props) {
 
       });
       setDays(newState);
-      console.log(days);
+      // console.log(days);
     } catch (err) {
       console.log(err);
     }
@@ -89,40 +87,37 @@ function Weather(props) {
 
 
       </Form>
-      {days.length > 1 ? (<p>days</p>) : (<p>no days</p>)}
+      <br />
       {isActive ? (<WeatherResults zip={zip} days={days} />) : (<div />)}
     </div >
   );
 }
 
 function WeatherResults(props) {
-  const [days, setDays] = useState(props.days);
 
   useEffect(() => {
     console.log('WEATHERRESULTS useEffect');
     console.log(`props.zip: ${props.zip}`);
     console.log(`props.days:`);
     console.log(props.days);
-    console.log(`days: ${days}`);
+    // props.days.forEach(x => {
+    //   console.log(x.data);
+    // })
   });
 
 
   return (
     <>
-      <h2 className="m-4">5-Day Forecast for {props.zip}</h2>
+      <h2 className="m-4">Forecast for {props.zip}</h2>
       <Container fluid>
         <Row className="justify-content-md-center">
           {props.days.map((day, index) => {
             return (
               <Col xs lg="2" key={index}>
-                <WeatherDay key={index} data={props.days.index} />
+                <WeatherDay key={index} data={day.date} />
               </Col>
             )
           })}
-          {/* {days.map((day) => (
-            <li>day</li>
-          ))} */}
-
         </Row>
       </Container>
     </>
@@ -131,6 +126,9 @@ function WeatherResults(props) {
 
 
 function WeatherDay(props) {
+  useEffect(() => {
+    console.log(props.data);
+  });
 
   return (
     <>
