@@ -9,7 +9,8 @@ function getRandomInt(max) {
 }
 
 function PlantMiniSquare(props) {
-
+    
+    let squares = [];
     let length = props.family.length;
     console.log(length);
     if (length <= 1) {
@@ -22,33 +23,37 @@ function PlantMiniSquare(props) {
                     </div>
                 </Col>)
     }
-    let squares = [];
+   
     if (length < 6) {    
-        for (let i = getRandomInt(6); i < length; ((i+1)%6)) {
-            if (props.family[i].common_name === props.skip) {
-                continue;
-            }
-            squares.push(<Col>
+        for (let i = getRandomInt(5); i < length; ((i+1)%5)) {
+            
+            if (props.family[i].common_name !== props.skip) {
+                squares.push(<Col>
                     <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
                     <div className="commonName p-2">{props.family[i].common_name}</div>
                     <div className="scientificName p-2">{props.family[i].scientific_name}</div>
                     <Button className="btn btn-sm" href={`../${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
                     </Col>)
-        }
-    }
-    else {    
-        for (let i = getRandomInt(length); i < 5; ((i+1)%length)) {
-            if (props.family[i].common_name === props.skip) {
-                continue;
             }
-            squares.push (<Col>
-                <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
-                <div>{props.family[i].common_name}</div>
-                <div>{props.family[i].scientific_name}</div>
-                <Button className="btn-sm" href={`../${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
-            </Col>)
         }
     }
+    else {   
+        let i = getRandomInt(length);
+        let j = 0
+         do {
+            console.log(i);
+            if (props.family[i].common_name !== props.skip) {
+                squares.push (<Col>
+                    <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
+                    <div>{props.family[i].common_name}</div>
+                    <div>{props.family[i].scientific_name}</div>
+                    <Button className="btn-sm" href={`../${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
+                </Col>)
+            }
+            i  = (i + 1) % length;
+            j++;
+            } while (j < 5)
+        }
     return squares;
         
 }
@@ -158,12 +163,13 @@ function Bio () {
         return <div className="loading mt-5 pt-3">Loading Plant Data...</div>
     }
     else {
-        const syn = plantInfo.main_species.synonyms.map((plant) => {return <li key={plant.id}>{plant.name}</li>})
+        let synonyms = [];
+        plantInfo.main_species.synonyms.forEach((plant) => {synonyms.push(plant.name)})
         return (
             <div>
                 <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
                 <div>
-                    <img className="plantPic" src={plantInfo.image_url} alt={`${plantInfo.common_name}`} />
+                    <img className="plantPic" src={plantInfo.image_url} alt={`${plantInfo.common_name} example`} />
                     <div className="plantBio m-4">
                         Common Name: {plantInfo.common_name}<br/>
                         Scientific Name: {plantInfo.scientific_name}<br/>
@@ -175,11 +181,9 @@ function Bio () {
                         Minimum Precipitation (in mm): {plantInfo.main_species.growth.minimum_precipitation.mm}<br/>
                         Maximum Precipitation (in mm): {plantInfo.main_species.growth.maximum_precipitation.mm}<br/>
                         Minimum Temperature Needed: {plantInfo.main_species.growth.minimum_temperature.deg_f}<br/>
-                        Maximum Temperature Tolerated: {plantInfo.main_species.growth.maximum_temperature.deg_f}<br/>
-                        Synonyms: 
-                            <ul>
-                                {syn}
-                            </ul>
+                        Maximum Temperature Tolerated: {plantInfo.main_species.growth.maximum_temperature.deg_f}<br/><br/>
+                        Synonyms: <br/>
+                                {synonyms.join(', ')}
                     </div>  
                 </div> 
                 <hr/>

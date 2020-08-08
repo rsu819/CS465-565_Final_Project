@@ -2,9 +2,9 @@ import React from "react";
 //import '../App.css';
 import '../stylesheets/PlantGrid.css'
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import basil from './testResult'
-//the props passed in should be attr with JSON object fields
+// import { Link } from "react-router-dom";
+//import basil from './testResult'
+
 
 
 function Name(props) {
@@ -61,11 +61,11 @@ class PlantRow extends React.Component {
 
     componentDidMount = async function() {
         try {
-            //let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
-            //let results = await response.json();
-            //console.log(results);
+            let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
+            let results = await response.json();
+            console.log(results);
             this.setState({
-                data: basil,
+                data: results,
                 isLoaded: true 
             })
             }

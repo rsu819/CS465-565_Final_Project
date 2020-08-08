@@ -5,7 +5,10 @@ const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const { urlencoded } = require("express");
-require('dotenv').config();
+if (process.env.NODE_ENV !== "production" ) {
+  require("dotenv").config();
+}
+
 
 // import router paths
 let indexRouter = require("./routes/index");
