@@ -7,6 +7,10 @@
     font-size: 1.3em;
 }
 
+.sciName {
+    font-size: 1em;
+}
+
 .btn {
     background-color: var(--blue-dark);
     color: white;

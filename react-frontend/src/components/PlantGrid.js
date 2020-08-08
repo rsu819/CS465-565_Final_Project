@@ -24,7 +24,10 @@ class PlantSquare extends React.Component {
             <Name name={this.props.name}/>
             <div className="sciName p-2">Scientific Name:<br/> {this.props.sciName}</div>
             <div>
-                <Button href={this.props.url} className='btn-sm btn-primary mt-2 rounded-0'><strong>Go!</strong></Button>
+                <Button href={this.props.url} 
+                        className='btn-sm btn-primary mt-2 rounded-0' 
+                        aria-label="link to plant information">
+                            <strong>Go!</strong></Button>
             </div>
         </Col>
     }
@@ -112,7 +115,7 @@ class PlantGrid extends React.Component {
         
         return  <div>
                     <h2 className='results m-5'>Search Results</h2>
-                    <Container className="results" name="results">
+                    <Container className="results" name="results" aria-label="search results">
                        <PlantRow data={this.props.value}/>
                     </Container>
                 </div>
