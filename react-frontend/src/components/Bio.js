@@ -1,27 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Link } from "react";
 import { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "../stylesheets/Bio.css";
 import { useRouteMatch } from "react-router-dom";
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
+
 function PlantMiniSquare(props) {
 
+    let length = props.family.length;
+    console.log(length);
+    if (length <= 1) {
+        return (<Col>
+                    <div className="notFound">
+                        <span>No other plants in this family exist <br/> 
+                            on this database <br/> explore more varieties with our <br/></span>
+                        <img src={require("../images/cactusIcon.png")}></img>
+                        <a href="link:./Finder" ><u>Plant Finder!</u></a>
+                    </div>
+                </Col>)
+    }
     let squares = [];
-    if (props.family.length < 6) {      
-        for (let i = 0; i < props.family.length; i++) {
+    if (length < 6) {    
+        for (let i = getRandomInt(6); i < length; ((i+1)%6)) {
             if (props.family[i].common_name === props.skip) {
                 continue;
             }
-                squares.push(<Col>
-                        <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
-                        <div className="commonName p-2">{props.family[i].common_name}</div>
-                        <div className="scientificName p-2">{props.family[i].scientific_name}</div>
-                        <Button className="btn btn-sm" href={`../../plants/${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
+            squares.push(<Col>
+                    <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
+                    <div className="commonName p-2">{props.family[i].common_name}</div>
+                    <div className="scientificName p-2">{props.family[i].scientific_name}</div>
+                    <Button className="btn btn-sm" href={`../${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
                     </Col>)
         }
     }
     else {    
-        for (let i = 0; i < 5; i++) {
+        for (let i = getRandomInt(length); i < 5; ((i+1)%length)) {
             if (props.family[i].common_name === props.skip) {
                 continue;
             }
@@ -29,7 +45,7 @@ function PlantMiniSquare(props) {
                 <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
                 <div>{props.family[i].common_name}</div>
                 <div>{props.family[i].scientific_name}</div>
-                <Button className="btn-sm" href={`../../plants/${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
+                <Button className="btn-sm" href={`../${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
             </Col>)
         }
     }
@@ -72,7 +88,7 @@ class PlantRow extends React.Component {
         }
         else {
             return <Row>
-                    <PlantMiniSquare family={this.state.family} skip={this.props.skip}/>
+                    <PlantMiniSquare family={family} skip={this.props.skip}/>
                 </Row>
         }
     
@@ -148,7 +164,7 @@ function Bio () {
                 <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
                 <div>
                     <img className="plantPic" src={plantInfo.image_url} alt={`${plantInfo.common_name}`} />
-                    <div className="plantBio mt-4">
+                    <div className="plantBio m-4">
                         Common Name: {plantInfo.common_name}<br/>
                         Scientific Name: {plantInfo.scientific_name}<br/>
                         Growth Habit: {plantInfo.main_species.specifications.growth_habit}<br/>
@@ -166,8 +182,9 @@ function Bio () {
                             </ul>
                     </div>  
                 </div> 
+                <hr/>
                 <Container fluid className="suggestions m-5">
-                    <h5 className="title m-5">Varieties of the same family:</h5>
+                    <h6 className="title m-5">Varieties in the same family:</h6>
                     <PlantRow  family={plantInfo.family_common_name} skip={plantInfo.common_name}/>
                 </Container> 
             </div>
