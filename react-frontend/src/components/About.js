@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 
-import jean from "../images/jean_choi.png";
-import robin from "../images/robin_su.png";
+import jean from "../images/jean_choi_2.png";
+import robin from "../images/robin_su_1.png";
 
 class About extends React.Component {
   constructor(props) {
