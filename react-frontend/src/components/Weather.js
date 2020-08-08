@@ -1,11 +1,29 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from 'react-dom';
+// eslint-disable-next-line
 import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
+// import i01d from "../images/icons/01d.png";
+// import i01n from "../images/icons/01n.png";
+// import i02d from "../images/icons/02d.png";
+// import i02n from "../images/icons/02n.png";
+// import i03d from "../images/icons/03d.png";
+// import i03n from "../images/icons/03n.png";
+// import i04d from "../images/icons/04d.png";
+// import i04n from "../images/icons/04n.png";
+// import i09d from "../images/icons/09d.png";
+// import i09n from "../images/icons/09n.png";
+// import i10d from "../images/icons/10d.png";
+// import i10n from "../images/icons/10n.png";
+// import i11d from "../images/icons/11d.png";
+// import i11n from "../images/icons/11n.png";
+// import i13d from "../images/icons/13d.png";
+// import i13n from "../images/icons/13n.png";
+// import i50d from "../images/icons/50d.png";
+// import i50n from "../images/icons/50n.png";
 
 function Weather(props) {
   const [zip, setZip] = useState("");
   const [isActive, setActive] = useState();
-  const [days, setDays] = useState([]);
+  const [data, setData] = useState();
 
   const handleClick = (e) => {
     if (validZip() === true) {
@@ -34,24 +52,7 @@ function Weather(props) {
     try {
       let response = await fetch(`http://localhost:3000/weather/${zip}`);
       let json = await response.json();
-      console.log(json);
-      let newState = []
-      json.data.forEach((x) => {
-        let found = newState.find(item => item.date === x.date);
-        //if days doesn't have, create new array elem and push obj
-        if (!found) {
-          newState.push({
-            date: x.date,
-            data: [x]
-          });
-        } else {
-          //if days does exist, push obj
-          found.data.push(x)
-        }
-
-      });
-      setDays(newState);
-      // console.log(days);
+      setData(json);
     } catch (err) {
       console.log(err);
     }
@@ -81,43 +82,80 @@ function Weather(props) {
         </Form.Group>
 
 
-        <Button className="btn" type="button" onClick={handleClick} variant="primary" aria-label="search buttton for weather form">
+        <Button className="btn" type="button" onClick={handleClick} variant="primary" aria-label="search button for weather form">
           Search!
         </Button>
 
 
       </Form>
       <br />
-      {isActive ? (<WeatherResults zip={zip} days={days} />) : (<div />)}
+      {isActive ? (<WeatherResults zip={zip} data={data} />) : (<div />)}
     </div >
   );
 }
 
 function WeatherResults(props) {
+  const [loaded, setLoad] = useState(false);
+  const [temperature, setTemperature] = useState();
+  const [feelsLike, setFeelsLike] = useState();
+  const [minTemp, setMinTemp] = useState();
+  const [maxTemp, setMaxTemp] = useState();
+  const [humidity, setHumidity] = useState();
+  const [pressure, setPressure] = useState();
+
+  const [name, setName] = useState();
+  const [icon, setIcon] = useState();
 
   useEffect(() => {
-    console.log('WEATHERRESULTS useEffect');
+    console.log('WeatherResults useEffet');
     console.log(`props.zip: ${props.zip}`);
-    console.log(`props.days:`);
-    console.log(props.days);
-    // props.days.forEach(x => {
-    //   console.log(x.data);
-    // })
+    console.log(`props.data:`);
+    console.log(props.data);
+    setLoad(true);
+    if (props.data) {
+      setTemperature(convertToF(props.data.main.temp));
+      setFeelsLike(convertToF(props.data.main.feels_like));
+      setMinTemp(convertToF(props.data.main.temp_min));
+      setMaxTemp(convertToF(props.data.main.temp_max));
+      setHumidity(props.data.main.humidity);
+      setPressure(props.data.main.pressure);
+      setName(props.data.name);
+      setIcon('i' + props.data.weather[0].icon);
+
+    }
+    console.log(temperature);
+    console.log(icon);
+
   });
+
+  const convertToF = (x) => {
+    return Math.round(1.8 * (parseInt(x, 10) - 273.15) + 32);
+  }
 
 
   return (
     <>
-      <h2 className="m-4">Forecast for {props.zip}</h2>
+      <h2 className="m-4">Weather in {name}: </h2>
       <Container fluid>
         <Row className="justify-content-md-center">
-          {props.days.map((day, index) => {
-            return (
-              <Col xs lg="2" key={index}>
-                <WeatherDay key={index} data={day.date} />
-              </Col>
-            )
-          })}
+          {!loaded ? (<p>Loading...</p>) : (
+
+            <Col xs lg="4">
+              {/* <Image
+                className="w-15"
+                src={`${icon}`}
+                alt="weather icon"
+                fluid
+              /> */}
+              <div className="mt-4">
+                <p> Current temperature: {temperature} &#176; F</p>
+                <p> Feels like: {feelsLike} &#176; F</p>
+                <p> Minimum temperature: {minTemp} &#176; F</p>
+                <p> Maximum temperature: {maxTemp} &#176; F</p>
+                <p> Humidity: {humidity}%</p>
+              </div>
+            </Col>
+          )}
         </Row>
       </Container>
     </>
@@ -125,18 +163,5 @@ function WeatherResults(props) {
 }
 
 
-function WeatherDay(props) {
-  useEffect(() => {
-    console.log(props.data);
-  });
 
-  return (
-    <>
-      hi {props.data}
-    </>
-  )
-
-
-
-}
 export default Weather;
