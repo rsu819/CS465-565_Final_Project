@@ -15,14 +15,29 @@ let search = `/api/v1/plants/search?q=`;
 let plants = `/api/v1/plants/`;
 let family = `/api/v1/plants?filter[family_common_name]=`;
 
+router.get('/page/next', async function(req, res) {
+  let path = req.body.path;
+  console.log(req.body.path);
+  try {
+    const response = await fetch(url+path+`&token=${process.env.TREFLE_KEY}`);
+    const json = await response.json();
+    console.log(json);
+    res.status(200).send(json);
+  }
+  catch(error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
 router.get('/:slug', async function(req, res) {
   let query = req.params.slug;
   console.log('Search query: ' + query);
   try {
     const response = await fetch(url+search+query+`&token=${process.env.TREFLE_KEY}`);
-  const json = await response.json();
-  console.log(json);
-  res.status(200).send(json);
+    const json = await response.json();
+    console.log(json);
+    res.status(200).send(json);
   }
   catch(error) {
     console.log(error);
@@ -42,6 +57,7 @@ router.get('/family/:name', async function(req, res) {
   }
   catch(error) {
     console.log(error);
+    res.send(err);
   }
 });
 

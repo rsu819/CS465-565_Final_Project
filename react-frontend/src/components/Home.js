@@ -26,7 +26,9 @@ class Home extends React.Component {
 
 
   render() {
-    return <Form className="searchform" onSubmit={this.handleSubmit}>
+    return <Form className="searchform" 
+                  onSubmit={this.handleSubmit}
+                  aria-label="form to search by keyword">
       <Form.Group controlId="searchPlants">
         <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
         <Form.Control className="search" 

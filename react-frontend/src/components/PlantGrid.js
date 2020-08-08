@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Link } from "react";
 //import '../App.css';
 import '../stylesheets/PlantGrid.css'
 import { Container, Row, Col, Button } from "react-bootstrap";
@@ -33,6 +33,14 @@ class PlantSquare extends React.Component {
     }
 }
 
+function Next(props) {
+    console.log(props.links.next);
+    if (props.links.self === props.links.last) {
+        return <Button className="btn disabled" aria-label="end of results">End of Results</Button>
+    }
+    return <Button className="btn" aria-label="button link for next page of results">Next page</Button>
+}
+
 
 class PlantRow extends React.Component {
     constructor(props) {
@@ -40,9 +48,20 @@ class PlantRow extends React.Component {
         console.log(this.props.data)
         this.state = {
             data: [],
+            links: {},
+            next: false,
+            nextLink: "",
             isLoaded: false,
             error: null
         }
+    this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick = function() {
+        this.setState({
+            next: true,
+            nextLink: this.state.links.next
+        })
     }
 
     renderPlantSquare(plant) {
@@ -69,6 +88,7 @@ class PlantRow extends React.Component {
             console.log(results);
             this.setState({
                 data: results,
+                links: results.links,
                 isLoaded: true 
             })
             }
@@ -79,10 +99,34 @@ class PlantRow extends React.Component {
             });
         }
     }
+
+    componentDidUpdate = async function() {
+        try {
+            let response = await fetch('http://www.localhost:3000/plants/page/next', {
+                                headers: {'Content-Type': 'application/json'},
+                                body: {
+                                    'path': 'this.state.links.next'
+                                }
+            });
+            let results = await response.json();
+            console.log(results);
+            this.setState({
+                data: results,
+                links: results.links,
+                isLoaded: true 
+            })
+            }
+        catch (error) {
+            this.setState({
+                isLoaded: true,
+                error
+            })
+        }
+    }
     
 
     render() {
-        const { data, isLoaded, error } = this.state;
+        const { data, links, isLoaded, error } = this.state;
         if (error) {
             return <div>{error.message}</div>
         }
@@ -90,10 +134,14 @@ class PlantRow extends React.Component {
             return <div>Loading...</div>
         }
         else {
-            return <Row>{data.data.map(
-                (each) => {
-                    return this.renderPlantSquare(each)
-                })}
+            return <Row>
+                        {data.data.map(
+                            (each) => {
+                                return this.renderPlantSquare(each)
+                        })}
+                        <Col>
+                            <Next links={links} onClick={this.handleClick}/>
+                        </Col>
                 </Row>
         }
     }

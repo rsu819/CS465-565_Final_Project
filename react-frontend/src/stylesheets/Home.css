@@ -4,10 +4,10 @@
 }
 
 .search {
-    display: inline;
-    /* width: 75%;
+    display: inline-block;
+    width: 75%;
     height: 2em;
-    margin-bottom: 1.5em; */
+    margin-bottom: 1.5em;
     font-size: 1.5em;
 }
 
