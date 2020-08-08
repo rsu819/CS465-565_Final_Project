@@ -101,9 +101,11 @@ function WeatherResults(props) {
   const [minTemp, setMinTemp] = useState();
   const [maxTemp, setMaxTemp] = useState();
   const [humidity, setHumidity] = useState();
+  // eslint-disable-next-line
   const [pressure, setPressure] = useState();
 
   const [name, setName] = useState();
+  // eslint-disable-next-line
   const [icon, setIcon] = useState();
 
   useEffect(() => {
@@ -123,10 +125,7 @@ function WeatherResults(props) {
       setIcon('i' + props.data.weather[0].icon);
 
     }
-    console.log(temperature);
-    console.log(icon);
-
-  });
+  }, [props.zip, props.data]);
 
   const convertToF = (x) => {
     return Math.round(1.8 * (parseInt(x, 10) - 273.15) + 32);
