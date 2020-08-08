@@ -4,9 +4,10 @@ if (process.env.NODE_ENV !== 'production') {
 let express = require('express');
 let router = express.Router();
 let fetch = require('node-fetch'); 
-const { response } = require('express');
+let parser = require('body-parser');
+// const { response } = require('express');
 const app = require('../app');
-const { nextTick } = require('async');
+// const { nextTick } = require('async');
 //base URL
 let url = 'https://trefle.io';
 
@@ -15,7 +16,11 @@ let search = `/api/v1/plants/search?q=`;
 let plants = `/api/v1/plants/`;
 let family = `/api/v1/plants?filter[family_common_name]=`;
 
-router.get('/page/next', async function(req, res) {
+router.use(parser.urlencoded({ extended: false }));
+router.use(parser.json());
+
+router.post('/page/next', async function(req, res) {
+  console.log(req);
   let path = req.body.path;
   console.log(req.body.path);
   try {
