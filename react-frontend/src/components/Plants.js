@@ -9,12 +9,13 @@ function Plants() {
     let { slug } = useParams();
     console.log('SLUG: ' + slug);
     return <Switch> 
+              <Route path={`${url}/:id`}>
+                <Bio/>
+              </Route>
               <Route path='/:slug'>
                 <PlantGrid value={slug}/>
               </Route>
-              <Route path={`${url}/:id`}>
-                <Bio/>
-              </Route> 
+               
               
             </Switch>
 }

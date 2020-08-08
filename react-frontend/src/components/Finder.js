@@ -58,8 +58,19 @@ class Finder extends React.Component {
     return;
   };
 
+  /**************************** EDIT ******************************************/
+  // handleSubmit = function (e) {
+  //   e.preventDefault();
+  //   alert("You searched for " + this.state.selectedSpeciesId);
+  //   this.props.history.push(`/plants/species/${this.state.selectedSpeciesId}`);
+  //   return;
+  // };
+  /****************************** EDIT ****************************************/
+  
+  
   handleSubmit = function () {
     alert("You searched for " + this.state.selectedSpeciesId);
+
     return;
   };
 

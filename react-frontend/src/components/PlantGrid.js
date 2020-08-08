@@ -1,4 +1,4 @@
-import React, { Link } from "react";
+import React from "react";
 //import '../App.css';
 import '../stylesheets/PlantGrid.css'
 import { Container, Row, Col, Button } from "react-bootstrap";
@@ -36,9 +36,9 @@ class PlantSquare extends React.Component {
 function Next(props) {
     console.log(props.links.next);
     if (props.links.self === props.links.last) {
-        return <Button className="btn disabled" aria-label="end of results">End of Results</Button>
+        return <Button className="btn disabled mt-5" aria-label="end of results">End of Results</Button>
     }
-    return <Button className="btn" aria-label="button link for next page of results">Next page</Button>
+    return <Button className="btn mt-5 rounded-0" aria-label="button link for next page of results" onClick={props.onClick}><strong>More Results</strong></Button>
 }
 
 
@@ -54,13 +54,15 @@ class PlantRow extends React.Component {
             isLoaded: false,
             error: null
         }
-    this.handleClick = this.handleClick.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick = function() {
+    handleClick() {
+        alert(this.state.links.next);
         this.setState({
             next: true,
-            nextLink: this.state.links.next
+            nextLink: this.state.links.next,
+            isLoaded: false
         })
     }
 
@@ -85,7 +87,7 @@ class PlantRow extends React.Component {
         try {
             let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
             let results = await response.json();
-            console.log(results);
+            console.log(results.links.self);
             this.setState({
                 data: results,
                 links: results.links,
@@ -100,27 +102,32 @@ class PlantRow extends React.Component {
         }
     }
 
-    componentDidUpdate = async function() {
-        try {
-            let response = await fetch('http://www.localhost:3000/plants/page/next', {
-                                headers: {'Content-Type': 'application/json'},
-                                body: {
-                                    'path': 'this.state.links.next'
-                                }
-            });
-            let results = await response.json();
-            console.log(results);
-            this.setState({
-                data: results,
-                links: results.links,
-                isLoaded: true 
-            })
+    componentDidUpdate = async function(prevProps, prevState) {
+        console.log('prev: ' + prevState.nextLink);
+        console.log('current: ' + this.state.nextLink);
+        if (prevState.nextLink !== this.state.nextLink) {
+            try {
+                let response = await fetch('http://www.localhost:3000/plants/page/next', {
+                                    method: 'POST',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: {
+                                        'path': `${this.state.nextLink}`
+                                    }
+                });
+                let results = await response.json();
+                console.log(results);
+                this.setState({
+                    data: results,
+                    links: results.links,
+                    isLoaded: true 
+                })
+                }
+            catch (error) {
+                this.setState({
+                    isLoaded: true,
+                    error
+                })
             }
-        catch (error) {
-            this.setState({
-                isLoaded: true,
-                error
-            })
         }
     }
     
@@ -139,8 +146,20 @@ class PlantRow extends React.Component {
                             (each) => {
                                 return this.renderPlantSquare(each)
                         })}
-                        <Col>
-                            <Next links={links} onClick={this.handleClick}/>
+                        <Col className="next">
+                            {/* {function Next(props) {
+                                if (data.links.self === data.links.last) {
+                                    return <Button className="btn disabled" aria-label="end of results">End of Results</Button>
+                                }
+                                else {
+                                    return <Button className="btn" 
+                                                    onClick={this.handleClick}
+                                                    aria-label="click for more results">
+                                                More Results
+                                            </Button>
+                                }
+                            }} */}
+                             <Next className="nextBtn" links={links} onClick={this.handleClick}/>
                         </Col>
                 </Row>
         }

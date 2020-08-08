@@ -15,7 +15,6 @@ class Home extends React.Component {
 
   handleChange = function(e) {
     this.setState({value: e.target.value});
-    console.log(this.state.value);
     return;
   }
 
@@ -41,7 +40,7 @@ class Home extends React.Component {
                 required
         />
       </Form.Group>
-      <Button className="btn btn-lg rounded-0" type="submit" variant="primary" aria-label="Submit">Search!</Button>
+      <Button className="btn btn-lg rounded-0" type="submit" variant="primary" aria-label="submit search">Search!</Button>
     </Form>
    }
 };
