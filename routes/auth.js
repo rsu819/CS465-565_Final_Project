@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 var router = express.Router();
 
 const params = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:4000',
   token: process.env.TREFLE_KEY,
 }
 const apiUrl = "https://trefle.io/api/auth/claim";

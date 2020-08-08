@@ -58,22 +58,15 @@ class Finder extends React.Component {
     return;
   };
 
-  /**************************** EDIT ******************************************/
-  // handleSubmit = function (e) {
-  //   e.preventDefault();
-  //   alert("You searched for " + this.state.selectedSpeciesId);
-  //   this.props.history.push(`/plants/species/${this.state.selectedSpeciesId}`);
-  //   return;
-  // };
-  /****************************** EDIT ****************************************/
   
-  
-  handleSubmit = function () {
-    alert("You searched for " + this.state.selectedSpeciesId);
-
+  handleSubmit = function (e) {
+    e.preventDefault();
+    // alert("You searched for " + this.state.selectedSpeciesId);
+    this.props.history.push(`/plants/species/${this.state.selectedSpeciesId}`);
     return;
   };
-
+ 
+  
   onChangeDivision = function (e) {
     console.log(`DEBUG division: ${e.target.value}`);
     this.setState({ selectedDivisionId: parseInt(e.target.value, 10) });
@@ -202,7 +195,7 @@ class Finder extends React.Component {
       .then((res) => res.json())
       .then((res) => {
         //clear existing data
-        //console.log(res);
+        console.log(res);
         this.setState({ divisions: [] });
         res.data.forEach((division) => {
           //console.log(division);

@@ -111,7 +111,6 @@ class PlantRow extends React.Component {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: {
-                                        'path': `${this.state.nextLink}`
                                     }
                 });
                 let results = await response.json();
