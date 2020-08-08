@@ -44,7 +44,7 @@ class App extends React.Component {
               <Redirect to="/home" />
             </Route>
             <Route path="/home" component={Home} exact />
-            <Route path="/plants/:slug" component={Plants} exact />
+            <Route path="/plants/:slug" component={Plants}/>
             <Route path="/finder" component={Finder} exact />
             <Route path="/weather" component={Weather} exact />
             <Route path="/about" component={About} exact />

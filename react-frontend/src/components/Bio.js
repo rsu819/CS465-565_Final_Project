@@ -12,7 +12,7 @@ function PlantMiniSquare(props) {
             if (props.family[i].common_name === props.skip) {
                 continue;
             }
-                squares.push(<Col>
+                squares.push(<Col className="col-md">
                         <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
                         <div className="commonName p-2">{props.family[i].common_name}</div>
                         <div className="scientificName p-2">{props.family[i].scientific_name}</div>
@@ -25,7 +25,7 @@ function PlantMiniSquare(props) {
             if (props.family[i].common_name === props.skip) {
                 continue;
             }
-            squares.push (<Col>
+            squares.push (<Col className="col-md">
                 <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
                 <div>{props.family[i].common_name}</div>
                 <div>{props.family[i].scientific_name}</div>
@@ -142,13 +142,15 @@ function Bio () {
         return <div className="loading mt-5 pt-3">Loading Plant Data...</div>
     }
     else {
-        const syn = plantInfo.main_species.synonyms.map((plant) => {return <li key={plant.id}>{plant.name}</li>})
+        console.log(plantInfo)
+        let synonyms = [];
+        plantInfo.main_species.synonyms.forEach((plant) => {synonyms.push(plant.name)});
         return (
             <div>
-                <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
+                <h1 className="Name m-4" >{plantInfo.common_name}</h1>
                 <div>
                     <img className="plantPic" src={plantInfo.image_url} alt={`${plantInfo.common_name}`} />
-                    <div className="plantBio mt-4">
+                    <p className="plantBio mt-4">
                         Common Name: {plantInfo.common_name}<br/>
                         Scientific Name: {plantInfo.scientific_name}<br/>
                         Growth Habit: {plantInfo.main_species.specifications.growth_habit}<br/>
@@ -160,11 +162,11 @@ function Bio () {
                         Maximum Precipitation (in mm): {plantInfo.main_species.growth.maximum_precipitation.mm}<br/>
                         Minimum Temperature Needed: {plantInfo.main_species.growth.minimum_temperature.deg_f}<br/>
                         Maximum Temperature Tolerated: {plantInfo.main_species.growth.maximum_temperature.deg_f}<br/>
-                        Synonyms: 
-                            <ul>
-                                {syn}
-                            </ul>
-                    </div>  
+                        Synonyms:<br/>
+                            <div>
+                                {synonyms.join(", ")}
+                            </div>
+                    </p>  
                 </div> 
                 <Container fluid className="suggestions m-5">
                     <h5 className="title m-5">Varieties of the same family:</h5>
