@@ -7,16 +7,14 @@ import Bio from "./Bio";
 function Plants() {
     let { url } = useRouteMatch();
     let { slug } = useParams();
-    console.log('SLUG: ' + slug);
+    console.log('URL: ' + url);
     return <Switch> 
-              <Route path={`${url}/:id`}>
+              <Route path={`/species/:id`}>
                 <Bio/>
               </Route>
               <Route path='/:slug'>
                 <PlantGrid value={slug}/>
               </Route>
-               
-              
             </Switch>
 }
 
