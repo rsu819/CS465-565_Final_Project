@@ -29,17 +29,38 @@ class PlantSquare extends React.Component {
     }
 }
 
-function Next(props) {
-    console.log(props.links.next);
-    if (props.links.self === props.links.last) {
-        return <Button className="btn disabled mt-5" 
-                    aria-label="end of results">
-                End of Results</Button>
+function Prev(props) {
+   
+    if (props.links.prev) {
+            return <Col>
+                        <Button className="btn mt-4 rounded-0" 
+                                aria-label="button link for next page of results" 
+                                onClick={props.onClick}>
+                        <strong>Previous Results</strong>
+                        </Button>
+                    </Col>
     }
-    return <Button className="btn mt-5 rounded-0" 
-                    aria-label="button link for next page of results" 
-                    onClick={props.onClick}>
-                <strong>More Results</strong></Button>
+    else {
+        return null;
+    }
+
+}
+
+function Next(props) {
+
+    if (props.links.self === props.links.last) {
+        return <Col>
+                    <Button className="btn disabled mt-4" 
+                            aria-label="end of results">
+                        <strong>End of Results</strong></Button>
+                </Col>
+    }
+    return  <Col>
+                <Button className="btn mt-4 rounded-0" 
+                        aria-label="button link for next page of results" 
+                        onClick={props.onClick}>
+                    <strong>More Results</strong></Button>
+            </Col>
 }
 
 
@@ -50,22 +71,30 @@ class PlantRow extends React.Component {
         this.state = {
             data: [],
             links: {},
-            next: false,
-            nextLink: "",
+            self: "",
             isLoaded: false,
             error: null
         }
-        this.handleClick = this.handleClick.bind(this);
+        this.handlePrevClick = this.handlePrevClick.bind(this);
+        this.handleNextClick = this.handleNextClick.bind(this);
     }
 
-    handleClick() {
-        alert(this.state.links.next);
+    handlePrevClick() {
+        if (this.state.links.prev) {
+            this.setState({
+                self: this.state.links.prev,
+                isLoaded: false
+            })
+        }
+    }
+
+    handleNextClick() {
         this.setState({
-            next: true,
-            nextLink: this.state.links.next,
+            self: this.state.links.next,
             isLoaded: false
         })
     }
+
 
     renderPlantSquare(plant) {
         let image = plant.image_url;
@@ -88,7 +117,6 @@ class PlantRow extends React.Component {
         try {
             let response = await fetch(`http://www.localhost:3000/plants/${this.props.data}`)
             let results = await response.json();
-            console.log(results.links.self);
             this.setState({
                 data: results,
                 links: results.links,
@@ -104,8 +132,8 @@ class PlantRow extends React.Component {
     }
 
     componentDidUpdate = async function(prevProps, prevState) {
-        const endpoint = { endpoint: `${this.state.nextLink}`}
-        if (prevState.nextLink !== this.state.nextLink) {
+        const link = { endpoint: `${this.state.self}`}
+        if (prevState.self !== this.state.self) {
             try {
                 let response = await fetch(`http://www.localhost:3000/plants/next/`, {
                     method: 'POST',
@@ -114,14 +142,14 @@ class PlantRow extends React.Component {
                         'Content-Type': 'application/json'
                     },
                     referrerPolicy: 'no-referrer',
-                    body: JSON.stringify(endpoint),
+                    body: JSON.stringify(link),
                     credentials: 'omit'
                 });
                 let results = await response.json();
-                console.log(results);
                 this.setState({
                     data: results,
                     links: results.links,
+                    self: results.links.self,
                     isLoaded: true 
                 })
                 }
@@ -132,6 +160,7 @@ class PlantRow extends React.Component {
                 })
             }
         }
+ 
     }
     
 
@@ -144,15 +173,20 @@ class PlantRow extends React.Component {
             return <div>Loading...</div>
         }
         else {
-            return <Row>
+            return <>
+                    <Row>
+                       
                         {data.data.map(
                             (each) => {
                                 return this.renderPlantSquare(each)
                         })}
-                        <Col className="next">
-                             <Next className="nextBtn" links={links} onClick={this.handleClick}/>
-                        </Col>
-                </Row>
+                    </Row>
+                    <Row className="newPage mb-5">
+                        <Prev className="prevBtn" links={links} onClick={this.handlePrevClick}/>  
+                        <Next className="nextBtn" links={links} onClick={this.handleNextClick}/>
+                    </Row>
+
+                </>
         }
     }
 }
@@ -166,7 +200,6 @@ class PlantGrid extends React.Component {
             isLoaded: false,
             error: null
         };
-    console.log(this.props.value);
     }
 
     render() {
