@@ -9,7 +9,7 @@ function Plants() {
     let { slug } = useParams();
     console.log('URL: ' + url);
     return <Switch> 
-              <Route path={`/species/:id`}>
+              <Route path={`/${url}/:id`}>
                 <Bio/>
               </Route>
               <Route path='/:slug'>
