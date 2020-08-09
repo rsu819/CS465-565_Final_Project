@@ -104,7 +104,7 @@ class PlantRow extends React.Component {
     let name = plant.common_name;
     let slug = plant.common_name;
     let sciName = plant.scientific_name;
-    let url = `/plants/species/${plant.id}`;
+    let url = `/plants/${this.props.data}/${plant.id}`;
     console.log('URL: ' + url);
     return <PlantSquare
       className="plant-square"
