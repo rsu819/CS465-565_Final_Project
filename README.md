@@ -3,8 +3,7 @@
 ## Project
 
 This project was created and build for the CS465/545 Full Stack Web Development course at
-Portland State University for the Summer Quarter in 2020.
-
+[Portland State University](https://pdx.edu).
 ### Contributors
 
 [Jean Choi](https://github.com/choijean)<br>
