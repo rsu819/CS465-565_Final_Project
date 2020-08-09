@@ -1,0 +1,26 @@
+.square {
+    background-color: var(--blue-green);
+    border: solid white 3px;
+}
+
+.next {
+    margin: 3px;
+    background-color: rgb(240, 255, 252);
+    border: solid var(--blue-green) 1px;
+}
+
+.name {
+    font-size: 1.3em;
+}
+
+.sciName {
+    font-size: 1em;
+}
+
+.btn {
+    background-color: var(--blue-dark);
+    color: white;
+    border-width: 1px;
+    border-style: none;
+}
+

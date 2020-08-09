@@ -2,13 +2,17 @@
   "name": "react-frontend",
   "version": "0.1.0",
   "private": true,
+<<<<<<< HEAD
   "proxy": "http://localhost:3000",
   "homepage": "http://plantsplantsplants.herokuapp.com",
+=======
+>>>>>>> 8406053aa25db6df32d6e895464af8bd351684d2
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.5.0",
+    "js-cookie": "^2.2.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",
     "react-dom": "^16.13.1",

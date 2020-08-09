@@ -5,7 +5,10 @@ const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const { urlencoded } = require("express");
-require('dotenv').config();
+if (process.env.NODE_ENV !== "production" ) {
+  require("dotenv").config();
+}
+
 
 // import router paths
 let indexRouter = require("./routes/index");
@@ -14,11 +17,12 @@ let plantRouter = require("./routes/plants");
 let findRouter = require("./routes/finder");
 let weatherRouter = require("./routes/weather");
 let aboutRouter = require("./routes/about");
+let authRouter = require("./routes/auth");
 
 // create express app object
 const app = express();
 
-//app.use(cors());
+app.use(cors());
 
 // call middleware functions for each requested path
 app.use("/", indexRouter);
@@ -27,6 +31,7 @@ app.use("/plants", plantRouter);
 app.use("/finder", findRouter);
 app.use("/weather", weatherRouter);
 app.use("/about", aboutRouter);
+app.use("/auth", authRouter);
 
 
 // middleware functions

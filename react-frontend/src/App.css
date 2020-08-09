@@ -1,18 +1,19 @@
 :root {
   --purple-dark: rgb(73, 55, 80);
   --purple-light: rgb(82, 82, 115);
-  --blue-dark: rgb(82, 141, 160);
+  --blue-dark: rgb(19, 60, 74);
   --blue-light: rgb(91, 175, 161);
   --blue-green: rgb(98, 210, 161);
   --green-dark: rgb(140, 220, 121);
   --green-light: rgb(196, 238, 154);
   --yellow: rgb(252, 254, 187);
+  
 }
 
 .App {
   box-sizing: border-box;
   text-align: center;
-  font-family: "Ubuntu", sans-serif;
+  font-family: "Gill Sans", sans-serif;
 }
 
 .navbar {
