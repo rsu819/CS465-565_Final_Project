@@ -7,35 +7,8 @@ import robin from "../images/robin_su_1.png";
 class About extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: [] };
-    // this.callAPI(); // if getting rid of componen›tWillMount()
   }
 
-  callAPI() {
-    fetch("http://localhost:3000/about")
-      .then((res) => {
-        console.log(res);
-        return res.json();
-      })
-      .then((res) => {
-        console.log("DEBUG res:", res);
-        res.data.forEach((plant) => {
-          //console.log(plant);
-          this.setState({
-            apiResponse: [...this.state.apiResponse, { name: plant.common_name, id: plant.id }],
-          });
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  // life cycle hook: automatically executes on first render
-  UNSAFE_componentWillMount() {
-    console.log("DEBUG About componentWillMount");
-    this.callAPI();
-  }
 
   render() {
     return (

@@ -1,9 +1,10 @@
 var express = require("express");
 const fetch = require("node-fetch");
 var router = express.Router();
+const baseUrl = (process.env.NODE_ENV === 'production') ? "https://plantsplantsplants.herokuapp.com" : "http://localhost:4000";
 
 const params = {
-  origin: 'http://localhost:4000',
+  origin: `${baseUrl}`,
   token: process.env.TREFLE_KEY,
 }
 const apiUrl = "https://trefle.io/api/auth/claim";

@@ -1,11 +1,12 @@
 // eslint-disable-next-line
 import axios from "axios";
 const fetch = require("node-fetch");
+const baseUrl = (process.env.NODE_ENV === 'production') ? "https://plantsplantsplants.herokuapp.com" : "http://localhost:3000";
 
 class AuthService {
   login() {
     try {
-      fetch("http://localhost:3000/auth")
+      fetch(`${baseUrl}/auth`)
         .then((res) => {
           console.log(res);
           return res.json();

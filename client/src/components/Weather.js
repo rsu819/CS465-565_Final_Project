@@ -20,6 +20,8 @@ import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
 // import i50d from "../images/icons/50d.png";
 // import i50n from "../images/icons/50n.png";
 
+const baseUrl = (process.env.NODE_ENV === 'production') ? "https://plantsplantsplants.herokuapp.com" : "http://localhost:3000";
+
 function Weather(props) {
   const [zip, setZip] = useState("");
   const [isActive, setActive] = useState();
@@ -50,7 +52,7 @@ function Weather(props) {
 
   const getWeatherByZip = async () => {
     try {
-      let response = await fetch(`http://localhost:3000/weather/${zip}`);
+      let response = await fetch(`${baseUrl}/weather/${zip}`);
       let json = await response.json();
       setData(json);
     } catch (err) {
@@ -137,32 +139,33 @@ function WeatherResults(props) {
   }
   else {
     return (
-    <>
-      <h2 className="m-4">Weather in {name}: </h2>
-      <Container fluid>
-        <Row className="justify-content-md-center">
-          {!loaded ? (<p>Loading...</p>) : (
+      <>
+        <h2 className="m-4">Weather in {name}: </h2>
+        <Container fluid>
+          <Row className="justify-content-md-center">
+            {!loaded ? (<p>Loading...</p>) : (
 
-            <Col xs lg="4">
-              <Image
-                className="w-15"
-                src={require(`../images/icons/${icon}.png`)}
-                alt="weather icon"
-                fluid
-              />
-              <div className="mt-4">
-                <p> Current temperature: {temperature} &#176; F</p>
-                <p> Feels like: {feelsLike} &#176; F</p>
-                <p> Minimum temperature: {minTemp} &#176; F</p>
-                <p> Maximum temperature: {maxTemp} &#176; F</p>
-                <p> Humidity: {humidity}%</p>
-              </div>
-            </Col>
-          )}
-        </Row>
-      </Container>
-    </>
-  )}
+              <Col xs lg="4">
+                <Image
+                  className="w-15"
+                  src={require(`../images/icons/${icon}.png`)}
+                  alt="weather icon"
+                  fluid
+                />
+                <div className="mt-4">
+                  <p> Current temperature: {temperature} &#176; F</p>
+                  <p> Feels like: {feelsLike} &#176; F</p>
+                  <p> Minimum temperature: {minTemp} &#176; F</p>
+                  <p> Maximum temperature: {maxTemp} &#176; F</p>
+                  <p> Humidity: {humidity}%</p>
+                </div>
+              </Col>
+            )}
+          </Row>
+        </Container>
+      </>
+    )
+  }
 }
 
 
