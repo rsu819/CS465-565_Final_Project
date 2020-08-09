@@ -48,18 +48,19 @@ function Prev(props) {
 
 function Next(props) {
     console.log(props.links);
-    if (!props.links.next) {
-        return <Col>
-                    <Button className="btn disabled mt-4" 
-                            aria-label="end of results">
-                        <strong>End of Results</strong></Button>
+    if (props.links.next) {
+        return  <Col>
+                    <Button className="btn mt-4 rounded-0" 
+                            aria-label="button link for next page of results" 
+                            onClick={props.onClick}>
+                        <strong>More Results</strong></Button>
                 </Col>
+        
     }
-    return  <Col>
-                <Button className="btn mt-4 rounded-0" 
-                        aria-label="button link for next page of results" 
-                        onClick={props.onClick}>
-                    <strong>More Results</strong></Button>
+    return <Col>
+                <Button className="btn disabled mt-4" 
+                        aria-label="end of results">
+                    <strong>End of Results</strong></Button>
             </Col>
 }
 
