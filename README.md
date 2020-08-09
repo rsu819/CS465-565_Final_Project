@@ -12,8 +12,8 @@ Portland State University for the Summer Quarter in 2020.
 
 ### Goals
 
-> Present care information about plants on a simple interface
-> Allow users to explore plant categories through both scientific categories and by keyword search
+> Present care information about plants on a simple interface<br>
+> Allow users to explore plant categories through both scientific categories and by keyword search<br>
 > Include local weather forecast information to better help you plan ahead for caring for your plants
 
 ### Deployment
