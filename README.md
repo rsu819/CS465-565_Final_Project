@@ -7,7 +7,7 @@ Portland State University for the Summer Quarter in 2020.
 
 ### Contributors
 
-[Jean Choi](https://github.com/choijean)
+[Jean Choi](https://github.com/choijean)<br>
 [Robin Su](https://github.com/rsu819)
 
 ### Goals
