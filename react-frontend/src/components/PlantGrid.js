@@ -17,6 +17,7 @@ function Name(props) {
 class PlantSquare extends React.Component {
 
   render() {
+    console.log(this.props.url);
     return <Col className="square p-4" sm={6} md={4}>
       <Name name={this.props.name} />
       <div className="sciName p-2">Scientific Name:<br /> {this.props.sciName}</div>
@@ -105,7 +106,6 @@ class PlantRow extends React.Component {
     let slug = plant.common_name;
     let sciName = plant.scientific_name;
     let url = `/plants/${this.props.data}/${plant.id}`;
-    console.log('URL: ' + url);
     return <PlantSquare
       className="plant-square"
       image={image}
