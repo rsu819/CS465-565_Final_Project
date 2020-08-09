@@ -5,7 +5,7 @@ const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const { urlencoded } = require("express");
-if (process.env.NODE_ENV !== "production" ) {
+if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
@@ -43,12 +43,12 @@ app.use(urlencoded({ extended: false }));
 
 if (process.env.NODE_ENV === 'production') {
 
-  app.use(express.static(path.join(__dirname, "react-frontend", "build")));
+  app.use(express.static(path.join(__dirname, "client", "build")));
 
   // The "catchall" handler: for any request that doesn't
   // match one above, send back React's index.html file.
   app.get("/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'react-frontend', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
