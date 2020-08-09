@@ -1,10 +1,11 @@
+
 .square {
     background-color: var(--blue-green);
     border: solid white 3px;
+    
 }
 
 .next {
-    margin: 3px;
     background-color: rgb(240, 255, 252);
     border: solid var(--blue-green) 1px;
 }
