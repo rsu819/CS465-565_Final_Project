@@ -5,9 +5,8 @@ let express = require('express');
 let router = express.Router();
 let fetch = require('node-fetch'); 
 let parser = require('body-parser');
-// const { response } = require('express');
 const app = require('../app');
-// const { nextTick } = require('async');
+
 //base URL
 let url = 'https://trefle.io';
 
@@ -15,7 +14,6 @@ let url = 'https://trefle.io';
 let search = `/api/v1/plants/search?q=`;
 let plants = `/api/v1/plants/`;
 
-//router.use(parser.urlencoded({ extended: false }));
 router.use(parser.json());
 
 router.post('/next', async function(req, res) {
@@ -81,8 +79,6 @@ router.get('/:slug/:id', async function(req, res) {
     console.log(error);
   }
 });
-
-
 
 
 

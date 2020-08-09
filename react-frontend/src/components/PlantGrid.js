@@ -1,10 +1,6 @@
 import React from "react";
-//import '../App.css';
 import '../stylesheets/PlantGrid.css'
 import { Container, Row, Col, Button } from "react-bootstrap";
-// import { Link } from "react-router-dom";
-//import basil from './testResult'
-
 
 
 function Name(props) {
@@ -36,9 +32,14 @@ class PlantSquare extends React.Component {
 function Next(props) {
     console.log(props.links.next);
     if (props.links.self === props.links.last) {
-        return <Button className="btn disabled mt-5" aria-label="end of results">End of Results</Button>
+        return <Button className="btn disabled mt-5" 
+                    aria-label="end of results">
+                End of Results</Button>
     }
-    return <Button className="btn mt-5 rounded-0" aria-label="button link for next page of results" onClick={props.onClick}><strong>More Results</strong></Button>
+    return <Button className="btn mt-5 rounded-0" 
+                    aria-label="button link for next page of results" 
+                    onClick={props.onClick}>
+                <strong>More Results</strong></Button>
 }
 
 
@@ -103,8 +104,6 @@ class PlantRow extends React.Component {
     }
 
     componentDidUpdate = async function(prevProps, prevState) {
-        console.log('prev: ' + prevState.nextLink);
-        console.log('current: ' + this.state.nextLink);
         const endpoint = { endpoint: `${this.state.nextLink}`}
         if (prevState.nextLink !== this.state.nextLink) {
             try {
@@ -151,18 +150,6 @@ class PlantRow extends React.Component {
                                 return this.renderPlantSquare(each)
                         })}
                         <Col className="next">
-                            {/* {function Next(props) {
-                                if (data.links.self === data.links.last) {
-                                    return <Button className="btn disabled" aria-label="end of results">End of Results</Button>
-                                }
-                                else {
-                                    return <Button className="btn" 
-                                                    onClick={this.handleClick}
-                                                    aria-label="click for more results">
-                                                More Results
-                                            </Button>
-                                }
-                            }} */}
                              <Next className="nextBtn" links={links} onClick={this.handleClick}/>
                         </Col>
                 </Row>
@@ -186,7 +173,9 @@ class PlantGrid extends React.Component {
         
         return  <div>
                     <h2 className='results m-5'>Search Results</h2>
-                    <Container className="results" name="results" aria-label="search results">
+                    <Container className="results" 
+                                name="results" 
+                                aria-label="search results">
                        <PlantRow data={this.props.value}/>
                     </Container>
                 </div>
