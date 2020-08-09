@@ -140,20 +140,19 @@ function Bio() {
   const [isLoaded, setStatus] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  useEffect(async function fetchData() {
     try {
-      async function fetchData() {
         let response = await fetch(`${baseUrl}${url}`);
         let info = await response.json();
         console.log(info.data);
         setInfo(info.data);
         setStatus(true);
-      }
-      fetchData();
     }
+    
     catch (error) {
       setError(error);
     }
+    fetchData();
   }, []);
 
 
