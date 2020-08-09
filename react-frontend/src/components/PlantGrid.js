@@ -105,13 +105,18 @@ class PlantRow extends React.Component {
     componentDidUpdate = async function(prevProps, prevState) {
         console.log('prev: ' + prevState.nextLink);
         console.log('current: ' + this.state.nextLink);
+        const endpoint = { endpoint: `${this.state.nextLink}`}
         if (prevState.nextLink !== this.state.nextLink) {
             try {
-                let response = await fetch('http://www.localhost:3000/plants/page/next', {
-                                    method: 'POST',
-                                    headers: {'Content-Type': 'application/json'},
-                                    body: {
-                                    }
+                let response = await fetch(`http://www.localhost:3000/plants/next/`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify(endpoint),
+                    credentials: 'omit'
                 });
                 let results = await response.json();
                 console.log(results);

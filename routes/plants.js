@@ -14,16 +14,17 @@ let url = 'https://trefle.io';
 // URL endpoints
 let search = `/api/v1/plants/search?q=`;
 let plants = `/api/v1/plants/`;
-let family = `/api/v1/plants?filter[family_common_name]=`;
 
-router.use(parser.urlencoded({ extended: false }));
+//router.use(parser.urlencoded({ extended: false }));
 router.use(parser.json());
 
-router.post('/page/next', async function(req, res) {
-  console.log(req);
-  let path = req.body.path;
-  console.log(req.body.path);
+router.post('/next', async function(req, res) {
   try {
+    let request = await req.body.endpoint;
+    console.log(request);
+    let path = await request;
+  //console.log(req.body.path);
+ 
     const response = await fetch(url+path+`&token=${process.env.TREFLE_KEY}`);
     const json = await response.json();
     console.log(json);
