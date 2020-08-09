@@ -7,8 +7,8 @@ Portland State University for the Summer Quarter in 2020.
 
 ### Contributors
 
-Jean Choi
-Robin Su
+[Jean Choi](https://github.com/choijean)
+[Robin Su](https://github.com/rsu819)
 
 ### Goals
 
@@ -18,5 +18,5 @@ Robin Su
 
 ### Deployment
 
-This project was deployed on August 9th, 2020
+This project was deployed on August 9th, 2020.
 
