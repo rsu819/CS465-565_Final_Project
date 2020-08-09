@@ -152,7 +152,7 @@ function Bio() {
     catch (error) {
       setError(error);
     }
-    fetchData();
+    //fetchData();
   }, []);
 
 
