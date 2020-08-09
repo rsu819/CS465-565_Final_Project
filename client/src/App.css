@@ -29,3 +29,13 @@ a:hover,
 a:focus {
   color: var(--blue-dark);
 }
+
+ul {
+  width:100%;
+  text-align:center;
+}
+
+li{
+  display:table;
+  margin:0px auto 0px auto;
+}
