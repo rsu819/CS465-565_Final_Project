@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
 
+const baseUrl = (process.env.NODE_ENV === 'production') ? "https://plantsplantsplants.herokuapp.com" : "http://localhost:3000";
+
 function Weather(props) {
   const [zip, setZip] = useState("");
   const [isActive, setActive] = useState();
@@ -31,7 +33,7 @@ function Weather(props) {
 
   const getWeatherByZip = async () => {
     try {
-      let response = await fetch(`http://localhost:3000/weather/${zip}`);
+      let response = await fetch(`${baseUrl}/weather/${zip}`);
       let json = await response.json();
       setData(json);
     } catch (err) {
