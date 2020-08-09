@@ -422,7 +422,7 @@ class Finder extends React.Component {
           <PropagateLoader
             size={15}
             color={"var(--blue-dark)"}
-            loading={this.state.divisionLoading || this.state.classLoading || this.stateorderLoading || this.state.familyLoading || this.state.genusLoading || this.state.speciesLoading}
+            loading={this.state.divisionLoading || this.state.classLoading || this.state.orderLoading || this.state.familyLoading || this.state.genusLoading || this.state.speciesLoading}
           />
         </div>
         <Form

@@ -5,7 +5,7 @@ const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const { urlencoded } = require("express");
-if (process.env.NODE_ENV !== "production" ) {
+if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
@@ -22,7 +22,11 @@ let authRouter = require("./routes/auth");
 // create express app object
 const app = express();
 
-app.use(cors());
+const baseUrl = (process.env.NODE_ENV === 'production') ? "https://plantsplantsplants.herokuapp.com" : "http://localhost:4000";
+app.use(cors({
+  origin: `${baseUrl}`,
+  credentials: true,
+}));
 
 // call middleware functions for each requested path
 app.use("/", indexRouter);
