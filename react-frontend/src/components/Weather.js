@@ -126,6 +126,7 @@ function WeatherResults(props) {
 
               <Col xs lg="4">
                 <Image
+                  style={{ backgroundColor: 'var(--blue-light)' }}
                   className="w-15"
                   src={require(`../images/icons/${icon}.png`)}
                   alt="weather icon"
