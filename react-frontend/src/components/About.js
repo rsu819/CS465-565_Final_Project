@@ -62,7 +62,7 @@ class About extends React.Component {
                 fluid
               />
               <div className="mt-4">
-                <p>Is cool</p>
+                <p>Loves to cook</p>
               </div>
             </Col>
           </Row>
