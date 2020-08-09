@@ -5,11 +5,6 @@
     
 }
 
-.next {
-    background-color: rgb(240, 255, 252);
-    border: solid var(--blue-green) 1px;
-}
-
 .name {
     font-size: 1.3em;
 }

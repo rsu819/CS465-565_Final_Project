@@ -19,7 +19,7 @@ function PlantMiniSquare(props) {
                         <span>No other plants in this family exist <br/> 
                             on this database <br/> explore more varieties with our <br/></span>
                         <img src={require("../images/cactusIcon.png")}></img>
-                        <a href="link:./Finder" ><u>Plant Finder!</u></a>
+                        <a href="../../finder" ><u>Plant Finder!</u></a>
                     </div>
                 </Col>)
     }

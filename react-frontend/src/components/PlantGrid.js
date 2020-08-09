@@ -1,5 +1,5 @@
 import React from "react";
-import '../stylesheets/PlantGrid.css'
+import "../stylesheets/PlantGrid.css"
 import { Container, Row, Col, Button } from "react-bootstrap";
 
 
@@ -16,12 +16,12 @@ function Name(props) {
 class PlantSquare extends React.Component {
  
     render() {
-    return <Col className='square p-4' sm={6} md={4}>
+    return <Col className="square p-4" sm={6} md={4}>
             <Name name={this.props.name}/>
             <div className="sciName p-2">Scientific Name:<br/> {this.props.sciName}</div>
             <div>
                 <Button href={this.props.url} 
-                        className='btn-sm btn-primary mt-2 rounded-0' 
+                        className="btn-sm btn-primary mt-2 rounded-0" 
                         aria-label="link to plant information">
                             <strong>Go!</strong></Button>
             </div>
@@ -34,7 +34,7 @@ function Prev(props) {
     if (props.links.prev) {
             return <Col>
                         <Button className="btn mt-4 rounded-0" 
-                                aria-label="button link for next page of results" 
+                                aria-label="link to previous page of results" 
                                 onClick={props.onClick}>
                         <strong>Previous Results</strong>
                         </Button>
@@ -51,7 +51,7 @@ function Next(props) {
     if (props.links.next) {
         return  <Col>
                     <Button className="btn mt-4 rounded-0" 
-                            aria-label="button link for next page of results" 
+                            aria-label="button link to next page of results" 
                             onClick={props.onClick}>
                         <strong>More Results</strong></Button>
                 </Col>
@@ -138,14 +138,14 @@ class PlantRow extends React.Component {
         if (prevState.self !== this.state.self) {
             try {
                 let response = await fetch(`http://www.localhost:3000/plants/next/`, {
-                    method: 'POST',
-                    mode: 'cors',
+                    method: "POST",
+                    mode: "cors",
                     headers: {
-                        'Content-Type': 'application/json'
+                        "Content-Type": "application/json"
                     },
-                    referrerPolicy: 'no-referrer',
+                    referrerPolicy: "no-referrer",
                     body: JSON.stringify(link),
-                    credentials: 'omit'
+                    credentials: "omit"
                 });
                 let results = await response.json();
                 this.setState({
@@ -207,7 +207,7 @@ class PlantGrid extends React.Component {
     render() {
         
         return  <div>
-                    <h2 className='results m-5'>Search Results</h2>
+                    <h2 className="results m-5">Search Results</h2>
                     <Container className="results" 
                                 name="results" 
                                 aria-label="search results">
