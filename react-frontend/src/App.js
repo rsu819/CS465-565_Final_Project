@@ -14,22 +14,18 @@ import PageNotFound from "./components/PageNotFound";
 class App extends React.Component {
   componentDidMount() {
     let token = JSON.parse(localStorage.getItem('user'));
-    console.log(token);
+    // console.log(token);
     if (token !== null) {
-      console.log('we have a token!');
-      console.log(token.token);
-      console.log(token.expiration);
+      // console.log('we have a token!');
       let dateNow = new Date();
       let expiration = new Date(moment(token.expiration, "MM-DD-YYYY hh:mm"));
-      console.log(dateNow);
-      console.log(expiration);
       if (expiration < dateNow) {
         AuthService.logout();
         AuthService.login();
       }
     }
     else {
-      console.log('no token );');
+      // console.log('no token );');
       AuthService.login();
     }
   }
@@ -45,7 +41,7 @@ class App extends React.Component {
               <Redirect to="/home" />
             </Route>
             <Route path="/home" component={Home} exact />
-            <Route path="/plants/:slug" component={Plants}/>
+            <Route path="/plants/:slug" component={Plants} />
             <Route path="/finder" component={Finder} exact />
             <Route path="/weather" component={Weather} exact />
             <Route path="/about" component={About} exact />

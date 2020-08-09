@@ -1,24 +1,5 @@
 import React, { useState, useEffect } from "react";
-// eslint-disable-next-line
 import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
-// import i01d from "../images/icons/01d.png";
-// import i01n from "../images/icons/01n.png";
-// import i02d from "../images/icons/02d.png";
-// import i02n from "../images/icons/02n.png";
-// import i03d from "../images/icons/03d.png";
-// import i03n from "../images/icons/03n.png";
-// import i04d from "../images/icons/04d.png";
-// import i04n from "../images/icons/04n.png";
-// import i09d from "../images/icons/09d.png";
-// import i09n from "../images/icons/09n.png";
-// import i10d from "../images/icons/10d.png";
-// import i10n from "../images/icons/10n.png";
-// import i11d from "../images/icons/11d.png";
-// import i11n from "../images/icons/11n.png";
-// import i13d from "../images/icons/13d.png";
-// import i13n from "../images/icons/13n.png";
-// import i50d from "../images/icons/50d.png";
-// import i50n from "../images/icons/50n.png";
 
 function Weather(props) {
   const [zip, setZip] = useState("");
@@ -74,7 +55,6 @@ function Weather(props) {
             className="w-50 text-center"
             type="text"
             value={zip}
-            // onChange={e => setZip(e.target.value)}
             onChange={e => handleChange(e)}
             placeholder="e.g. 97229"
             aria-label="enter search for weather by zipcode"
@@ -107,10 +87,6 @@ function WeatherResults(props) {
   const [icon, setIcon] = useState();
 
   useEffect(() => {
-    console.log('WeatherResults useEffect');
-    console.log(`props.zip: ${props.zip}`);
-    console.log(`props.data:`);
-    console.log(props.data);
     if (props.data) {
       if (props.data.message !== 'valid') {
         setValidZip(false);

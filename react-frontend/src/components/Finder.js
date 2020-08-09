@@ -58,17 +58,15 @@ class Finder extends React.Component {
     return;
   };
 
-  
+
   handleSubmit = function (e) {
     e.preventDefault();
-    // alert("You searched for " + this.state.selectedSpeciesId);
     this.props.history.push(`/plants/species/${this.state.selectedSpeciesId}`);
     return;
   };
- 
-  
+
+
   onChangeDivision = function (e) {
-    console.log(`DEBUG division: ${e.target.value}`);
     this.setState({ selectedDivisionId: parseInt(e.target.value, 10) });
     //clear all following states
     this.setState({
@@ -97,7 +95,6 @@ class Finder extends React.Component {
   }
 
   onChangeClass = function (e) {
-    console.log(`DEBUG class: ${e.target.value}`);
     this.setState({ selectedClassId: parseInt(e.target.value, 10) });
     //clear all following states
     this.setState({
@@ -122,7 +119,6 @@ class Finder extends React.Component {
   }
 
   onChangeOrder = function (e) {
-    console.log(`DEBUG order: ${e.target.value}`);
     this.setState({ selectedOrderId: parseInt(e.target.value, 10) });
     //clear all following states
     this.setState({
@@ -143,9 +139,7 @@ class Finder extends React.Component {
   }
 
   onChangeFamily = function (e) {
-    console.log(`DEBUG family: ${e.target.value}`);
     this.setState({ selectedFamilyId: parseInt(e.target.value, 10) });
-    console.log(this.state.selectedFamilyId);
     //clear all following states
     this.setState({
       genera: [],
@@ -161,7 +155,6 @@ class Finder extends React.Component {
   }
 
   onChangeGenus = function (e) {
-    console.log(`DEBUG genus: ${e.target.value}`);
     this.setState({ selectedGenusId: parseInt(e.target.value, 10) });
     //clear all following states
     this.setState({
@@ -174,16 +167,13 @@ class Finder extends React.Component {
   }
 
   onChangeSpecies = function (e) {
-    console.log(`DEBUG species: ${e.target.value}`);
     this.setState({ selectedSpeciesId: parseInt(e.target.value, 10) });
-    console.log(`selectedSpecies ${this.state.selectedSpeciesId} `)
   }
 
   //=====================================
   // API calls to classifications
   // GET DIVISION
   getDivisions = function () {
-    console.log('DEBUG getDivisions()');
     this.setState({ divisionLoading: true });
     fetch(`${apiUrl}/api/v1/divisions`, {
       headers:
@@ -195,7 +185,6 @@ class Finder extends React.Component {
       .then((res) => res.json())
       .then((res) => {
         //clear existing data
-        console.log(res);
         this.setState({ divisions: [] });
         res.data.forEach((division) => {
           //console.log(division);
@@ -205,7 +194,6 @@ class Finder extends React.Component {
         });
         this.setState({ divisionLoading: false });
         this.setState({ divisionDisabled: false });
-        this.seeState();
       })
       .catch((err) => {
         console.log(err);
@@ -214,7 +202,6 @@ class Finder extends React.Component {
 
   // GET CLASSES
   getClasses = async () => {
-    console.log('getClasses()');
     this.setState({ classLoading: true });
     try {
       let next = true;
@@ -222,14 +209,11 @@ class Finder extends React.Component {
       while (next) {
         // eslint-disable-next-line
         let response = await this.reqClasses(page);
-        //console.log('get');
-        //console.log(response);
         page++;
         if (page > this.state.classPages) next = false;
       }
       this.setState({ classLoading: false });
       this.setState({ classDisabled: false });
-      this.seeState();
     } catch (err) {
       console.log(err);
     }
@@ -245,7 +229,6 @@ class Finder extends React.Component {
         }
       });
       const data = await response.json();
-      //console.log(`req`);
       this.setState({ classPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         if (item.division && (this.state.selectedDivisionId === item.division.id)) {
@@ -261,7 +244,6 @@ class Finder extends React.Component {
 
   // GET ORDERS
   getOrders = async () => {
-    console.log('getOrders()');
     this.setState({ orderLoading: true });
     try {
       let next = true;
@@ -269,14 +251,11 @@ class Finder extends React.Component {
       while (next) {
         // eslint-disable-next-line
         let response = await this.reqOrders(page);
-        //console.log('get');
-        //console.log(response);
         page++;
         if (page > this.state.orderPages) next = false;
       }
       this.setState({ orderLoading: false });
       this.setState({ orderDisabled: false });
-      this.seeState();
     } catch (err) {
       console.log(err);
     }
@@ -292,7 +271,6 @@ class Finder extends React.Component {
         }
       });
       const data = await response.json();
-      //console.log(`req`);
       this.setState({ orderPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         if (item.division_class && (this.state.selectedClassId === item.division_class.id)) {
@@ -308,7 +286,6 @@ class Finder extends React.Component {
 
   // GET FAMILIES
   getFamilies = async () => {
-    console.log('getFamilies()');
     this.setState({ familyLoading: true });
     try {
       let next = true;
@@ -316,14 +293,11 @@ class Finder extends React.Component {
       while (next) {
         // eslint-disable-next-line
         let response = await this.reqFamilies(page);
-        //console.log('get');
-        //console.log(response);
         page++;
         if (page > this.state.familyPages) next = false;
       }
       this.setState({ familyLoading: false });
       this.setState({ familyDisabled: false });
-      this.seeState();
     } catch (err) {
       console.log(err);
     }
@@ -339,7 +313,6 @@ class Finder extends React.Component {
         }
       });
       const data = await response.json();
-      //console.log(`req`);
       this.setState({ familyPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         if (item.division_order && (this.state.selectedOrderId === item.division_order.id)) {
@@ -355,7 +328,6 @@ class Finder extends React.Component {
 
   // GET GENERA
   getGenera = async () => {
-    console.log('getGenera()');
     this.setState({ genusLoading: true });
     try {
       let next = true;
@@ -363,15 +335,12 @@ class Finder extends React.Component {
       while (next) {
         // eslint-disable-next-line
         let response = await this.reqGenera(page);
-        //console.log('get');
-        //console.log(response);
         page++;
         //capping pages to 25
         if (page > this.state.genusPages || page >= 25) next = false;
       }
       this.setState({ genusLoading: false });
       this.setState({ genusDisabled: false });
-      this.seeState();
     } catch (err) {
       console.log(err);
     }
@@ -380,7 +349,6 @@ class Finder extends React.Component {
   reqGenera = async (page) => {
     try {
       const response = await fetch(`${apiUrl}/api/v1/genus?page=${page}&filter[family_id]=${this.state.selectedFamilyId}`, {
-        // const response = await fetch(`${apiUrl}/api/v1/genus?page=${page}&filter[family_id]=488`, {
         headers:
         {
           'Content-Type': 'application/html',
@@ -388,13 +356,11 @@ class Finder extends React.Component {
         }
       });
       const data = await response.json();
-      //console.log(`req`);
       this.setState({ genusPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         if (item.family && (this.state.selectedFamilyId === item.family.id)) {
           this.setState({
             genera: [...this.state.genera, { name: item.name, id: item.id }],
-            // genera: this.state.genera.push({ name: item.name, id: item.id })
           })
         }
       });
@@ -405,7 +371,6 @@ class Finder extends React.Component {
 
   // GET SPECIES
   getSpecies = async () => {
-    console.log('getSpecies()');
     this.setState({ speciesLoading: true });
     try {
       let next = true;
@@ -413,15 +378,12 @@ class Finder extends React.Component {
       while (next) {
         // eslint-disable-next-line
         let response = await this.reqSpecies(page);
-        //console.log('get');
-        //console.log(response);
         page++;
         //capping pages to 25
         if (page > this.state.speciesPages || page >= 25) next = false;
       }
       this.setState({ speciesLoading: false });
       this.setState({ speciesDisabled: false });
-      this.seeState();
     } catch (err) {
       console.log(err);
     }
@@ -437,7 +399,6 @@ class Finder extends React.Component {
         }
       });
       const data = await response.json();
-      //console.log(`req`);
       this.setState({ speciesPages: parseInt(data.links.last.match(/\d+$/)[0], 10) });
       data.data.forEach((item) => {
         this.setState({
@@ -450,11 +411,7 @@ class Finder extends React.Component {
     }
   }
 
-  // DEBUG function
-  seeState = () => {
-    console.log('this.state');
-    console.log(this.state);
-  }
+
 
   //==============================================
   // RENDER

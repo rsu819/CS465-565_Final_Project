@@ -17,7 +17,7 @@ router.get("/", async function (req, res) {
       headers: { 'Content-Type': 'application/json' }
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     res.status(200).send(json);
   } catch (err) {
     console.error(err);
