@@ -21,7 +21,7 @@ class PlantSquare extends React.Component {
       <Name name={this.props.name} />
       <div className="sciName p-2">Scientific Name:<br /> {this.props.sciName}</div>
       <div>
-        <Button href={`{this.props.url}`}
+        <Button href={this.props.url}
           className="btn-sm btn-primary mt-2 rounded-0"
           aria-label="link to plant information">
           <strong>Go!</strong></Button>
