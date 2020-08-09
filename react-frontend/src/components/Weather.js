@@ -97,16 +97,13 @@ function Weather(props) {
 
 function WeatherResults(props) {
   const [loaded, setLoad] = useState(false);
+  const [validZip, setValidZip] = useState(false);
   const [temperature, setTemperature] = useState();
   const [feelsLike, setFeelsLike] = useState();
   const [minTemp, setMinTemp] = useState();
   const [maxTemp, setMaxTemp] = useState();
   const [humidity, setHumidity] = useState();
-  // eslint-disable-next-line
-  const [pressure, setPressure] = useState();
-
   const [name, setName] = useState();
-  // eslint-disable-next-line
   const [icon, setIcon] = useState();
 
   useEffect(() => {
@@ -115,16 +112,22 @@ function WeatherResults(props) {
     console.log(`props.data:`);
     console.log(props.data);
     if (props.data) {
-      setTemperature(convertToF(props.data.main.temp));
-      setFeelsLike(convertToF(props.data.main.feels_like));
-      setMinTemp(convertToF(props.data.main.temp_min));
-      setMaxTemp(convertToF(props.data.main.temp_max));
-      setHumidity(props.data.main.humidity);
-      setPressure(props.data.main.pressure);
-      setName(props.data.name);
-      setIcon(props.data.weather[0].icon);
-      setLoad(true);
+      if (props.data.message !== 'valid') {
+        setValidZip(false);
+        setLoad(false);
+      } else {
+        setTemperature(convertToF(props.data.main.temp));
+        setFeelsLike(convertToF(props.data.main.feels_like));
+        setMinTemp(convertToF(props.data.main.temp_min));
+        setMaxTemp(convertToF(props.data.main.temp_max));
+        setHumidity(props.data.main.humidity);
+        setName(props.data.name);
+        setIcon(props.data.weather[0].icon);
+        setLoad(true);
+        setValidZip(true);
+      }
     }
+
   }, [props.zip, props.data]);
 
   const convertToF = (x) => {
@@ -132,37 +135,38 @@ function WeatherResults(props) {
   }
 
 
-  if (!loaded) {
-    return <div>Loading...</div>
+  if (!validZip) {
+    return <div> Zip code not found!</div>
   }
   else {
     return (
-    <>
-      <h2 className="m-4">Weather in {name}: </h2>
-      <Container fluid>
-        <Row className="justify-content-md-center">
-          {!loaded ? (<p>Loading...</p>) : (
+      <>
+        <h2 className="m-4">Weather in {name}: </h2>
+        <Container fluid>
+          <Row className="justify-content-md-center">
+            {!loaded ? (<p>Loading...</p>) : (
 
-            <Col xs lg="4">
-              <Image
-                className="w-15"
-                src={require(`../images/icons/${icon}.png`)}
-                alt="weather icon"
-                fluid
-              />
-              <div className="mt-4">
-                <p> Current temperature: {temperature} &#176; F</p>
-                <p> Feels like: {feelsLike} &#176; F</p>
-                <p> Minimum temperature: {minTemp} &#176; F</p>
-                <p> Maximum temperature: {maxTemp} &#176; F</p>
-                <p> Humidity: {humidity}%</p>
-              </div>
-            </Col>
-          )}
-        </Row>
-      </Container>
-    </>
-  )}
+              <Col xs lg="4">
+                <Image
+                  className="w-15"
+                  src={require(`../images/icons/${icon}.png`)}
+                  alt="weather icon"
+                  fluid
+                />
+                <div className="mt-4">
+                  <p> Current temperature: {temperature} &#176; F</p>
+                  <p> Feels like: {feelsLike} &#176; F</p>
+                  <p> Minimum temperature: {minTemp} &#176; F</p>
+                  <p> Maximum temperature: {maxTemp} &#176; F</p>
+                  <p> Humidity: {humidity}%</p>
+                </div>
+              </Col>
+            )}
+          </Row>
+        </Container>
+      </>
+    )
+  }
 }
 
 

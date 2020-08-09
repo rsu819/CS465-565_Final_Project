@@ -36,8 +36,10 @@ router.get('/:zip', async function (req, res) {
   const zip = req.params.zip;
   try {
     const response = await fetch(`${apiUrl}zip=${zip}&appid=${WEATHER_KEY}`);
-    const json = await response.json();
-
+    let json = await response.json();
+    if (!json.hasOwnProperty('message')) {
+      json.message = 'valid';
+    }
 
     res.status(200).send(json);
   } catch (err) {
