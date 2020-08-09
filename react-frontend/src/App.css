@@ -7,12 +7,13 @@
   --green-dark: rgb(140, 220, 121);
   --green-light: rgb(196, 238, 154);
   --yellow: rgb(252, 254, 187);
+  
 }
 
 .App {
   box-sizing: border-box;
   text-align: center;
-  font-family: "Ubuntu", sans-serif;
+  font-family: "Gill Sans", sans-serif;
 }
 
 .navbar {
@@ -27,4 +28,15 @@ a:active,
 a:hover,
 a:focus {
   color: var(--blue-dark);
+}
+
+
+ul {
+  width:100%;
+  text-align:center;
+}
+
+li{
+  display:table;
+  margin:0px auto 0px auto;
 }

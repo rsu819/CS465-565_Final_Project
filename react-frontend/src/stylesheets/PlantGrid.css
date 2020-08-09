@@ -1,10 +1,16 @@
+
 .square {
     background-color: var(--blue-green);
     border: solid white 3px;
+    
 }
 
 .name {
     font-size: 1.3em;
+}
+
+.sciName {
+    font-size: 1em;
 }
 
 .btn {

@@ -15,7 +15,6 @@ class Home extends React.Component {
 
   handleChange = function(e) {
     this.setState({value: e.target.value});
-    console.log(this.state.value);
     return;
   }
 
@@ -26,7 +25,9 @@ class Home extends React.Component {
 
 
   render() {
-    return <Form className="searchform" onSubmit={this.handleSubmit}>
+    return <Form className="searchform" 
+                  onSubmit={this.handleSubmit}
+                  aria-label="form to search by keyword">
       <Form.Group controlId="searchPlants">
         <Form.Label className="title mt-5 p-5">Enter plant to care for:</Form.Label>
         <Form.Control className="search" 
@@ -39,7 +40,7 @@ class Home extends React.Component {
                 required
         />
       </Form.Group>
-      <Button className="btn rounded-0" type="submit" variant="primary">Search!</Button>
+      <Button className="btn btn-lg rounded-0" type="submit" variant="primary" aria-label="submit search">Search!</Button>
     </Form>
    }
 };
