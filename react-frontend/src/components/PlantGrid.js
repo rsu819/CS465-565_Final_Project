@@ -48,7 +48,7 @@ function Prev(props) {
 
 function Next(props) {
 
-    if (props.links.self === props.links.last) {
+    if (!props.links.next) {
         return <Col>
                     <Button className="btn disabled mt-4" 
                             aria-label="end of results">
