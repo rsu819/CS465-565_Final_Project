@@ -5,7 +5,7 @@ class Navigation extends React.Component {
   render() {
     return (
       <Navbar className="navbar" expand="md">
-        <Navbar.Brand href="home">PlantsPlantsPlants</Navbar.Brand>
+        <Navbar.Brand href="/home">PlantsPlantsPlants</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
