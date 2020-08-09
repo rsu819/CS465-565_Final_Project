@@ -41,7 +41,7 @@ function PlantMiniSquare(props) {
   }
   else {
     let i = getRandomInt(length);
-    let j = 0
+    let j = 0;
     do {
       console.log(i);
       if (props.family[i].common_name !== props.skip) {
@@ -146,13 +146,12 @@ function Bio() {
         let info = await response.json();
         console.log(info.data);
         setInfo(info.data);
-        setStatus(true);
+        // setStatus(true);
     }
-    
     catch (error) {
       setError(error);
     }
-    //fetchData();
+    setStatus(true);
   }, []);
 
 
