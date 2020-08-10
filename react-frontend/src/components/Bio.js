@@ -15,6 +15,8 @@ function PlantMiniSquare(props) {
   let squares = [];
   let length = props.family.length;
   console.log(length);
+
+
   if (length <= 1) {
     return (<Col>
       <div className="notFound">
@@ -25,31 +27,34 @@ function PlantMiniSquare(props) {
       </div>
     </Col>)
   }
-
+  
   if (length < 6) {
     for (let i = getRandomInt(5); i < length; ((i + 1) % 5)) {
-
+      
       if (props.family[i].common_name !== props.skip) {
+        let path = `../${props.family[i].common_name}/${props.family[i].id}`;
         squares.push(<Col>
           <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
           <div className="commonName p-2">{props.family[i].common_name}</div>
           <div className="scientificName p-2">{props.family[i].scientific_name}</div>
-          <Button className="btn btn-sm" href={`../${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
+          <Button className="btn btn-sm"  href={path}>Go!</Button>
         </Col>)
       }
     }
   }
+  
   else {
     let i = getRandomInt(length);
     let j = 0
     do {
       console.log(i);
       if (props.family[i].common_name !== props.skip) {
+        let path = `../${props.family[i].common_name}/${props.family[i].id}`;
         squares.push(<Col>
           <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
           <div>{props.family[i].common_name}</div>
           <div>{props.family[i].scientific_name}</div>
-          <Button className="btn-sm" href={`../${props.family[i].common_name}/${props.family[i].id}`}>Go!</Button>
+          <Button className="btn-sm" href={path}>Go!</Button>
         </Col>)
       }
       i = (i + 1) % length;
@@ -95,7 +100,7 @@ class PlantRow extends React.Component {
     }
     else {
       return <Row>
-        <PlantMiniSquare family={family} skip={this.props.skip} />
+        <PlantMiniSquare family={family} skip={this.props.skip} history={this.props.history} />
       </Row>
     }
 
@@ -133,28 +138,28 @@ function FlowerFoliage(props) {
   return null;
 }
 
-function Bio() {
+function Bio(props) {
   let { url } = useRouteMatch();
   console.log(url);
   const [plantInfo, setInfo] = useState([]);
   const [isLoaded, setStatus] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(async function fetchData() {
+  useEffect(() => {
+    async function fetchData() {
     try {
-      let response = await fetch(`${baseUrl}${url}`);
-      let info = await response.json();
-      console.log(info.data);
-      setInfo(info.data);
-      setStatus(true);
+        let response = await fetch(`${baseUrl}${url}`);
+        let info = await response.json();
+        console.log(info.data);
+        setInfo(info.data);
+        setStatus(true);
     }
-
     catch (error) {
       setError(error);
     }
-    //fetchData();
-  }, []);
-
+  }
+  fetchData();
+}, []);
 
 
   if (error) {
@@ -169,13 +174,13 @@ function Bio() {
     return (
       <div>
         <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
+        <div>
         <Container fluid>
-          <Row className="justify-content-center">
-            <Col lg={6} sm={6}>
-              <img className="plantPic" style={{ width: '75%' }} src={plantInfo.image_url} alt={`${plantInfo.common_name} example`} />
-            </Col>
+          <Row className="justify-content-center">	          
+            <Col lg={6} sm={6}>	
+              <img className="plantPic" style={{ width: '75%' }} src={plantInfo.image_url} alt={`${plantInfo.common_name} example`} />	
+            </Col>	
           </Row>
-
           <div className="plantBio m-4">
             Common Name: {plantInfo.common_name}<br />
                         Scientific Name: {plantInfo.scientific_name}<br />
@@ -195,9 +200,12 @@ function Bio() {
         <hr />
         <Container fluid className="suggestions m-5">
           <h6 className="title m-5">Varieties in the same family:</h6>
-          <PlantRow family={plantInfo.family_common_name} skip={plantInfo.common_name} />
+          <PlantRow family={plantInfo.family_common_name} 
+                    skip={plantInfo.common_name} 
+                    history={props.history} />
         </Container>
       </div>
+    </div>
     )
   }
 }

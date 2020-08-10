@@ -15,14 +15,22 @@ function Name(props) {
 }
 
 class PlantSquare extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.history.push(this.props.url);
+  }
 
   render() {
-    console.log(this.props.url);
     return <Col className="square p-4" sm={6} md={4}>
       <Name name={this.props.name} />
       <div className="sciName p-2">Scientific Name:<br /> {this.props.sciName}</div>
       <div>
-        <Button href={this.props.url}
+        <Button 
+          onClick={this.handleClick}
           className="btn-sm btn-primary mt-2 rounded-0"
           aria-label="link to plant information">
           <strong>Go!</strong></Button>
@@ -49,7 +57,6 @@ function Prev(props) {
 }
 
 function Next(props) {
-  console.log(props.links);
   if (props.links.next) {
     return <Col>
       <Button className="btn mt-4 rounded-0"
@@ -70,7 +77,6 @@ function Next(props) {
 class PlantRow extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.data)
     this.state = {
       data: [],
       links: {},
@@ -114,6 +120,7 @@ class PlantRow extends React.Component {
       slug={slug}
       url={url}
       key={plant.id}
+      history={this.props.history}
     />
   }
 
@@ -213,7 +220,7 @@ class PlantGrid extends React.Component {
       <Container className="results"
         name="results"
         aria-label="search results">
-        <PlantRow data={this.props.value} />
+        <PlantRow data={this.props.value} history={this.props.history} />
       </Container>
     </div>
   }
