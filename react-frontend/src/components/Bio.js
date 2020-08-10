@@ -175,7 +175,6 @@ function Bio(props) {
         <div>
         <Container fluid>
           <Row className="justify-content-center">	          
-           
             <Col lg={6} sm={6}>	
               <img className="plantPic" style={{ width: '75%' }} src={plantInfo.image_url} alt={`${plantInfo.common_name} example`} />	
             </Col>	

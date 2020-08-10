@@ -16,12 +16,15 @@ let plants = `/api/v1/plants/`;
 
 router.use(parser.json());
 
+router.get('/', function (req, res) {
+  res.redirect('./home');
+});
+
 router.post('/next', async function(req, res) {
   try {
     let request = await req.body.endpoint;
     console.log(request);
     let path = await request;
-  //console.log(req.body.path);
  
     const response = await fetch(url+path+`&token=${process.env.TREFLE_KEY}`);
     const json = await response.json();
