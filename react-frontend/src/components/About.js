@@ -10,7 +10,15 @@ class About extends React.Component {
     return (
       <div>
         < h1 className="m-5" > About</h1>
+
         <Container fluid>
+          <Row className="justify-content-md-center">
+            <Col sm={10} lg={6}>
+              <p><strong>PlantsPlantsPlants</strong> is a full stack web application written by Jean Choi and Robin Su.
+              Enter a plant name or navigate through the taxonomic ranks to find a plant's care information.
+              To find information about the weather, enter your Zip code!</p>
+            </Col>
+          </Row>
           <Row className="justify-content-md-center">
             <Col xs lg="4">
               <Image
