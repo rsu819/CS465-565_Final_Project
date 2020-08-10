@@ -173,7 +173,7 @@ function Bio(props) {
       <div>
         <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
         <div>
-        <Container fluid>	        <div>
+        <Container fluid>
           <Row className="justify-content-center">	          
            
             <Col lg={6} sm={6}>	
