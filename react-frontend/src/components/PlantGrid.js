@@ -70,7 +70,7 @@ function Next(props) {
 
   }
   return <Col>
-    <Button className="btn disabled mt-4"
+    <Button className="btn disabled mt-4 rounded-0"
       aria-label="end of results">
       <strong>End of Results</strong></Button>
   </Col>
