@@ -145,7 +145,8 @@ function Bio(props) {
   const [isLoaded, setStatus] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(async function fetchData() {
+  useEffect(() => {
+    async function fetchData() {
     try {
         let response = await fetch(`${baseUrl}${url}`);
         let info = await response.json();
@@ -153,11 +154,12 @@ function Bio(props) {
         setInfo(info.data);
         setStatus(true);
     }
-    
     catch (error) {
       setError(error);
     }
-  }, []);
+  }
+  fetchData();
+}, []);
 
 
   if (error) {
@@ -203,6 +205,7 @@ function Bio(props) {
                     history={props.history} />
         </Container>
       </div>
+    </div>
     )
   }
 }
