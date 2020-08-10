@@ -1,4 +1,4 @@
-import React, { useEffect, Link } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "../stylesheets/Bio.css";
@@ -22,7 +22,7 @@ function PlantMiniSquare(props) {
       <div className="notFound">
         <span>No other plants in this family exist <br />
                             on this database <br /> explore more varieties with our <br /></span>
-        <img src={require("../images/cactusIcon.png")}></img>
+        <img src={require("../images/cactusIcon.png")} alt="cactus icon"></img>
         <a href="../../finder" ><u>Plant Finder!</u></a>
       </div>
     </Col>)
@@ -147,7 +147,6 @@ function Bio(props) {
 
   useEffect(async function fetchData() {
     try {
-        
         let response = await fetch(`${baseUrl}${url}`);
         let info = await response.json();
         console.log(info.data);
@@ -158,9 +157,7 @@ function Bio(props) {
     catch (error) {
       setError(error);
     }
-    //fetchData();
   }, []);
-
 
 
   if (error) {
@@ -176,7 +173,13 @@ function Bio(props) {
       <div>
         <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
         <div>
-          <img className="plantPic" src={plantInfo.image_url} alt={`${plantInfo.common_name} example`} />
+        <Container fluid>	        <div>
+          <Row className="justify-content-center">	          
+           
+            <Col lg={6} sm={6}>	
+              <img className="plantPic" style={{ width: '75%' }} src={plantInfo.image_url} alt={`${plantInfo.common_name} example`} />	
+            </Col>	
+          </Row>
           <div className="plantBio m-4">
             Common Name: {plantInfo.common_name}<br />
                         Scientific Name: {plantInfo.scientific_name}<br />
@@ -192,11 +195,13 @@ function Bio(props) {
                         Synonyms: <br />
             {synonyms.join(', ')}
           </div>
-        </div>
+        </Container>
         <hr />
         <Container fluid className="suggestions m-5">
           <h6 className="title m-5">Varieties in the same family:</h6>
-          <PlantRow family={plantInfo.family_common_name} skip={plantInfo.common_name} history={props.history} />
+          <PlantRow family={plantInfo.family_common_name} 
+                    skip={plantInfo.common_name} 
+                    history={props.history} />
         </Container>
       </div>
     )
