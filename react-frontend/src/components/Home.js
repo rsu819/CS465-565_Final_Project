@@ -1,7 +1,7 @@
 import React from "react";
 import "../stylesheets/Home.css";
 import { Button, Form } from "react-bootstrap";
-import App from "../App";
+
 
 class Home extends React.Component {
 
@@ -21,7 +21,7 @@ class Home extends React.Component {
 
   handleSubmit = function(e) {
     e.preventDefault();
-    App.props.history.push(`/plants/${this.state.value}`);
+    this.props.history.push(`/plants/${this.state.value}`);
   }
 
 
