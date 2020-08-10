@@ -168,9 +168,20 @@ function Bio(props) {
   else if (!isLoaded) {
     return <div className="loading mt-5 pt-3">Loading Plant Data...</div>
   }
+  else if (!plantInfo.main_species) {
+    return <div className="no info mt-5">
+              <h3>No Information Available.</h3>
+          </div>
+  }
   else {
     let synonyms = [];
-    plantInfo.main_species.synonyms.forEach((plant) => { synonyms.push(plant.name) })
+    if (plantInfo.main_species.synoyms) {
+      plantInfo.main_species.synonyms.forEach((plant) => { synonyms.push(plant.name) })
+    }
+    else {
+
+    }
+    
     return (
       <div>
         <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
@@ -194,7 +205,7 @@ function Bio(props) {
                         Minimum Temperature Needed: {plantInfo.main_species.growth.minimum_temperature.deg_f}<br />
                         Maximum Temperature Tolerated: {plantInfo.main_species.growth.maximum_temperature.deg_f}<br /><br />
                         Synonyms: <br />
-            {synonyms.join(', ')}
+                          {synonyms.join(', ')}
           </div>
         </Container>
         <hr />
