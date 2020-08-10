@@ -1,6 +1,7 @@
 import React from "react";
 import "../stylesheets/Home.css";
 import { Button, Form } from "react-bootstrap";
+import App from "../App";
 
 class Home extends React.Component {
 
@@ -20,7 +21,7 @@ class Home extends React.Component {
 
   handleSubmit = function(e) {
     e.preventDefault();
-    this.props.history.push(`/plants/${this.state.value}`);
+    App.props.history.push(`/plants/${this.state.value}`);
   }
 
 
@@ -40,7 +41,7 @@ class Home extends React.Component {
                 required
         />
       </Form.Group>
-      <Button className="btn btn-lg rounded-0" type="submit" variant="primary" aria-label="submit search">Search!</Button>
+      <Button className="btn btn-lg rounded-0" type="submit" variant="primary" aria-label="submit search" onClick={this.onSubmit}>Search!</Button>
     </Form>
    }
 };

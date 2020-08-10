@@ -13,10 +13,6 @@
 
 .btn {
     background-color:var(--green-dark);
-<<<<<<< HEAD
-    /* border-color: var(--green-light); */
-=======
->>>>>>> master
     padding-left: 8%;
     padding-right: 8%;
 }
