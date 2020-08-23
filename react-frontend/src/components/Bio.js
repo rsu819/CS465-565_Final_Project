@@ -2,77 +2,27 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "../stylesheets/Bio.css";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useLocation } from "react-router-dom";
+import PlantMiniSquare from "./PlantMiniSquare";
 
 const baseUrl = (process.env.NODE_ENV === 'production') ? "https://plantsplantsplants.herokuapp.com" : "http://localhost:3000";
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-function PlantMiniSquare(props) {
-
-  let squares = [];
-  let length = props.family.length;
-  console.log(length);
-
-
-  if (length <= 1) {
-    return (<Col>
-      <div className="notFound">
-        <span>No other plants in this family exist <br />
-                            on this database <br /> explore more varieties with our <br /></span>
-        <img src={require("../images/cactusIcon.png")} alt="cactus icon"></img>
-        <a href="../../finder" ><u>Plant Finder!</u></a>
-      </div>
-    </Col>)
-  }
-  
-  if (length < 6) {
-    for (let i = getRandomInt(5); i < length; ((i + 1) % 5)) {
-      
-      if (props.family[i].common_name !== props.skip) {
-        let path = `../${props.family[i].common_name}/${props.family[i].id}`;
-        squares.push(<Col>
-          <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
-          <div className="commonName p-2">{props.family[i].common_name}</div>
-          <div className="scientificName p-2">{props.family[i].scientific_name}</div>
-          <Button className="btn btn-sm"  href={path}>Go!</Button>
-        </Col>)
-      }
-    }
-  }
-  
-  else {
-    let i = getRandomInt(length);
-    let j = 0
-    do {
-      console.log(i);
-      if (props.family[i].common_name !== props.skip) {
-        let path = `../${props.family[i].common_name}/${props.family[i].id}`;
-        squares.push(<Col>
-          <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
-          <div>{props.family[i].common_name}</div>
-          <div>{props.family[i].scientific_name}</div>
-          <Button className="btn-sm" href={path}>Go!</Button>
-        </Col>)
-      }
-      i = (i + 1) % length;
-      j++;
-    } while (j < 5)
-  }
-  return squares;
-
-}
 
 class PlantRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       family: [],
+      newUrl: "",
       isLoaded: false
     }
+    this.handleClick = this.handleClick.bind(this);
   }
+
+  handleClick(url) {
+    this.setState(url);
+  }
+  
   componentDidMount = async function () {
     try {
       let familyRes = await fetch(`${baseUrl}/plants/family/${this.props.family}`);
@@ -100,10 +50,9 @@ class PlantRow extends React.Component {
     }
     else {
       return <Row>
-        <PlantMiniSquare family={family} skip={this.props.skip} history={this.props.history} />
+        <PlantMiniSquare family={family} skip={this.props.skip} history={this.props.history} onClick={this.props.onClick} />
       </Row>
     }
-
   }
 }
 
@@ -133,33 +82,108 @@ function FlowerFoliage(props) {
     if (props.foliage.color) {
       return <Foliage color={props.foliage.color} />
     }
-
   }
   return null;
 }
 
+function Line(props) {
+  
+  if (!props.value) {
+    return null;
+  }
+  return <div>{props.name}: {props.value}</div>
+}
+
+function PlantInfo(props) {
+  let synonyms = [];
+  if (props.synoyms) {
+    props.synonyms.forEach((plant) => { synonyms.push(plant.name) })
+  }
+
+  return <div>
+            <Line name="Common Name" value={props.common_name}/>
+            <Line name="Scientific Name" value={props.scientific_name}/>
+            <Line name="Growth Habit" value={props.growth_habit}/>
+            <Line name="Average Height" value={props.avg_height}/>
+            {/* <FlowerFoliage flower={props.main_species.flower} /> */}
+            <Line name="Amount of Light (0-10)" value={props.light}/>
+            <Line name="Minimum Precipitation (in mm)" value={props.min_precip}/>
+            <Line name="Maximum Precipitation (in mm)" value={props.max_precip}/>
+            <Line name="Maximum Temperature Required (in mm)" value={props.min_temp}/>
+            <Line name="Maximum Temperature Tolerated" value={props.max_temp}/>
+            <div>Synonyms: {synonyms.join(', ')}</div>    
+        </div>
+}
+
+
+
 function Bio(props) {
   let { url } = useRouteMatch();
-  console.log(url);
+  // let history = useHistory();
+  let location = useLocation();
   const [plantInfo, setInfo] = useState([]);
+  const [familyName, setFamilyName] = useState("");
   const [isLoaded, setStatus] = useState(false);
   const [error, setError] = useState(null);
+  const [newUrl, setUrl] = useState(url);
+  const [squares, setSquares] = useState([]);
+  const [length, setLength] = useState(null);
+  const [loc, setLoc] = useState("");
+
+
+  function handleClick(updatedUrl) {
+    setUrl(updatedUrl);
+    // console.log(updatedUrl);
+    props.history.push(updatedUrl);
+    setLoc(location);
+  }
+
+  // function getRandomInt(max) {
+  //   return Math.floor(Math.random() * Math.floor(max));
+  // }
+  
+  function renderSquares(sq) {
+    return sq.map((plant) => {
+              return (<Col lg={4} sm={6} key={plant.id}>
+            <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
+            <div className="commonName p-2">{plant.common_name}</div>
+            <div className="scientificName p-2">{plant.scientific_name}</div>
+            <Button className="btn btn-sm" 
+                    value={plant.common_name} 
+                    id={plant.id} onClick={() => handleClick(`/plants/${plant.common_name}/${plant.id}`)}>
+                  Go!
+            </Button>
+          </Col>)          
+        })
+  }
 
   useEffect(() => {
     async function fetchData() {
     try {
-        let response = await fetch(`${baseUrl}${url}`);
+        let response = await fetch(`${baseUrl}${newUrl}`);
         let info = await response.json();
-        console.log(info.data);
         setInfo(info.data);
+        console.log(info.data);
+        let fam = async function() {
+
+          let famRes = await fetch(`${baseUrl}/plants/family/${info.data.family_common_name}`);
+          let famInfo = await famRes.json();
+          return famInfo;
+        }
+        let family = await fam();
+        console.log(family.data);
+        setSquares(family.data);
         setStatus(true);
-    }
+        
+        setFamilyName(info.data.family_common_name);
+        setLength(family.data.length);
+    }        
     catch (error) {
       setError(error);
     }
   }
   fetchData();
-}, []);
+}, [location]);
 
 
   if (error) {
@@ -174,16 +198,7 @@ function Bio(props) {
           </div>
   }
   else {
-    let synonyms = [];
-    if (plantInfo.main_species.synoyms) {
-      plantInfo.main_species.synonyms.forEach((plant) => { synonyms.push(plant.name) })
-    }
-    else {
-
-    }
-    
-    return (
-      <div>
+      return <div>
         <h1 className="plantInfo m-4" >{plantInfo.common_name}</h1>
         <div>
         <Container fluid>
@@ -193,37 +208,43 @@ function Bio(props) {
             </Col>	
           </Row>
           <div className="plantBio m-4">
-            Common Name: {plantInfo.common_name}<br />
-                        Scientific Name: {plantInfo.scientific_name}<br />
-                        Growth Habit: {plantInfo.main_species.specifications.growth_habit}<br />
-                        Average Height: {plantInfo.main_species.specifications.avg_height} <br />
-            <FlowerFoliage flower={plantInfo.main_species.flower} />
-                        Amount of light needed (0-10): {plantInfo.main_species.growth.light} lux <br />
-                        Humidity: {plantInfo.main_species.growth.athmospheric_humidity}<br />
-                        Minimum Precipitation (in mm): {plantInfo.main_species.growth.minimum_precipitation.mm}<br />
-                        Maximum Precipitation (in mm): {plantInfo.main_species.growth.maximum_precipitation.mm}<br />
-                        Minimum Temperature Needed: {plantInfo.main_species.growth.minimum_temperature.deg_f}<br />
-                        Maximum Temperature Tolerated: {plantInfo.main_species.growth.maximum_temperature.deg_f}<br /><br />
-                        Synonyms: <br />
-                          {synonyms.join(', ')}
-          </div>
+            <PlantInfo 
+                common_name={plantInfo.common_name}
+                scientific_name={plantInfo.scientific_name} 
+                growth_habit={plantInfo.main_species.specifications.growth_habit}
+                avg_height={plantInfo.main_species.specifications.avg_height}
+                flower={plantInfo.main_species.flower}
+                light={plantInfo.main_species.growth.light} 
+                min_precip={plantInfo.main_species.growth.minimum_precipitation.mm}
+                max_precip={plantInfo.main_species.growth.maximum_precipitation.mm}
+                min_temp={plantInfo.main_species.growth.minimum_temperature.deg_f}
+                max_temp={plantInfo.main_species.growth.maximum_temperature.deg_f}
+                synonyms={plantInfo.main_species.synonyms}/>
+            </div>
         </Container>
-        <hr />
         <Container fluid className="suggestions m-5">
           <h6 className="title m-5">Varieties in the same family:</h6>
-          <PlantRow family={plantInfo.family_common_name} 
-                    skip={plantInfo.common_name} 
-                    history={props.history} />
+          <div>
+            { (length > 5)
+              ? <Row>{ renderSquares(squares) }</Row>
+              : <Row>
+                  <Col>
+                    <div className="notFound">
+                      <span>No other plants in this family exist <br />
+                                  on this database <br /> explore more varieties with our <br /></span>
+                      <img src={require("../images/cactusIcon.png")} alt="cactus icon"></img>
+                      <Button value={plantInfo.family.common_name} href="../finder"><u>Plant Finder!</u></Button>
+                    </div>
+                  </Col>
+                </Row>
+            }
+            </div>
         </Container>
       </div>
     </div>
-    )
+    
   }
-}
-
-
-
-
+} 
 
 
 export default Bio;
