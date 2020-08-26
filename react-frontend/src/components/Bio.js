@@ -2,59 +2,59 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "../stylesheets/Bio.css";
-import { useRouteMatch, useLocation } from "react-router-dom";
+import { useRouteMatch, useLocation, useHistory } from "react-router-dom";
 import PlantMiniSquare from "./PlantMiniSquare";
 
 const baseUrl = (process.env.NODE_ENV === 'production') ? "https://plantsplantsplants.herokuapp.com" : "http://localhost:3000";
 
 
-class PlantRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      family: [],
-      newUrl: "",
-      isLoaded: false
-    }
-    this.handleClick = this.handleClick.bind(this);
-  }
+// class PlantRow extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       family: [],
+//       newUrl: "",
+//       isLoaded: false
+//     }
+//     this.handleClick = this.handleClick.bind(this);
+//   }
 
-  handleClick(url) {
-    this.setState(url);
-  }
+//   handleClick(url) {
+//     this.setState(url);
+//   }
   
-  componentDidMount = async function () {
-    try {
-      let familyRes = await fetch(`${baseUrl}/plants/family/${this.props.family}`);
-      let family = await familyRes.json();
-      this.setState({
-        family: family.data,
-        isLoaded: true
-      })
-    }
-    catch (error) {
-      this.setState({
-        isLoaded: true,
-        error
-      })
-    }
-  }
+//   componentDidMount = async function () {
+//     try {
+//       let familyRes = await fetch(`${baseUrl}/plants/family/${this.props.family}`);
+//       let family = await familyRes.json();
+//       this.setState({
+//         family: family.data,
+//         isLoaded: true
+//       })
+//     }
+//     catch (error) {
+//       this.setState({
+//         isLoaded: true,
+//         error
+//       })
+//     }
+//   }
 
-  render() {
-    const { error, isLoaded, family } = this.state;
-    if (error) {
-      return <div>Error: {error.message}</div>
-    }
-    else if (!isLoaded) {
-      return <div>Loading...</div>
-    }
-    else {
-      return <Row>
-        <PlantMiniSquare family={family} skip={this.props.skip} history={this.props.history} onClick={this.props.onClick} />
-      </Row>
-    }
-  }
-}
+//   render() {
+//     const { error, isLoaded, family } = this.state;
+//     if (error) {
+//       return <div>Error: {error.message}</div>
+//     }
+//     else if (!isLoaded) {
+//       return <div>Loading...</div>
+//     }
+//     else {
+//       return <Row>
+//         <PlantMiniSquare family={family} skip={this.props.skip} history={this.props.history} onClick={this.props.onClick} />
+//       </Row>
+//     }
+//   }
+// }
 
 function Flower(props) {
   return <div>Flower color: {props.color}</div>
@@ -109,7 +109,7 @@ function PlantInfo(props) {
             <Line name="Amount of Light (0-10)" value={props.light}/>
             <Line name="Minimum Precipitation (in mm)" value={props.min_precip}/>
             <Line name="Maximum Precipitation (in mm)" value={props.max_precip}/>
-            <Line name="Maximum Temperature Required (in mm)" value={props.min_temp}/>
+            <Line name="Minimum Temperature Required (in Fahrenheit)" value={props.min_temp}/>
             <Line name="Maximum Temperature Tolerated" value={props.max_temp}/>
             <div>Synonyms: {synonyms.join(', ')}</div>    
         </div>
@@ -119,7 +119,7 @@ function PlantInfo(props) {
 
 function Bio(props) {
   let { url } = useRouteMatch();
-  // let history = useHistory();
+  let history = useHistory();
   let location = useLocation();
   const [plantInfo, setInfo] = useState([]);
   const [familyName, setFamilyName] = useState("");
@@ -133,8 +133,7 @@ function Bio(props) {
 
   function handleClick(updatedUrl) {
     setUrl(updatedUrl);
-    // console.log(updatedUrl);
-    props.history.push(updatedUrl);
+    history.push(updatedUrl);
     setLoc(location);
   }
 
@@ -143,8 +142,8 @@ function Bio(props) {
   // }
   
   function renderSquares(sq) {
-    return sq.map((plant) => {
-              return (<Col lg={4} sm={6} key={plant.id}>
+    return sq.slice(0,5).map((plant) => {
+              return (<Col className="columns" lg={2} sm={2} key={plant.id}>
             <img src={require('../images/leafimg.jpeg')} alt='plant icon'></img>
             <div className="commonName p-2">{plant.common_name}</div>
             <div className="scientificName p-2">{plant.scientific_name}</div>
@@ -233,7 +232,7 @@ function Bio(props) {
                       <span>No other plants in this family exist <br />
                                   on this database <br /> explore more varieties with our <br /></span>
                       <img src={require("../images/cactusIcon.png")} alt="cactus icon"></img>
-                      <Button value={plantInfo.family.common_name} href="../finder"><u>Plant Finder!</u></Button>
+                      <Button href="../finder"><u>Plant Finder!</u></Button>
                     </div>
                   </Col>
                 </Row>
